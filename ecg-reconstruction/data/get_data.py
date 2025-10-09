@@ -31,18 +31,32 @@ def load_ptb_xl(ptb_xl_path, sampling_rate=500):
     scp_codes = pd.read_csv(os.path.join(ptb_xl_path, 'scp_statements.csv'), index_col=0)
     scp_codes = scp_codes[scp_codes.diagnostic == 1]
     
-    # Load raw data
+    # Load raw data - only load records that exist
     records = []
     signals = []
-    
+
     print("Loading ECG signals...")
-    for idx, row in tqdm(metadata.iterrows(), total=len(metadata)):
-        # Get file path
-        if row.strat_fold <= 8:  # Training
-            file_path = os.path.join(ptb_xl_path, 'records100', row.filename_hr)
-        else:  # Test
-            file_path = os.path.join(ptb_xl_path, 'records100', row.filename_hr)
-            
+    # First, get list of available records
+    records100_path = os.path.join(ptb_xl_path, 'records100')
+    available_records = []
+    if os.path.exists(records100_path):
+        for file in os.listdir(records100_path):
+            if file.endswith('.hea'):
+                record_id = int(file.split('_')[0])
+                available_records.append(record_id)
+
+    print(f"Found {len(available_records)} available records: {available_records[:10]}...")
+
+    # Filter metadata to only include available records
+    metadata_subset = metadata[metadata.index.isin(available_records)]
+    print(f"Metadata contains {len(metadata_subset)} matching records")
+
+    for idx, row in tqdm(metadata_subset.iterrows(), total=len(metadata_subset)):
+        # For our subset, construct filename directly from record ID
+        # Our files are named like "00001_hr.hea" in records100/
+        filename = f"{idx:05d}_hr"
+        file_path = os.path.join(ptb_xl_path, 'records100', filename)
+
         # Load record
         try:
             record = wfdb.rdrecord(file_path)
