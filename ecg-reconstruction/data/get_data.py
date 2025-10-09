@@ -11,9 +11,10 @@ import pickle
 import h5py
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Prepare PTB-XL data')
-    parser.add_argument('ptb_xl_path', type=str, help='Path to PTB-XL dataset')
-    parser.add_argument('output_path', type=str, help='Path to save processed data')
+    parser = argparse.ArgumentParser(description='Prepare PTB-XL data or load test data')
+    parser.add_argument('--ptb_xl_path', type=str, help='Path to PTB-XL dataset')
+    parser.add_argument('--output_path', type=str, help='Path to save processed data')
+    parser.add_argument('--test_mode', action='store_true', help='Use synthetic test data instead of PTB-XL')
     parser.add_argument('--sampling_rate', type=int, default=500, help='Target sampling rate')
     return parser.parse_args()
 
@@ -123,38 +124,102 @@ def prepare_reconstruction_data(signals, splits):
     
     return data, min_val, max_val
 
+def load_test_data(test_data_path):
+    """
+    Load synthetic test data for pipeline testing
+    """
+    print(f"Loading synthetic test data from: {test_data_path}")
+
+    # Load data splits
+    splits = {}
+    for split_name in ['train', 'val', 'test']:
+        input_path = os.path.join(test_data_path, f'{split_name}_input.npy')
+        target_path = os.path.join(test_data_path, f'{split_name}_target.npy')
+
+        if os.path.exists(input_path) and os.path.exists(target_path):
+            input_data = np.load(input_path)
+            target_data = np.load(target_path)
+            splits[split_name] = {
+                'input': input_data,
+                'target': target_data
+            }
+            print(f"  {split_name}: input {input_data.shape}, target {target_data.shape}")
+        else:
+            print(f"  Warning: {split_name} data not found")
+
+    # Load metadata if available
+    metadata_path = os.path.join(test_data_path, 'metadata.csv')
+    if os.path.exists(metadata_path):
+        metadata = pd.read_csv(metadata_path)
+    else:
+        # Create dummy metadata
+        total_samples = sum(len(split_data['input']) for split_data in splits.values())
+        rng = np.random.default_rng(42)
+        metadata = pd.DataFrame({
+            'ecg_id': range(total_samples),
+            'patient_id': rng.integers(1000, 9999, total_samples),
+            'strat_fold': [0] * len(splits['train']['input']) +
+                         [8] * len(splits['val']['input']) +
+                         [9] * len(splits['test']['input'])
+        })
+
+    return splits, metadata
+
 def main():
     args = parse_args()
-    
+
+    if args.test_mode:
+        # Load synthetic test data
+        test_data_path = args.output_path or 'data/test_data'
+        splits, metadata = load_test_data(test_data_path)
+
+        # Save data if output path is different
+        if args.output_path and args.output_path != test_data_path:
+            os.makedirs(args.output_path, exist_ok=True)
+            for split_name, split_data in splits.items():
+                np.save(os.path.join(args.output_path, f'{split_name}_input.npy'), split_data['input'])
+                np.save(os.path.join(args.output_path, f'{split_name}_target.npy'), split_data['target'])
+            metadata.to_csv(os.path.join(args.output_path, 'metadata.csv'), index=False)
+
+        # Print summary
+        for split_name, split_data in splits.items():
+            print(f"{split_name} data:")
+            print(f"  - Input shape: {split_data['input'].shape}")
+            print(f"  - Target shape: {split_data['target'].shape}")
+
+        print("Test data loading complete!")
+        return
+
+    # Original PTB-XL processing
+    if not args.ptb_xl_path:
+        raise ValueError("ptb_xl_path is required when not in test mode")
+
     # Create output directory
     os.makedirs(args.output_path, exist_ok=True)
-    
+
     # Load PTB-XL data
     signals, metadata, splits = load_ptb_xl(args.ptb_xl_path, args.sampling_rate)
-    
+
     # Prepare reconstruction data
     data, min_val, max_val = prepare_reconstruction_data(signals, splits)
-    
+
     # Save data
     print(f"Saving processed data to: {args.output_path}")
     for split_name, split_data in data.items():
         np.save(os.path.join(args.output_path, f'{split_name}_input.npy'), split_data['input'])
         np.save(os.path.join(args.output_path, f'{split_name}_target.npy'), split_data['target'])
-    
+
     # Save normalization parameters
     with open(os.path.join(args.output_path, 'norm_params.pkl'), 'wb') as f:
         pickle.dump({'min': min_val, 'max': max_val}, f)
-    
+
     # Save metadata
     metadata.to_csv(os.path.join(args.output_path, 'metadata.csv'))
-    
+
     # Print summary
     for split_name, split_data in data.items():
         print(f"{split_name} data:")
         print(f"  - Input shape: {split_data['input'].shape}")
         print(f"  - Target shape: {split_data['target'].shape}")
-    
-    print("Data preparation complete!")
 
-if __name__ == "__main__":
-    main()
+    print("Data preparation complete!")
