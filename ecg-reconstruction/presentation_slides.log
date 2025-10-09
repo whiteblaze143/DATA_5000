@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.8.5)  9 OCT 2025 13:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.8.5)  9 OCT 2025 14:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1048,11 +1048,6 @@ orchid.sty)
 rounded.sty)
 (C:\Users\mithu\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beameroutertheme
 infolines.sty))
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\\' on input line 29.
-
-
 (C:\Users\mithu\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
 tex.def
 File: l3backend-pdftex.def 2025-06-09 L3 backend support: PDF output (pdfTeX)
@@ -1234,40 +1229,40 @@ your preamble.
 
 \c@lstlisting=\count395
 (presentation_slides.nav)
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 37--37
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 37--37
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 42--42
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 42--42
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 
 
 
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 [1
 
 {C:/Users/mithu/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 47--47
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 47--47
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 (presentation_slides.toc)
 
 
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 [2
 
 ]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 77--77
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 77--77
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
@@ -1292,28 +1287,28 @@ thkerncmss.
 )
 
 
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 [3
 
 ]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 126--126
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 126--126
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 
 
 
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 [4
 
 ]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 162--162
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 162--162
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
@@ -1325,295 +1320,117 @@ Overfull \hbox (58.52701pt too wide) in paragraph at lines 162--162
 
 
 
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 [5
 
 ]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 197--197
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 197--197
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 
 
 
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 [6
 
 ]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 205--205
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 205--205
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
-<docs/figures/sample_ecg.png, id=233, 1076.823pt x 859.0494pt>
-File: docs/figures/sample_ecg.png Graphic file (type png)
-<use docs/figures/sample_ecg.png>
-Package pdftex.def Info: docs/figures/sample_ecg.png  used on input line 205.
-(pdftex.def)             Requested size: 433.48404pt x 345.81581pt.
+<docs/figures/problem_visualization.png, id=233, 1076.823pt x 426.393pt>
+File: docs/figures/problem_visualization.png Graphic file (type png)
+<use docs/figures/problem_visualization.png>
+Package pdftex.def Info: docs/figures/problem_visualization.png  used on input 
+line 205.
+(pdftex.def)             Requested size: 433.48404pt x 171.64722pt.
 
-Overfull \vbox (182.6231pt too high) detected at line 205
+Overfull \vbox (17.95511pt too high) detected at line 205
  []
 
 
 
 
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 [7
 
- <./docs/figures/sample_ecg.png>]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 213--213
+ <./docs/figures/problem_visualization.png>]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 213--213
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
-<docs/figures/lead_correlations.png, id=263, 667.5339pt x 569.9694pt>
-File: docs/figures/lead_correlations.png Graphic file (type png)
-<use docs/figures/lead_correlations.png>
-Package pdftex.def Info: docs/figures/lead_correlations.png  used on input line
- 213.
-(pdftex.def)             Requested size: 433.48404pt x 370.12784pt.
+<docs/figures/approach_diagram.png, id=264, 686.565pt x 459.3963pt>
+File: docs/figures/approach_diagram.png Graphic file (type png)
+<use docs/figures/approach_diagram.png>
+Package pdftex.def Info: docs/figures/approach_diagram.png  used on input line 
+213.
+(pdftex.def)             Requested size: 433.48404pt x 290.05208pt.
 
-Overfull \vbox (206.3797pt too high) detected at line 213
+Overfull \vbox (126.85936pt too high) detected at line 213
  []
 
 
 
 
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 [8
 
- <./docs/figures/lead_correlations.png>]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 239--239
+ <./docs/figures/approach_diagram.png>]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 221--221
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
-<docs/figures/signal_statistics.png, id=291, 1076.823pt x 425.1885pt>
-File: docs/figures/signal_statistics.png Graphic file (type png)
-<use docs/figures/signal_statistics.png>
-Package pdftex.def Info: docs/figures/signal_statistics.png  used on input line
- 239.
-(pdftex.def)             Requested size: 216.74202pt x 85.58116pt.
+<docs/figures/dataset_characteristics.png, id=293, 1076.823pt x 714.2685pt>
+File: docs/figures/dataset_characteristics.png Graphic file (type png)
+<use docs/figures/dataset_characteristics.png>
+Package pdftex.def Info: docs/figures/dataset_characteristics.png  used on inpu
+t line 221.
+(pdftex.def)             Requested size: 433.48404pt x 287.53334pt.
+
+Overfull \vbox (135.7852pt too high) detected at line 221
+ []
 
 
 
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 [9
 
- <./docs/figures/signal_statistics.png>]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 289--289
+ <./docs/figures/dataset_characteristics.png>]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 229--229
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
-
-
-
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-[10
-
-]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 319--319
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-
-
-
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-[11
-
-]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 341--341
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-
-
-
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-[12
-
-]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 355--355
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-
-
-
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-[13
-
-]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 383--383
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-
-
-
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-[14
-
-]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 397--397
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-
-
-
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-[15
-
-]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 441--441
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-
-
-
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-[16
-
-]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 489--489
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-
-Overfull \hbox (123.31868pt too wide) in paragraph at lines 489--489
- [] 
- []
-
-
-
-
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-[17
-
-]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 513--513
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-
-
-
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-[18
-
-]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 530--530
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-
-
-
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-[19
-
-]
-Overfull \hbox (199.94318pt too wide) in paragraph at lines 558--558
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-
-
-
-Overfull \hbox (199.94318pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-[20
-
-]
-\tf@nav=\write6
-\openout6 = `presentation_slides.nav'.
-
-\tf@toc=\write7
-\openout7 = `presentation_slides.toc'.
-
-\tf@snm=\write8
-\openout8 = `presentation_slides.snm'.
-
- (presentation_slides.aux)
- ***********
-LaTeX2e <2025-06-01> patch level 1
-L3 programming layer <2025-07-19>
- ***********
-Package rerunfilecheck Info: File `presentation_slides.out' has not changed.
-(rerunfilecheck)             Checksum: B4FD89BD5FAF2066F9346A1BBBEAD78A;594.
- ) 
-Here is how much of TeX's memory you used:
- 36923 strings out of 468149
- 872477 string characters out of 5431083
- 1360179 words of memory out of 5000000
- 64813 multiletter control sequences out of 15000+600000
- 640238 words of font info for 72 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 128i,15n,123p,738b,996s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\mithu\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss
-2488.pk> <C:\Users\mithu\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi60
-0\ecss1200.pk> <C:\Users\mithu\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
-/dpi600\tcss1095.pk> <C:\Users\mithu\AppData\Local\MiKTeX\fonts/pk/ljfour/jknap
-pen/ec/dpi600\ecss1000.pk> <C:\Users\mithu\AppData\Local\MiKTeX\fonts/pk/ljfour
-/jknappen/ec/dpi600\ecsx1095.pk> <C:\Users\mithu\AppData\Local\MiKTeX\fonts/pk/
-ljfour/jknappen/ec/dpi600\ecss0600.pk> <C:\Users\mithu\AppData\Local\MiKTeX\fon
-ts/pk/ljfour/jknappen/ec/dpi600\ecss0800.pk> <C:\Users\mithu\AppData\Local\MiKT
-eX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1095.pk> <C:\Users\mithu\AppData\Loca
-l\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1440.pk><C:/Users/mithu/AppData
-/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/mith
-u/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmss10.pfb><C:/U
-sers/mithu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.p
-fb>
-Output written on presentation_slides.pdf (20 pages, 1437075 bytes).
-PDF statistics:
- 1068 PDF objects out of 1200 (max. 8388607)
- 46 named destinations out of 1000 (max. 500000)
- 302 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+<docs/figures/expected_outcomes.png, id=322, 820.9872pt x 492.1587pt>
+File: docs/figures/expected_outcomes.png Graphic file (type png)
+<use docs/figures/expected_outcomes.png>
+Package pdftex.def Info: docs/figures/expected_outcomes.png  used on input line
+ 229.
+(pdftex.def)             Requested size: 433.48404pt x 259.86661pt.
+
+! LaTeX Error: Unicode character ≈ (U+2248)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.229 \end{frame}
+                 
+? 

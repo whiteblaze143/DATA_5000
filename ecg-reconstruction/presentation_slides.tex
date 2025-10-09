@@ -199,7 +199,7 @@
 \begin{frame}{The Problem: Limited Lead ECG Acquisition}
     \begin{figure}
         \centering
-        \includegraphics[width=\textwidth]{docs/figures/problem_visualization.png}
+        \includegraphics[width=\textwidth]{ecg-reconstruction/docs/figures/problem_visualization.png}
         \caption{Clinical challenge: Standard ECG machines require 12 electrodes, but many scenarios (ambulances, wearables, remote monitoring) can only acquire 3 leads. This limits diagnostic capabilities in critical situations.}
     \end{figure}
 \end{frame}
@@ -207,7 +207,7 @@
 \begin{frame}{Our Approach: Hybrid Physics + Deep Learning}
     \begin{figure}
         \centering
-        \includegraphics[width=\textwidth]{docs/figures/approach_diagram.png}
+        \includegraphics[width=\textwidth]{ecg-reconstruction/docs/figures/approach_diagram.png}
         \caption{Hybrid reconstruction: Physics-based exact reconstruction of limb leads (III, aVR, aVL, aVF) from leads I, II, combined with deep learning reconstruction of chest leads (V1-V6) from leads I, II, V4.}
     \end{figure}
 \end{frame}
@@ -215,7 +215,7 @@
 \begin{frame}{Dataset: PTB-XL for Clinical Relevance}
     \begin{figure}
         \centering
-        \includegraphics[width=\textwidth]{docs/figures/dataset_characteristics.png}
+        \includegraphics[width=\textwidth]{ecg-reconstruction/docs/figures/dataset_characteristics.png}
         \caption{PTB-XL dataset characteristics: 21,837 clinical ECG recordings from 18,885 patients, covering diverse cardiac conditions. Input leads (I, II, V4) provide sufficient information for reconstruction while being practically acquirable.}
     \end{figure}
 \end{frame}
@@ -223,7 +223,7 @@
 \begin{frame}{Expected Outcomes: Clinically Viable Reconstruction}
     \begin{figure}
         \centering
-        \includegraphics[width=\textwidth]{docs/figures/expected_outcomes.png}
+        \includegraphics[width=\textwidth]{ecg-reconstruction/docs/figures/expected_outcomes.png}
         \caption{Target performance: Perfect reconstruction of physics-based leads (MAE ≈ 0), high-fidelity chest lead reconstruction (correlation > 0.9, MAE < 0.05), enabling 12-lead equivalent diagnosis from 3-lead input.}
     \end{figure}
 \end{frame}
@@ -526,16 +526,6 @@
         \vspace{0.5cm}
         Questions?
     \end{center}
-
-    \vspace{1cm}
-    \begin{columns}[c]
-        \column{0.5\textwidth}
-        \begin{itemize}
-            \item \textbf{Contact}: mithun.babu@email.com
-            \item \textbf{GitHub}: github.com/username/ecg-reconstruction
-            \item \textbf{Supervisor}: Dr. [Supervisor Name]
-        \end{itemize}
-
         \column{0.5\textwidth}
         \begin{figure}
             \centering

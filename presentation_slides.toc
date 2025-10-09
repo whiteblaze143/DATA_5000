@@ -1,1 +1,5 @@
 \beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@sectionintoc {2}{Methodology}{5}{0}{2}
+\beamer@sectionintoc {3}{Methodology and Evaluation Plan}{13}{0}{3}
+\beamer@sectionintoc {4}{Discussion}{18}{0}{4}
+\beamer@sectionintoc {5}{Conclusion}{20}{0}{5}

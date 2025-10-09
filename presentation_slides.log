@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.8.5)  9 OCT 2025 14:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.8.5)  9 OCT 2025 18:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1345,5 +1345,437 @@ Overfull \hbox (63.21242pt too wide) in paragraph at lines 205--205
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
+<ecg-reconstruction/docs/figures/problem_visualization.png, id=233, 1076.823pt 
+x 426.393pt>
+File: ecg-reconstruction/docs/figures/problem_visualization.png Graphic file (t
+ype png)
+<use ecg-reconstruction/docs/figures/problem_visualization.png>
+Package pdftex.def Info: ecg-reconstruction/docs/figures/problem_visualization.
+png  used on input line 205.
+(pdftex.def)             Requested size: 433.48404pt x 171.64722pt.
 
-LaTeX 
+Overfull \vbox (17.95511pt too high) detected at line 205
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[7
+
+ <./ecg-reconstruction/docs/figures/problem_visualization.png>]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 213--213
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+<ecg-reconstruction/docs/figures/approach_diagram.png, id=264, 686.565pt x 459.
+3963pt>
+File: ecg-reconstruction/docs/figures/approach_diagram.png Graphic file (type p
+ng)
+<use ecg-reconstruction/docs/figures/approach_diagram.png>
+Package pdftex.def Info: ecg-reconstruction/docs/figures/approach_diagram.png  
+used on input line 213.
+(pdftex.def)             Requested size: 433.48404pt x 290.05208pt.
+
+Overfull \vbox (126.85936pt too high) detected at line 213
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[8
+
+ <./ecg-reconstruction/docs/figures/approach_diagram.png>]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 221--221
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+<ecg-reconstruction/docs/figures/dataset_characteristics.png, id=293, 1076.823p
+t x 714.2685pt>
+File: ecg-reconstruction/docs/figures/dataset_characteristics.png Graphic file 
+(type png)
+<use ecg-reconstruction/docs/figures/dataset_characteristics.png>
+Package pdftex.def Info: ecg-reconstruction/docs/figures/dataset_characteristic
+s.png  used on input line 221.
+(pdftex.def)             Requested size: 433.48404pt x 287.53334pt.
+
+Overfull \vbox (135.7852pt too high) detected at line 221
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[9
+
+ <./ecg-reconstruction/docs/figures/dataset_characteristics.png>]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 229--229
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+<ecg-reconstruction/docs/figures/expected_outcomes.png, id=322, 820.9872pt x 49
+2.1587pt>
+File: ecg-reconstruction/docs/figures/expected_outcomes.png Graphic file (type 
+png)
+<use ecg-reconstruction/docs/figures/expected_outcomes.png>
+Package pdftex.def Info: ecg-reconstruction/docs/figures/expected_outcomes.png 
+ used on input line 229.
+(pdftex.def)             Requested size: 433.48404pt x 259.86661pt.
+
+! LaTeX Error: Unicode character ≈ (U+2248)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.229 \end{frame}
+                 
+? 
+
+! LaTeX Error: Unicode character ≈ (U+2248)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.229 \end{frame}
+                 
+? 
+
+Overfull \vbox (108.11847pt too high) detected at line 229
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[10
+
+ <./ecg-reconstruction/docs/figures/expected_outcomes.png>]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 279--279
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[11
+
+]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 309--309
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[12
+
+]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 331--331
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[13
+
+]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 345--345
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[14
+
+]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 373--373
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[15
+
+]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 387--387
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[16
+
+]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 431--431
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[17
+
+]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 479--479
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+
+Overfull \hbox (123.31868pt too wide) in paragraph at lines 479--479
+ [] 
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[18
+
+]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 503--503
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[19
+
+]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 520--520
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[20
+
+]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 538--538
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+! Undefined control sequence.
+\beamerx@\beamer@columncom ...3->\beamer@colclose 
+                                                  \def \beamer@colclose {\en...
+l.538 \end{frame}
+                 
+? 
+! Undefined control sequence.
+\@tempa ->\beamer@colmode 
+                          
+l.538 \end{frame}
+                 
+? 
+
+! Undefined control sequence.
+\@tempa ->\beamer@colmode 
+                          
+l.538 \end{frame}
+                 
+? 
+! Package keyval Error:  undefined.
+
+See the keyval package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.538 \end{frame}
+                 
+? 
+! Undefined control sequence.
+\beamerx@\beamer@columncom ...\beamer@colheadskip 
+                                                  \ignorespaces 
+l.538 \end{frame}
+                 
+? 
+! Undefined control sequence.
+<argument> \beamer@colalign 
+                            
+l.538 \end{frame}
+                 
+? 
+! Undefined control sequence.
+<argument> \beamer@colalign 
+                            
+l.538 \end{frame}
+                 
+? 
+! Undefined control sequence.
+\beamer@doifinframe ...lose {}\beamer@colexitcode 
+                                                  \beamer@todoend \endgroup ...
+l.538 \end{frame}
+                 
+? 
+! Undefined control sequence.
+\beamer@doifinframe ...olexitcode \beamer@todoend 
+                                                  \endgroup \endgroup  \end ...
+l.538 \end{frame}
+                 
+? 
+! Missing } inserted.
+<inserted text> 
+                }
+l.538 \end{frame}
+                 
+? 
+
+! LaTeX Error: \begin{document} ended by \end{beamer@framepauses}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.538 \end{frame}
+                 
+? 
+! Extra \endgroup.
+\end  ...end#1\endcsname \@checkend {#1}\endgroup 
+                                                  \UseHook {env/#1/after}\if...
+l.538 \end{frame}
+                 
+? 
+! Too many }'s.
+\endbeamer@frameslide ...amer@framepauses}\egroup 
+                                                  \ifx \beamer@frametitle \@...
+l.538 \end{frame}
+                 
+? 
+! Undefined control sequence.
+\endbeamer@frameslide ...box \else \beamer@zoomer 
+                                                  \fi \beamer@undolabels \be...
+l.538 \end{frame}
+                 
+? 
+
+! LaTeX Error: \begin{document} ended by \end{beamer@frameslide}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.538 \end{frame}
+                 
+? 
+! Extra \endgroup.
+\end  ...end#1\endcsname \@checkend {#1}\endgroup 
+                                                  \UseHook {env/#1/after}\if...
+l.538 \end{frame}
+                 
+? 
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[21
+
+]
+\tf@nav=\write6
+\openout6 = `presentation_slides.nav'.
+
+\tf@toc=\write7
+\openout7 = `presentation_slides.toc'.
+
+\tf@snm=\write8
+\openout8 = `presentation_slides.snm'.
+
+ (presentation_slides.aux)
+ ***********
+LaTeX2e <2025-06-01> patch level 1
+L3 programming layer <2025-07-19>
+ ***********
+Package rerunfilecheck Info: File `presentation_slides.out' has not changed.
+(rerunfilecheck)             Checksum: B4FD89BD5FAF2066F9346A1BBBEAD78A;594.
+ ) 
+Here is how much of TeX's memory you used:
+ 36942 strings out of 468149
+ 873470 string characters out of 5431083
+ 1360179 words of memory out of 5000000
+ 64828 multiletter control sequences out of 15000+600000
+ 640238 words of font info for 72 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 128i,15n,123p,757b,996s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\mithu\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss
+2488.pk> <C:\Users\mithu\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi60
+0\ecss1200.pk> <C:\Users\mithu\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
+/dpi600\tcss1095.pk> <C:\Users\mithu\AppData\Local\MiKTeX\fonts/pk/ljfour/jknap
+pen/ec/dpi600\ecss1000.pk> <C:\Users\mithu\AppData\Local\MiKTeX\fonts/pk/ljfour
+/jknappen/ec/dpi600\ecsx1095.pk> <C:\Users\mithu\AppData\Local\MiKTeX\fonts/pk/
+ljfour/jknappen/ec/dpi600\ecss0600.pk> <C:\Users\mithu\AppData\Local\MiKTeX\fon
+ts/pk/ljfour/jknappen/ec/dpi600\ecss0800.pk> <C:\Users\mithu\AppData\Local\MiKT
+eX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1095.pk> <C:\Users\mithu\AppData\Loca
+l\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1440.pk><C:/Users/mithu/AppData
+/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/mith
+u/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmss10.pfb><C:/U
+sers/mithu/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.p
+fb>
+Output written on presentation_slides.pdf (21 pages, 1123087 bytes).
+PDF statistics:
+ 1096 PDF objects out of 1200 (max. 8388607)
+ 48 named destinations out of 1000 (max. 500000)
+ 307 words of extra memory for PDF output out of 10000 (max. 10000000)
+
