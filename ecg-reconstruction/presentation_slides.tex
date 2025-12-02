@@ -33,6 +33,9 @@
 % Custom commands
 \newcommand{\ecg}[1]{\textcolor{ecgblue}{#1}}
 \newcommand{\highlight}[1]{\textcolor{ecggreen}{\textbf{#1}}}
+\newcommand{\daniel}[1]{\textcolor{ecgblue}{#1}}
+\newcommand{\mithun}[1]{\textcolor{ecggreen}{#1}}
+\newcommand{\both}[1]{#1}
 
 \begin{document}
 
@@ -46,51 +49,62 @@
     \tableofcontents
 \end{frame}
 
-\section{Introduction}
+\section{Problem Statement}
 
-\begin{frame}{The Challenge: ECG Lead Reduction}
+\begin{frame}{Problem Statement}
+    \both{
+    \begin{itemize}
+        \item Cardiovascular diseases (CVDs) are the leading cause of death globally
+        \item Early detection through ECG monitoring is crucial for timely intervention
+        \item Standard 12-lead ECG requires complex electrode placement and equipment
+        \item Many scenarios limit ECG acquisition to fewer leads:
+        \begin{itemize}
+            \item Wearable devices (1-3 leads)
+            \item Emergency situations (ambulances)
+            \item Resource-constrained environments
+        \end{itemize}
+        \item \highlight{Challenge}: How to reconstruct full 12-lead ECG from reduced leads?
+    \end{itemize}
+    }
+\end{frame}
+
+\begin{frame}{Cardiovascular Disease (CVD) Context}
+    \both{
     \begin{columns}[c]
         \column{0.6\textwidth}
         \begin{itemize}
-            \item Standard 12-lead ECG provides comprehensive cardiac assessment
-            \item \highlight{Problem}: Limited lead availability in certain scenarios
-            \begin{itemize}
-                \item Wearable devices (1-3 leads)
-                \item Emergency situations
-                \item Resource-constrained environments
-            \end{itemize}
-            \item \highlight{Goal}: Reconstruct full 12-lead ECG from reduced leads
+            \item CVDs account for 32\% of global deaths [WHO, 2023]
+            \item ECG is primary diagnostic tool for cardiac arrhythmias
+            \item 12-lead ECG provides comprehensive cardiac assessment
+            \item Early detection improves survival rates significantly
+            \item \highlight{Problem}: Limited ECG accessibility in critical situations
         \end{itemize}
 
         \column{0.4\textwidth}
         \begin{figure}
             \centering
-            \begin{tikzpicture}
-                \draw[thick] (0,0) rectangle (3,2);
-                \node at (1.5,1) {12-Lead ECG};
-                \draw[thick,red] (0.5,0.3) rectangle (2.5,0.7);
-                \node[red] at (1.5,0.5) {I, II, V4};
+            \begin{tikzpicture}[scale=0.8]
+                \draw[thick,red] (0,0) rectangle (3,2);
+                \node[red] at (1.5,1) {CVD Crisis};
+                \node[below,red] at (1.5,0.7) {32\% of deaths};
+                \draw[thick,ecgblue] (0.5,0.3) rectangle (2.5,0.7);
+                \node[ecgblue] at (1.5,0.5) {ECG Solution};
             \end{tikzpicture}
-            \caption{Lead reduction problem}
         \end{figure}
     \end{columns}
+    }
 \end{frame}
 
-\begin{frame}{ECG Lead Configuration}
+\begin{frame}{ECG Fundamentals}
+    \both{
     \begin{columns}[c]
         \column{0.5\textwidth}
         \begin{itemize}
-            \item \textbf{Limb Leads} (I, II, III, aVR, aVL, aVF)
-            \begin{itemize}
-                \item Physics-based relationships
-                \item Einthoven's triangle
-                \item Goldberger's equations
-            \end{itemize}
-            \item \textbf{Chest Leads} (V1-V6)
-            \begin{itemize}
-                \item No direct physical relationships
-                \item Require data-driven approach
-            \end{itemize}
+            \item Electrocardiogram measures heart's electrical activity
+            \item Records voltage differences between electrode pairs
+            \item Standard 12-lead ECG: 10 electrodes, 12 lead vectors
+            \item Provides spatial information about cardiac electrical activity
+            \item Essential for diagnosing arrhythmias, ischemia, and conduction abnormalities
         \end{itemize}
 
         \column{0.5\textwidth}
@@ -101,43 +115,93 @@
                 \draw[thick] (0,0) circle (0.3);
                 \node at (0,0) {\textbullet};
 
-                % Limb leads
+                % Leads
                 \draw[ecgblue,thick] (-2,1) -- (0,0);
                 \draw[ecgblue,thick] (2,1) -- (0,0);
                 \draw[ecgblue,thick] (0,-2) -- (0,0);
-
-                % Chest leads
                 \draw[ecggreen,thick] (-1.5,0.5) -- (-0.5,0);
-                \draw[ecggreen,thick] (-1,0.8) -- (-0.2,0.2);
-                \draw[ecggreen,thick] (-0.5,1) -- (0.1,0.3);
-                \draw[ecggreen,thick] (0.5,1) -- (0.1,-0.3);
-                \draw[ecggreen,thick] (1,0.8) -- (0.2,-0.2);
                 \draw[ecggreen,thick] (1.5,0.5) -- (0.5,0);
 
-                \node[ecgblue] at (-2.2,1.2) {RA};
-                \node[ecgblue] at (2.2,1.2) {LA};
-                \node[ecgblue] at (0,-2.2) {RL};
+                \node[ecgblue] at (-2.2,1.2) {I};
+                \node[ecgblue] at (2.2,1.2) {II};
+                \node[ecgblue] at (0,-2.2) {III};
                 \node[ecggreen] at (-1.7,0.7) {V1};
                 \node[ecggreen] at (1.7,0.7) {V6};
             \end{tikzpicture}
-            \caption{ECG lead placement}
+            \caption{12-lead ECG electrode placement}
         \end{figure}
     \end{columns}
+    }
 \end{frame}
 
-\section{Methodology}
+\begin{frame}{ECG Leads and Electrodes}
+    \both{
+    \begin{columns}[c]
+        \column{0.5\textwidth}
+        \begin{itemize}
+            \item \textbf{Limb Leads} (I, II, III, aVR, aVL, aVF)
+            \begin{itemize}
+                \item 4 limb electrodes (RA, LA, RL, RL/N)
+                \item Bipolar leads: I, II, III
+                \item Augmented leads: aVR, aVL, aVF
+            \end{itemize}
+            \item \textbf{Chest Leads} (V1-V6)
+            \begin{itemize}
+                \item 6 chest electrodes (V1-V6)
+                \item Unipolar leads referenced to Wilson central terminal
+                \item Provide anterior-posterior cardiac views
+            \end{itemize}
+        \end{itemize}
 
-\begin{frame}{Hybrid Approach: Physics + Deep Learning}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \centering
+            \begin{tikzpicture}[scale=0.8]
+                % Einthoven's triangle
+                \draw[thick] (0,0) -- (3,0) -- (1.5,2.6) -- cycle;
+                \node at (-0.3,0) {RA};
+                \node at (3.3,0) {LA};
+                \node at (1.5,3.0) {RL};
+                \node[ecgblue] at (0.8,1.8) {I: +60°};
+                \node[ecgblue] at (2.2,1.8) {II: +120°};
+                \node[ecgblue] at (1.5,-0.3) {III: +180°};
+            \end{tikzpicture}
+            \caption{Einthoven's triangle}
+        \end{figure}
+    \end{columns}
+    }
+\end{frame}
+
+\begin{frame}{Project Motivation}
+    \both{
+    \begin{itemize}
+        \item \highlight{Clinical Need}: ECG monitoring in challenging environments
+        \begin{itemize}
+            \item Ambulances and emergency response
+            \item Wearable fitness devices
+            \item Rural and remote healthcare settings
+            \item Home monitoring for chronic conditions
+        \end{itemize}
+        \item \highlight{Technical Challenge}: Reconstruct missing leads from available ones
+        \item \highlight{Clinical Impact}: Enable accurate diagnosis with minimal electrodes
+        \item \highlight{Innovation}: Combine physics-based methods with deep learning
+    \end{itemize}
+    }
+\end{frame}
+
+\begin{frame}{What We're Doing and Why}
+    \both{
     \begin{columns}[c]
         \column{0.6\textwidth}
         \begin{itemize}
-            \item \highlight{Physics-Informed Strategy}
+            \item \highlight{Hybrid Approach}: Physics + Deep Learning
             \begin{itemize}
-                \item Limb leads: Direct calculation using Einthoven/Goldberger
-                \item Chest leads: Data-driven reconstruction
+                \item Limb leads: Exact reconstruction using cardiac electrophysiology
+                \item Chest leads: Data-driven reconstruction using 1D U-Net
             \end{itemize}
-            \item \highlight{Input Leads}: I, II, V4 (clinically relevant)
-            \item \highlight{Target}: Reconstruct V1-V6 chest leads
+            \item \highlight{Input}: Leads I, II, V4 (clinically practical)
+            \item \highlight{Output}: Complete 12-lead ECG reconstruction
+            \item \highlight{Why Hybrid?}: Physics ensures accuracy, ML handles complexity
         \end{itemize}
 
         \column{0.4\textwidth}
@@ -145,23 +209,90 @@
             \centering
             \begin{tikzpicture}
                 \draw[thick] (0,0) rectangle (3,2);
-                \node at (1.5,1) {Input: I, II, V4};
+                \node at (1.5,1) {I, II, V4};
 
                 \draw[->,thick] (3.5,1) -- (4.5,1);
 
                 \draw[thick,ecgblue] (5,0.3) rectangle (8,0.7);
-                \node[ecgblue] at (6.5,0.5) {Limb Leads};
-                \node[ecgblue] at (6.5,1.2) {III, aVR, aVL, aVF};
+                \node[ecgblue] at (6.5,0.5) {Physics};
+                \node[ecgblue] at (6.5,1.2) {Limb Leads};
 
                 \draw[thick,ecggreen] (5,1.3) rectangle (8,1.7);
-                \node[ecggreen] at (6.5,1.5) {Chest Leads};
-                \node[ecggreen] at (6.5,0) {V1-V6};
+                \node[ecggreen] at (6.5,1.5) {Deep Learning};
+                \node[ecggreen] at (6.5,0) {Chest Leads};
             \end{tikzpicture}
         \end{figure}
     \end{columns}
+    }
 \end{frame}
 
-\begin{frame}{Dataset: PTB-XL}
+\section{Data Description}
+
+\begin{frame}{Data Description}
+    \both{
+    \begin{itemize}
+        \item \highlight{Dataset}: PTB-XL - Large-scale clinical ECG database
+        \item \highlight{Source}: PhysioNet (publicly available)
+        \item \highlight{Size}: 21,837 recordings from 18,885 patients
+        \item \highlight{Format}: 12-lead ECG, 10 seconds, 500 Hz sampling
+        \item \highlight{Quality}: Clinical-grade recordings with diagnostic labels
+    \end{itemize}
+    }
+\end{frame}
+
+\begin{frame}{Data Type and Characteristics}
+    \both{
+    \begin{columns}[c]
+        \column{0.5\textwidth}
+        \begin{itemize}
+            \item \textbf{Data Type}: Time series signals
+            \item \textbf{Duration}: 10 seconds per recording
+            \item \textbf{Sampling Rate}: 500 Hz
+            \item \textbf{Resolution}: 16-bit ADC
+            \item \textbf{Format}: WFDB (WaveForm DataBase)
+            \item \textbf{Leads}: 12 standard ECG leads
+        \end{itemize}
+
+        \column{0.5\textwidth}
+        \begin{table}[]\centering
+            \begin{tabular}{@{}lr@{}}
+                \toprule
+                Split & Samples \\
+                \midrule
+                Training & 14,331 \\
+                Validation & 2,132 \\
+                Test & 5,374 \\
+                \bottomrule
+            \end{tabular}
+            \caption{Dataset splits}
+        \end{table}
+    \end{columns}
+    }
+\end{frame}
+
+\begin{frame}{Data Source and Sample}
+    \both{
+    \begin{columns}[c]
+        \column{0.6\textwidth}
+        \begin{itemize}
+            \item \textbf{Source}: PTB-XL Database [Wagner et al., 2020]
+            \item \textbf{Institution}: PTB (Physikalisch-Technische Bundesanstalt)
+            \item \textbf{Collection}: 1990-1996 at Charité University Hospital
+            \item \textbf{Diversity}: Various cardiac conditions and normal cases
+            \item \textbf{Accessibility}: Free download from PhysioNet
+        \end{itemize}
+
+        \column{0.4\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{ecg-reconstruction/docs/figures/sample_ecg.png}
+            \caption{Sample 12-lead ECG from PTB-XL}
+        \end{figure}
+    \end{columns}
+    }
+\end{frame}
+
+\section{Objectives}
     \begin{columns}[c]
         \column{0.6\textwidth}
         \begin{itemize}

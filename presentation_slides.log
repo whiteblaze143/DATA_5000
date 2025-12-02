@@ -1345,16 +1345,20 @@ Overfull \hbox (63.21242pt too wide) in paragraph at lines 205--205
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
-<ecg-reconstruction/docs/figures/problem_visualization.png, id=233, 1076.823pt 
-x 426.393pt>
-File: ecg-reconstruction/docs/figures/problem_visualization.png Graphic file (t
-ype png)
-<use ecg-reconstruction/docs/figures/problem_visualization.png>
-Package pdftex.def Info: ecg-reconstruction/docs/figures/problem_visualization.
-png  used on input line 205.
-(pdftex.def)             Requested size: 433.48404pt x 171.64722pt.
+<ecg-reWarning: File `docs/figures/problem_visualization.png' not found on input
+ line 205.
 
-Overfull \vbox (17.95511pt too high) detected at line 205
+
+! Package pdftex.def Error: File `docs/figures/problem_visualization.png' not f
+ound: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.205 \end{frame}
+                 
+?  (17.95511pt too high) detected at line 205
  []
 
 

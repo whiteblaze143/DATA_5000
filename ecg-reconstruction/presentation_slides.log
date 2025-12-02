@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.8.5)  9 OCT 2025 14:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.8.5)  10 OCT 2025 12:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1055,24 +1055,24 @@ File: l3backend-pdftex.def 2025-06-09 L3 backend support: PDF output (pdfTeX)
 ) (presentation_slides.aux)
 \openout1 = `presentation_slides.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -1134,68 +1134,68 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring OFF on input line 37.
+Package hyperref Info: Link coloring OFF on input line 40.
  (presentation_slides.out) (presentation_slides.out)
 \@outlinefile=\write5
 \openout5 = `presentation_slides.out'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 37.
+(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 40.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 37.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 40.
 \symnumbers=\mathgroup6
 \sympureletters=\mathgroup7
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmss/m/n --> T1/cmr/m/n on input line 37.
-LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 37.
+(Font)                  OT1/cmss/m/n --> T1/cmr/m/n on input line 40.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 40.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> T1/cmss/b/n on input line 37.
+(Font)                  OT1/cmr/bx/n --> T1/cmss/b/n on input line 40.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmr/bx/n --> T1/cmss/b/n on input line 37.
-LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 37.
+(Font)                  OT1/cmr/bx/n --> T1/cmss/b/n on input line 40.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 40.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> T1/cmss/m/n on input line 37.
+(Font)                  OT1/cmss/m/n --> T1/cmss/m/n on input line 40.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> T1/cmss/m/n on input line 37.
-LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 37.
+(Font)                  OT1/cmss/bx/n --> T1/cmss/m/n on input line 40.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 40.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> T1/cmss/m/it on input line 37.
+(Font)                  OT1/cmr/m/it --> T1/cmss/m/it on input line 40.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> T1/cmss/m/it on input line 37.
-LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 37.
+(Font)                  OT1/cmr/bx/it --> T1/cmss/m/it on input line 40.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 40.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 37.
+(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 40.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 37.
+(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 40.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  T1/cmss/m/n --> T1/cmss/b/n on input line 37.
+(Font)                  T1/cmss/m/n --> T1/cmss/b/n on input line 40.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  T1/cmss/m/it --> T1/cmss/b/it on input line 37.
+(Font)                  T1/cmss/m/it --> T1/cmss/b/it on input line 40.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/cmss/b/n --> T1/cmr/b/n on input line 37.
+(Font)                  OT1/cmss/b/n --> T1/cmr/b/n on input line 40.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  T1/cmss/b/n --> T1/cmss/b/n on input line 37.
+(Font)                  T1/cmss/b/n --> T1/cmss/b/n on input line 40.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  T1/cmss/m/n --> T1/cmss/b/n on input line 37.
+(Font)                  T1/cmss/m/n --> T1/cmss/b/n on input line 40.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  T1/cmss/m/it --> T1/cmss/b/it on input line 37.
+(Font)                  T1/cmss/m/it --> T1/cmss/b/it on input line 40.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  T1/cmtt/m/n --> T1/cmtt/b/n on input line 37.
-LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 37.
+(Font)                  T1/cmtt/m/n --> T1/cmtt/b/n on input line 40.
+LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 40.
 LaTeX Font Info:    Encoding `T1' has changed to `OT1' for symbol font
-(Font)              `pureletters' in the math version `normal' on input line 37
+(Font)              `pureletters' in the math version `normal' on input line 40
 .
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `normal'
-(Font)                  T1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 37
+(Font)                  T1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 40
 .
 LaTeX Font Info:    Encoding `T1' has changed to `OT1' for symbol font
-(Font)              `pureletters' in the math version `bold' on input line 37.
+(Font)              `pureletters' in the math version `bold' on input line 40.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  T1/cmss/b/it --> OT1/mathkerncmss/m/sl on input line 37
+(Font)                  T1/cmss/b/it --> OT1/mathkerncmss/m/sl on input line 40
 .
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
 (Font)                  OT1/mathkerncmss/m/sl --> OT1/mathkerncmss/bx/sl on inp
-ut line 37.
+ut line 40.
 
 (C:\Users\mithu\AppData\Local\Programs\MiKTeX\tex/latex/translator\translator-b
 asic-dictionary-English.dict
@@ -1225,16 +1225,16 @@ Dictionary: translator-theorem-dictionary, Language: English
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
 ick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into 
 your preamble.
- on input line 37.
+ on input line 40.
 
 \c@lstlisting=\count395
 (presentation_slides.nav)
-Overfull \hbox (63.21242pt too wide) in paragraph at lines 37--37
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 40--40
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
 
-Overfull \hbox (63.21242pt too wide) in paragraph at lines 42--42
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 45--45
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
@@ -1248,7 +1248,7 @@ Overfull \hbox (63.21242pt too wide) has occurred while \output is active
 [1
 
 {C:/Users/mithu/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
-Overfull \hbox (63.21242pt too wide) in paragraph at lines 47--47
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 50--50
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
@@ -1262,23 +1262,37 @@ Overfull \hbox (63.21242pt too wide) has occurred while \output is active
 [2
 
 ]
-Overfull \hbox (63.21242pt too wide) in paragraph at lines 77--77
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 69--69
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 77.
+
+
+
+Overfull \hbox (63.21242pt too wide) has occurred while \output is active
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+[3
+
+]
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 96--96
+ [][]  \T1/cmss/m/n/6 ([])  
+ []
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 96.
 
 (C:\Users\mithu\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 77.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 96.
 
 
 (C:\Users\mithu\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on inp
-ut line 77.
+ut line 96.
 
 (C:\Users\mithu\AppData\Local\Programs\MiKTeX\tex/latex/sansmathaccent\ot1mathk
 erncmss.fd
@@ -1291,30 +1305,11 @@ Overfull \hbox (63.21242pt too wide) has occurred while \output is active
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
-[3
-
-]
-Overfull \hbox (63.21242pt too wide) in paragraph at lines 126--126
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-
-
-
-Overfull \hbox (63.21242pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
 [4
 
 ]
-Overfull \hbox (63.21242pt too wide) in paragraph at lines 162--162
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 135--135
  [][]  \T1/cmss/m/n/6 ([])  
- []
-
-
-Overfull \hbox (58.52701pt too wide) in paragraph at lines 162--162
- [] 
  []
 
 
@@ -1327,7 +1322,7 @@ Overfull \hbox (63.21242pt too wide) has occurred while \output is active
 [5
 
 ]
-Overfull \hbox (63.21242pt too wide) in paragraph at lines 197--197
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 173--173
  [][]  \T1/cmss/m/n/6 ([])  
  []
 
@@ -1341,18 +1336,8 @@ Overfull \hbox (63.21242pt too wide) has occurred while \output is active
 [6
 
 ]
-Overfull \hbox (63.21242pt too wide) in paragraph at lines 205--205
+Overfull \hbox (63.21242pt too wide) in paragraph at lines 190--190
  [][]  \T1/cmss/m/n/6 ([])  
- []
-
-<docs/figures/problem_visualization.png, id=233, 1076.823pt x 426.393pt>
-File: docs/figures/problem_visualization.png Graphic file (type png)
-<use docs/figures/problem_visualization.png>
-Package pdftex.def Info: docs/figures/problem_visualization.png  used on input 
-line 205.
-(pdftex.def)             Requested size: 433.48404pt x 171.64722pt.
-
-Overfull \vbox (17.95511pt too high) detected at line 205
  []
 
 
@@ -1364,73 +1349,5 @@ Overfull \hbox (63.21242pt too wide) has occurred while \output is active
 
 [7
 
- <./docs/figures/problem_visualization.png>]
-Overfull \hbox (63.21242pt too wide) in paragraph at lines 213--213
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-<docs/figures/approach_diagram.png, id=264, 686.565pt x 459.3963pt>
-File: docs/figures/approach_diagram.png Graphic file (type png)
-<use docs/figures/approach_diagram.png>
-Package pdftex.def Info: docs/figures/approach_diagram.png  used on input line 
-213.
-(pdftex.def)             Requested size: 433.48404pt x 290.05208pt.
-
-Overfull \vbox (126.85936pt too high) detected at line 213
- []
-
-
-
-
-Overfull \hbox (63.21242pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-[8
-
- <./docs/figures/approach_diagram.png>]
-Overfull \hbox (63.21242pt too wide) in paragraph at lines 221--221
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-<docs/figures/dataset_characteristics.png, id=293, 1076.823pt x 714.2685pt>
-File: docs/figures/dataset_characteristics.png Graphic file (type png)
-<use docs/figures/dataset_characteristics.png>
-Package pdftex.def Info: docs/figures/dataset_characteristics.png  used on inpu
-t line 221.
-(pdftex.def)             Requested size: 433.48404pt x 287.53334pt.
-
-Overfull \vbox (135.7852pt too high) detected at line 221
- []
-
-
-
-
-Overfull \hbox (63.21242pt too wide) has occurred while \output is active
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-[9
-
- <./docs/figures/dataset_characteristics.png>]
-Overfull \hbox (63.21242pt too wide) in paragraph at lines 229--229
- [][]  \T1/cmss/m/n/6 ([])  
- []
-
-<docs/figures/expected_outcomes.png, id=322, 820.9872pt x 492.1587pt>
-File: docs/figures/expected_outcomes.png Graphic file (type png)
-<use docs/figures/expected_outcomes.png>
-Package pdftex.def Info: docs/figures/expected_outcomes.png  used on input line
- 229.
-(pdftex.def)             Requested size: 433.48404pt x 259.86661pt.
-
-! LaTeX Error: Unicode character ≈ (U+2248)
-               not set up for use with LaTeX.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.229 \end{frame}
-                 
-? 
+]
+Overfull
