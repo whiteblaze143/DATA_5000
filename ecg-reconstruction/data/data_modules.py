@@ -9,17 +9,26 @@ class ECGReconstructionDataset(Dataset):
     - Inputs: leads I, II, V4
     - Targets: all 12 leads
     """
-    def __init__(self, input_path, target_path, transform=None):
+    def __init__(self, input_path, target_path, transform=None, verbose=True):
         """
         Args:
             input_path: Path to input data (.npy file)
             target_path: Path to target data (.npy file)
             transform: Optional transform to apply to both input and target
+            verbose: Print loading info (default True)
         """
-        print(f"Loading input from: {input_path}")
+        if verbose:
+            print(f"Loading input from: {input_path}")
+        
+        if not os.path.exists(input_path):
+            raise FileNotFoundError(f"Input file not found: {input_path}")
+        if not os.path.exists(target_path):
+            raise FileNotFoundError(f"Target file not found: {target_path}")
+        
         self.inputs = np.load(input_path)
         
-        print(f"Loading target from: {target_path}")
+        if verbose:
+            print(f"Loading target from: {target_path}")
         self.targets = np.load(target_path)
         
         # Ensure data is in float32
@@ -29,17 +38,20 @@ class ECGReconstructionDataset(Dataset):
         self.transform = transform
         
         # Verify shapes
-        assert self.inputs.shape[0] == self.targets.shape[0], "Input and target sample counts don't match"
-        assert self.inputs.shape[2] == self.targets.shape[2], "Input and target sequence lengths don't match"
+        assert self.inputs.shape[0] == self.targets.shape[0], \
+            f"Input and target sample counts don't match: {self.inputs.shape[0]} vs {self.targets.shape[0]}"
+        assert self.inputs.shape[2] == self.targets.shape[2], \
+            f"Input and target sequence lengths don't match: {self.inputs.shape[2]} vs {self.targets.shape[2]}"
         
         # Print dataset info
-        print("[OK] Dataset loaded successfully:")
-        print(f"   - Number of samples: {len(self)}")
-        print(f"   - Input shape: {self.inputs.shape}")
-        print(f"   - Target shape: {self.targets.shape}")
-        print(f"   - Data type: {torch.from_numpy(self.inputs[0]).dtype}")
-        print(f"   - Memory (input): {self.inputs.nbytes / 1e9:.2f} GB")
-        print(f"   - Memory (target): {self.targets.nbytes / 1e9:.2f} GB")
+        if verbose:
+            print("[OK] Dataset loaded successfully:")
+            print(f"   - Number of samples: {len(self)}")
+            print(f"   - Input shape: {self.inputs.shape}")
+            print(f"   - Target shape: {self.targets.shape}")
+            print(f"   - Data type: {torch.from_numpy(self.inputs[0]).dtype}")
+            print(f"   - Memory (input): {self.inputs.nbytes / 1e9:.2f} GB")
+            print(f"   - Memory (target): {self.targets.nbytes / 1e9:.2f} GB")
     
     def __len__(self):
         return len(self.inputs)
@@ -58,7 +70,7 @@ class ECGReconstructionDataset(Dataset):
         
         return input_tensor, target_tensor
 
-def get_dataloaders(data_dir, batch_size=32, num_workers=4):
+def get_dataloaders(data_dir, batch_size=32, num_workers=4, verbose=True):
     """
     Create train, validation, and test dataloaders
     
@@ -66,25 +78,58 @@ def get_dataloaders(data_dir, batch_size=32, num_workers=4):
         data_dir: Directory containing processed data files
         batch_size: Batch size for dataloaders
         num_workers: Number of worker processes for data loading
+        verbose: Print loading information
         
     Returns:
         train_loader, val_loader, test_loader
     """
+    # Verify data directory exists
+    if not os.path.exists(data_dir):
+        raise FileNotFoundError(
+            f"Data directory not found: {data_dir}\n"
+            f"Please run data preparation first, or use --test_mode for synthetic data."
+        )
+    
+    # Check for required files
+    required_files = [
+        'train_input.npy', 'train_target.npy',
+        'val_input.npy', 'val_target.npy',
+        'test_input.npy', 'test_target.npy'
+    ]
+    missing = [f for f in required_files if not os.path.exists(os.path.join(data_dir, f))]
+    if missing:
+        raise FileNotFoundError(
+            f"Missing data files in {data_dir}: {missing}\n"
+            f"Please run data preparation first."
+        )
+    
+    if verbose:
+        print(f"\nLoading data from: {data_dir}")
+    
     # Create datasets
     train_dataset = ECGReconstructionDataset(
         os.path.join(data_dir, 'train_input.npy'),
-        os.path.join(data_dir, 'train_target.npy')
+        os.path.join(data_dir, 'train_target.npy'),
+        verbose=verbose
     )
     
     val_dataset = ECGReconstructionDataset(
         os.path.join(data_dir, 'val_input.npy'),
-        os.path.join(data_dir, 'val_target.npy')
+        os.path.join(data_dir, 'val_target.npy'),
+        verbose=verbose
     )
     
     test_dataset = ECGReconstructionDataset(
         os.path.join(data_dir, 'test_input.npy'),
-        os.path.join(data_dir, 'test_target.npy')
+        os.path.join(data_dir, 'test_target.npy'),
+        verbose=verbose
     )
+    
+    # Determine number of workers (0 on Windows for multiprocessing issues)
+    if os.name == 'nt' and num_workers > 0:
+        import warnings
+        warnings.warn("Reducing num_workers to 0 on Windows to avoid multiprocessing issues")
+        num_workers = 0
     
     # Create dataloaders
     train_loader = DataLoader(

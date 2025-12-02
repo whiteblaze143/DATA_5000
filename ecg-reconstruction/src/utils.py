@@ -86,10 +86,10 @@ def plot_reconstruction(y_true, y_pred, lead_names=None, sample_idx=0, save_path
     Plot ground truth vs predicted signals
     
     Args:
-        y_true: Ground truth signals [batch, leads, samples]
-        y_pred: Predicted signals [batch, leads, samples]
+        y_true: Ground truth signals [leads, samples] or [batch, leads, samples]
+        y_pred: Predicted signals [leads, samples] or [batch, leads, samples]
         lead_names: List of lead names
-        sample_idx: Index of sample to plot
+        sample_idx: Index of sample to plot (only used if batch dimension exists)
         save_path: Path to save the plot
     """
     # Move to numpy for plotting
@@ -98,9 +98,19 @@ def plot_reconstruction(y_true, y_pred, lead_names=None, sample_idx=0, save_path
     if torch.is_tensor(y_pred):
         y_pred = y_pred.detach().cpu().numpy()
     
-    # Get dimensions
-    n_leads = y_true.shape[1]
-    n_samples = y_true.shape[2]
+    # Handle both 2D [leads, samples] and 3D [batch, leads, samples] inputs
+    if y_true.ndim == 2:
+        # Already single sample: [leads, samples]
+        n_leads = y_true.shape[0]
+        n_samples = y_true.shape[1]
+        y_true_sample = y_true
+        y_pred_sample = y_pred
+    else:
+        # Batch format: [batch, leads, samples]
+        n_leads = y_true.shape[1]
+        n_samples = y_true.shape[2]
+        y_true_sample = y_true[sample_idx]
+        y_pred_sample = y_pred[sample_idx]
     
     # Default lead names if not provided
     if lead_names is None:
@@ -120,14 +130,14 @@ def plot_reconstruction(y_true, y_pred, lead_names=None, sample_idx=0, save_path
         ax = axes[i]
         
         # Plot true signal
-        ax.plot(time, y_true[sample_idx, i], 'b-', label='True')
+        ax.plot(time, y_true_sample[i], 'b-', label='True')
         
         # Plot predicted signal
-        ax.plot(time, y_pred[sample_idx, i], 'r-', label='Predicted')
+        ax.plot(time, y_pred_sample[i], 'r-', label='Predicted')
         
         # Calculate metrics for this lead
-        corr = pearsonr(y_true[sample_idx, i], y_pred[sample_idx, i])[0]
-        mae = mean_absolute_error(y_true[sample_idx, i], y_pred[sample_idx, i])
+        corr = pearsonr(y_true_sample[i], y_pred_sample[i])[0]
+        mae = mean_absolute_error(y_true_sample[i], y_pred_sample[i])
         
         # Add title and labels
         ax.set_title(f'{lead_names[i]} (r={corr:.3f}, MAE={mae:.3f})')
