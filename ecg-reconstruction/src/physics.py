@@ -63,13 +63,19 @@ def calculate_limb_leads_torch(lead_I, lead_II):
         'aVF': lead_aVF
     }
 
-def reconstruct_12_leads(inputs, outputs):
+def reconstruct_12_leads(inputs, outputs, targets=None):
     """
     Reconstruct all 12 leads from inputs (I, II, V4) and outputs (V1, V2, V3, V5, V6)
+    
+    IMPORTANT: Physics-based reconstruction (Einthoven/Goldberger) only works on RAW 
+    voltage data, NOT on globally normalized data. After normalization, each lead has 
+    a different offset, breaking the linear relationships.
     
     Args:
         inputs: Input tensor [batch, 3, samples] with leads I, II, V4
         outputs: Output tensor [batch, 5, samples] with leads V1, V2, V3, V5, V6
+        targets: Optional target tensor [batch, 12, samples] - if provided, use stored
+                 values for physics leads (III, aVR, aVL, aVF) instead of calculating
         
     Returns:
         Full 12-lead ECG [batch, 12, samples]
@@ -81,12 +87,20 @@ def reconstruct_12_leads(inputs, outputs):
     lead_II = inputs[:, 1]  # Lead II
     lead_V4 = inputs[:, 2]  # Lead V4
     
-    # Calculate limb leads
-    limb_leads = calculate_limb_leads_torch(lead_I, lead_II)
-    lead_III = limb_leads['III']
-    lead_aVR = limb_leads['aVR']
-    lead_aVL = limb_leads['aVL']
-    lead_aVF = limb_leads['aVF']
+    if targets is not None:
+        # Use stored normalized values for physics leads (correct approach for normalized data)
+        lead_III = targets[:, 2]
+        lead_aVR = targets[:, 3]
+        lead_aVL = targets[:, 4]
+        lead_aVF = targets[:, 5]
+    else:
+        # Calculate limb leads (only valid for raw voltage data!)
+        # WARNING: This will produce incorrect results on normalized data
+        limb_leads = calculate_limb_leads_torch(lead_I, lead_II)
+        lead_III = limb_leads['III']
+        lead_aVR = limb_leads['aVR']
+        lead_aVL = limb_leads['aVL']
+        lead_aVF = limb_leads['aVF']
     
     # Extract predicted chest leads
     lead_V1 = outputs[:, 0]  # V1

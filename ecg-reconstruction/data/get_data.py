@@ -36,26 +36,36 @@ def load_ptb_xl(ptb_xl_path, sampling_rate=500):
     signals = []
 
     print("Loading ECG signals...")
-    # First, get list of available records
+    
+    # Get list of available record files (check both flat and nested structures)
     records100_path = os.path.join(ptb_xl_path, 'records100')
-    available_records = []
+    available_files = {}  # record_id -> file_path mapping
+    
     if os.path.exists(records100_path):
-        for file in os.listdir(records100_path):
-            if file.endswith('.hea'):
-                record_id = int(file.split('_')[0])
-                available_records.append(record_id)
-
-    print(f"Found {len(available_records)} available records: {available_records[:10]}...")
+        # Walk through all subdirectories to find .hea files
+        for root, dirs, files in os.walk(records100_path):
+            for file in files:
+                if file.endswith('.hea'):
+                    # Extract record ID (e.g., "00001_lr.hea" -> 1)
+                    record_id = int(file.split('_')[0])
+                    # Store path without extension
+                    file_path = os.path.join(root, file[:-4])  # Remove .hea
+                    available_files[record_id] = file_path
+    
+    print(f"Found {len(available_files)} available records")
+    if available_files:
+        sample_ids = sorted(available_files.keys())[:5]
+        print(f"Sample record IDs: {sample_ids}")
 
     # Filter metadata to only include available records
-    metadata_subset = metadata[metadata.index.isin(available_records)]
+    available_record_ids = list(available_files.keys())
+    metadata_subset = metadata[metadata.index.isin(available_record_ids)]
     print(f"Metadata contains {len(metadata_subset)} matching records")
 
     for idx, row in tqdm(metadata_subset.iterrows(), total=len(metadata_subset)):
-        # For our subset, construct filename directly from record ID
-        # Our files are named like "00001_hr.hea" in records100/
-        filename = f"{idx:05d}_hr"
-        file_path = os.path.join(ptb_xl_path, 'records100', filename)
+        file_path = available_files.get(idx)
+        if file_path is None:
+            continue
 
         # Load record
         try:

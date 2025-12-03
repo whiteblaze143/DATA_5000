@@ -229,7 +229,8 @@ def validate(model, dataloader, criterion, device):
             running_loss += loss.item()
             
             # Reconstruct full 12-lead ECG
-            reconstructed_12_leads = reconstruct_12_leads(inputs, chest_leads_outputs)
+            # Pass targets to use stored physics leads (normalized data breaks Einthoven's law)
+            reconstructed_12_leads = reconstruct_12_leads(inputs, chest_leads_outputs, targets)
             
             # Evaluate reconstruction
             metrics = evaluate_reconstruction(targets, reconstructed_12_leads)
@@ -368,7 +369,7 @@ def main():
                 inputs = inputs.to(device)
                 targets = targets.to(device)
                 chest_outputs = model(inputs)
-                reconstructed = reconstruct_12_leads(inputs, chest_outputs)
+                reconstructed = reconstruct_12_leads(inputs, chest_outputs, targets)
                 
                 plot_reconstruction(
                     targets[0].cpu(),
