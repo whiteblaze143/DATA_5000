@@ -1,0 +1,673 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{43}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{} and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showURL}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showURL #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[Alcaraz and Strodthoff(2023)]%
+        {ref60}
+\bibfield{author}{\bibinfo{person}{Juan Miguel~López Alcaraz} {and}
+  \bibinfo{person}{Nils Strodthoff}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{Diffusion-based Conditional {ECG} Generation with
+  Structured State Space Models}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2301.08227}}
+  (\bibinfo{year}{2023}).
+\newblock
+\href{https://doi.org/10.48550/arxiv.2301.08227}{doi:\nolinkurl{10.48550/arxiv.2301.08227}}
+\newblock
+\shownote{SSSD-ECG: First S4 state-space model + diffusion for ECG synthesis,
+  captures long-term dependencies efficiently}.
+
+
+\bibitem[Antonicelli et~al\mbox{.}(2012)]%
+        {ref43}
+\bibfield{author}{\bibinfo{person}{R. Antonicelli}, \bibinfo{person}{C. Ripa},
+  \bibinfo{person}{A. Abbatecola}, \bibinfo{person}{C. Capparuccia},
+  \bibinfo{person}{L. Ferrara}, {and} \bibinfo{person}{L. Spazzafumo}.}
+  \bibinfo{year}{2012}\natexlab{}.
+\newblock \showarticletitle{Validation of the 3-lead tele-{ECG} versus the
+  12-lead tele-{ECG} and the conventional 12-lead {ECG} method in older
+  people}.
+\newblock \bibinfo{journal}{\emph{Journal of Telemedicine and Telecare}}
+  \bibinfo{volume}{18}, \bibinfo{number}{2} (\bibinfo{year}{2012}),
+  \bibinfo{pages}{104--108}.
+\newblock
+\href{https://doi.org/10.1258/jtt.2011.110613}{doi:\nolinkurl{10.1258/jtt.2011.110613}}
+
+
+\bibitem[Avina-Cervantes et~al\mbox{.}(2006)]%
+        {ref19}
+\bibfield{author}{\bibinfo{person}{J. Avina-Cervantes}, \bibinfo{person}{M.
+  Torres-Cisneros}, \bibinfo{person}{J. Martinez}, {and} \bibinfo{person}{J.
+  Ruiz-Pinales}.} \bibinfo{year}{2006}\natexlab{}.
+\newblock \showarticletitle{Frequency, time-frequency and wavelet analysis of
+  {ECG} signal}.
+\newblock \bibinfo{journal}{\emph{{MEP} Proceedings}} (\bibinfo{year}{2006}),
+  \bibinfo{pages}{257--261}.
+\newblock
+\href{https://doi.org/10.1109/mep.2006.335676}{doi:\nolinkurl{10.1109/mep.2006.335676}}
+
+
+\bibitem[Chatterjee and Changawala(2010)]%
+        {ref38}
+\bibfield{author}{\bibinfo{person}{S. Chatterjee} {and} \bibinfo{person}{N.
+  Changawala}.} \bibinfo{year}{2010}\natexlab{}.
+\newblock \showarticletitle{Fragmented {QRS} complex: a novel marker of
+  cardiovascular disease}.
+\newblock \bibinfo{journal}{\emph{Clinical Cardiology}} \bibinfo{volume}{33},
+  \bibinfo{number}{2} (\bibinfo{year}{2010}), \bibinfo{pages}{68--71}.
+\newblock
+\href{https://doi.org/10.1002/clc.20709}{doi:\nolinkurl{10.1002/clc.20709}}
+
+
+\bibitem[Chen et~al\mbox{.}(2024)]%
+        {ref63}
+\bibfield{author}{\bibinfo{person}{Jiar Chen}, \bibinfo{person}{Shenda Hong},
+  {et~al\mbox{.}}} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Multi-Channel Masked Autoencoder and Comprehensive
+  Evaluations for Reconstructing 12-Lead {ECG} from Arbitrary Single-Lead
+  {ECG}}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2407.11481}}
+  (\bibinfo{year}{2024}).
+\newblock
+\href{https://doi.org/10.48550/arxiv.2407.11481}{doi:\nolinkurl{10.48550/arxiv.2407.11481}}
+\newblock
+\shownote{ECGGenEval benchmark: MSE 0.0317, Pearson 0.7885, comprehensive
+  3-level evaluation (signal + feature + diagnostic), PTB-XL + CPSC2018 +
+  CODE-test}.
+
+
+\bibitem[Chen and Soliman(2019)]%
+        {ref37}
+\bibfield{author}{\bibinfo{person}{L. Chen} {and} \bibinfo{person}{E.
+  Soliman}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{{P} wave indices---advancing our understanding of
+  atrial fibrillation-related cardiovascular outcomes}.
+\newblock \bibinfo{journal}{\emph{Frontiers in Cardiovascular Medicine}}
+  \bibinfo{volume}{6} (\bibinfo{year}{2019}).
+\newblock
+\href{https://doi.org/10.3389/fcvm.2019.00053}{doi:\nolinkurl{10.3389/fcvm.2019.00053}}
+
+
+\bibitem[Deering et~al\mbox{.}(2025)]%
+        {ref73}
+\bibfield{author}{\bibinfo{person}{T. Deering} {et~al\mbox{.}}}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{{VALID-ECG} Pivotal Study: Clinical Validation of
+  Synthesized 12-Lead Electrocardiograms for Arrhythmia Assessment}.
+\newblock \bibinfo{journal}{\emph{Heart Rhythm Society Scientific Sessions}}
+  (\bibinfo{date}{April} \bibinfo{year}{2025}).
+\newblock
+\urldef\tempurl%
+\url{https://ir.heartbeam.com}
+\showURL{%
+\tempurl}
+\newblock
+\shownote{HeartBeam FDA 510(k) submission basis; 198 patients, 5 US sites,
+  93.4\% diagnostic agreement for arrhythmia assessment; awaiting FDA
+  clearance}.
+
+
+\bibitem[Diamant et~al\mbox{.}(2022)]%
+        {ref9}
+\bibfield{author}{\bibinfo{person}{N. Diamant}, \bibinfo{person}{E.
+  Reinertsen}, \bibinfo{person}{S. Song}, \bibinfo{person}{A. Aguirre},
+  \bibinfo{person}{C. Stultz}, {and} \bibinfo{person}{P. Batra}.}
+  \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Patient contrastive learning: a performant,
+  expressive, and practical approach to electrocardiogram modeling}.
+\newblock \bibinfo{journal}{\emph{{PLOS} Computational Biology}}
+  \bibinfo{volume}{18}, \bibinfo{number}{2} (\bibinfo{year}{2022}),
+  \bibinfo{pages}{e1009862}.
+\newblock
+\href{https://doi.org/10.1371/journal.pcbi.1009862}{doi:\nolinkurl{10.1371/journal.pcbi.1009862}}
+
+
+\bibitem[Dzikowicz et~al\mbox{.}(2025)]%
+        {ref70}
+\bibfield{author}{\bibinfo{person}{David~J. Dzikowicz} {et~al\mbox{.}}}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Identifying Demographic Factors Affecting the {ECG}
+  Patch Compliance in Atrial Fibrillation Monitoring}.
+\newblock \bibinfo{journal}{\emph{Annals of Noninvasive Electrocardiology}}
+  (\bibinfo{year}{2025}).
+\newblock
+\href{https://doi.org/10.1111/anec.XXXXX}{doi:\nolinkurl{10.1111/anec.XXXXX}}
+\newblock
+\shownote{First BMI stratification study: Obese Class II/III 66-67\% compliance
+  vs 75\% normal/overweight (p<0.01), 256 AF patients, adhesive failure
+  mechanism}.
+
+
+\bibitem[Edpuganti et~al\mbox{.}(2025)]%
+        {ref80}
+\bibfield{author}{\bibinfo{person}{S. Edpuganti}, \bibinfo{person}{A. Kini},
+  {and} \bibinfo{person}{S.~K. Sharma}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Artificial Intelligence in Cardiovascular Imaging:
+  Clinical Integration, Medicolegal Liability, and Regulatory Considerations}.
+\newblock \bibinfo{journal}{\emph{Discoveries}} \bibinfo{volume}{13},
+  \bibinfo{number}{2} (\bibinfo{year}{2025}), \bibinfo{pages}{e215}.
+\newblock
+\href{https://doi.org/10.15190/d.2025.2}{doi:\nolinkurl{10.15190/d.2025.2}}
+\newblock
+\shownote{Comprehensive review of AI workflow integration barriers: EHR
+  incompatibility, PACS limitations, medicolegal liability frameworks, FDA
+  regulatory pathways}.
+
+
+\bibitem[Fu et~al\mbox{.}(2024)]%
+        {ref17}
+\bibfield{author}{\bibinfo{person}{F. Fu}, \bibinfo{person}{D. Zhong},
+  \bibinfo{person}{J. Liu}, \bibinfo{person}{T. Xu}, \bibinfo{person}{Q. Shen},
+  {and} \bibinfo{person}{W. Wang}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Wearable 12-lead {ECG} acquisition using a novel
+  deep learning approach from {Frank} or {EASI} leads with clinical
+  validation}.
+\newblock \bibinfo{journal}{\emph{Bioengineering}} \bibinfo{volume}{11},
+  \bibinfo{number}{3} (\bibinfo{year}{2024}), \bibinfo{pages}{293}.
+\newblock
+\href{https://doi.org/10.3390/bioengineering11030293}{doi:\nolinkurl{10.3390/bioengineering11030293}}
+
+
+\bibitem[Fung et~al\mbox{.}(2015)]%
+        {ref45}
+\bibfield{author}{\bibinfo{person}{E. Fung}, \bibinfo{person}{M. J{"a}rvelin},
+  \bibinfo{person}{R. Doshi}, \bibinfo{person}{J. Shinbane},
+  \bibinfo{person}{S. Carlson}, {and} \bibinfo{person}{L. Grazette}.}
+  \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{Electrocardiographic patch devices and contemporary
+  wireless cardiac monitoring}.
+\newblock \bibinfo{journal}{\emph{Frontiers in Physiology}}
+  \bibinfo{volume}{6} (\bibinfo{year}{2015}).
+\newblock
+\href{https://doi.org/10.3389/fphys.2015.00149}{doi:\nolinkurl{10.3389/fphys.2015.00149}}
+
+
+\bibitem[Gwynn et~al\mbox{.}(2021)]%
+        {ref48}
+\bibfield{author}{\bibinfo{person}{J. Gwynn}, \bibinfo{person}{K. Gwynne},
+  \bibinfo{person}{R. Rodrigues}, \bibinfo{person}{S. Thompson},
+  \bibinfo{person}{G. Bolton}, {and} \bibinfo{person}{Y. Dimitropulos}.}
+  \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Atrial fibrillation in indigenous {A}ustralians: a
+  multisite screening study using a single-lead {ECG} device in aboriginal
+  primary health settings}.
+\newblock \bibinfo{journal}{\emph{Heart Lung and Circulation}}
+  \bibinfo{volume}{30}, \bibinfo{number}{2} (\bibinfo{year}{2021}),
+  \bibinfo{pages}{267--274}.
+\newblock
+\href{https://doi.org/10.1016/j.hlc.2020.06.009}{doi:\nolinkurl{10.1016/j.hlc.2020.06.009}}
+
+
+\bibitem[Ikeda(2021)]%
+        {ref47}
+\bibfield{author}{\bibinfo{person}{T. Ikeda}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Current use and future needs of noninvasive
+  ambulatory electrocardiogram monitoring}.
+\newblock \bibinfo{journal}{\emph{Internal Medicine}} \bibinfo{volume}{60},
+  \bibinfo{number}{1} (\bibinfo{year}{2021}), \bibinfo{pages}{9--14}.
+\newblock
+\href{https://doi.org/10.2169/internalmedicine.5691-20}{doi:\nolinkurl{10.2169/internalmedicine.5691-20}}
+
+
+\bibitem[Jagminas et~al\mbox{.}(2024)]%
+        {ref52}
+\bibfield{author}{\bibinfo{person}{R. Jagminas}, \bibinfo{person}{R.
+  Šerpytis}, \bibinfo{person}{P. Šerpytis}, {and} \bibinfo{person}{S.
+  Glavekcaitė}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Left ventricular hypertrabeculation ({LVHT}) in
+  athletes: a negligible finding?}
+\newblock \bibinfo{journal}{\emph{Medicina}} \bibinfo{volume}{61},
+  \bibinfo{number}{1} (\bibinfo{year}{2024}), \bibinfo{pages}{32}.
+\newblock
+\href{https://doi.org/10.3390/medicina61010032}{doi:\nolinkurl{10.3390/medicina61010032}}
+
+
+\bibitem[Kligfield et~al\mbox{.}(2007)]%
+        {ref42}
+\bibfield{author}{\bibinfo{person}{P. Kligfield}, \bibinfo{person}{L. Gettes},
+  \bibinfo{person}{J. Bailey}, \bibinfo{person}{R. Childers},
+  \bibinfo{person}{B. Deal}, {and} \bibinfo{person}{E. Hancock}.}
+  \bibinfo{year}{2007}\natexlab{}.
+\newblock \showarticletitle{Recommendations for the standardization and
+  interpretation of the electrocardiogram}.
+\newblock \bibinfo{journal}{\emph{Journal of the American College of
+  Cardiology}} \bibinfo{volume}{49}, \bibinfo{number}{10}
+  (\bibinfo{year}{2007}), \bibinfo{pages}{1109--1127}.
+\newblock
+\href{https://doi.org/10.1016/j.jacc.2007.01.024}{doi:\nolinkurl{10.1016/j.jacc.2007.01.024}}
+
+
+\bibitem[Krasteva et~al\mbox{.}(2019)]%
+        {ref30}
+\bibfield{author}{\bibinfo{person}{V. Krasteva}, \bibinfo{person}{I. Jekova},
+  {and} \bibinfo{person}{R. Schmid}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Simulating arbitrary electrode reversals in
+  standard 12-lead {ECG}}.
+\newblock \bibinfo{journal}{\emph{Sensors}} \bibinfo{volume}{19},
+  \bibinfo{number}{13} (\bibinfo{year}{2019}), \bibinfo{pages}{2920}.
+\newblock
+\href{https://doi.org/10.3390/s19132920}{doi:\nolinkurl{10.3390/s19132920}}
+
+
+\bibitem[Kurtul and Duran(2017)]%
+        {ref35}
+\bibfield{author}{\bibinfo{person}{A. Kurtul} {and} \bibinfo{person}{M.
+  Duran}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Fragmented {QRS} complex predicts contrast-induced
+  nephropathy and in-hospital mortality after primary percutaneous coronary
+  intervention}.
+\newblock \bibinfo{journal}{\emph{Clinical Cardiology}} \bibinfo{volume}{40},
+  \bibinfo{number}{4} (\bibinfo{year}{2017}), \bibinfo{pages}{235--242}.
+\newblock
+\href{https://doi.org/10.1002/clc.22651}{doi:\nolinkurl{10.1002/clc.22651}}
+
+
+\bibitem[Lai et~al\mbox{.}(2025)]%
+        {ref62}
+\bibfield{author}{\bibinfo{person}{Yuye Lai} {et~al\mbox{.}}}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{{DiffuSETS}: 12-Lead {ECG} generation conditioned
+  on clinical text reports}.
+\newblock \bibinfo{journal}{\emph{Cell Reports Medicine}} \bibinfo{volume}{6},
+  \bibinfo{number}{6} (\bibinfo{year}{2025}).
+\newblock
+\href{https://doi.org/10.1016/j.xcrm.2025.101XXX}{doi:\nolinkurl{10.1016/j.xcrm.2025.101XXX}}
+\newblock
+\shownote{Text-to-ECG diffusion with 3-level evaluation framework (signal,
+  feature, diagnostic), CLIP score for text-ECG alignment}.
+
+
+\bibitem[Lancia et~al\mbox{.}(2008)]%
+        {ref39}
+\bibfield{author}{\bibinfo{person}{L. Lancia}, \bibinfo{person}{M. Cerone},
+  \bibinfo{person}{P. Vittorini}, \bibinfo{person}{S. Romano}, {and}
+  \bibinfo{person}{M. Penco}.} \bibinfo{year}{2008}\natexlab{}.
+\newblock \showarticletitle{A comparison between {EASI} system 12-lead {ECG}s
+  and standard 12-lead {ECG}s for improved clinical nursing practice}.
+\newblock \bibinfo{journal}{\emph{Journal of Clinical Nursing}}
+  \bibinfo{volume}{17}, \bibinfo{number}{3} (\bibinfo{year}{2008}),
+  \bibinfo{pages}{370--377}.
+\newblock
+\href{https://doi.org/10.1111/j.1365-2702.2007.01935.x}{doi:\nolinkurl{10.1111/j.1365-2702.2007.01935.x}}
+
+
+\bibitem[Lee et~al\mbox{.}(2020)]%
+        {ref25}
+\bibfield{author}{\bibinfo{person}{D. Lee}, \bibinfo{person}{H. Kwon},
+  \bibinfo{person}{H. Lee}, \bibinfo{person}{C. Seo}, {and} \bibinfo{person}{K.
+  Park}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Optimal lead position in patch-type monitoring
+  sensors for reconstructing 12-lead {ECG} signals with universal
+  transformation coefficient}.
+\newblock \bibinfo{journal}{\emph{Sensors}} \bibinfo{volume}{20},
+  \bibinfo{number}{4} (\bibinfo{year}{2020}), \bibinfo{pages}{963}.
+\newblock
+\href{https://doi.org/10.3390/s20040963}{doi:\nolinkurl{10.3390/s20040963}}
+
+
+\bibitem[Li et~al\mbox{.}(2025)]%
+        {ref72}
+\bibfield{author}{\bibinfo{person}{Xuecheng Li} {et~al\mbox{.}}}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Deep learning model for {ECG} reconstruction
+  reveals the information content of {ECG} leads}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2502.00559}}
+  (\bibinfo{year}{2025}).
+\newblock
+\href{https://doi.org/10.48550/arxiv.2502.00559}{doi:\nolinkurl{10.48550/arxiv.2502.00559}}
+\newblock
+\shownote{Quantifies information content and inter-lead correlations per ECG
+  lead, directly relevant to optimal lead selection}.
+
+
+\bibitem[Matyschik et~al\mbox{.}(2020)]%
+        {ref5}
+\bibfield{author}{\bibinfo{person}{M. Matyschik}, \bibinfo{person}{H.
+  Mauranen}, \bibinfo{person}{J. Karel}, {and} \bibinfo{person}{P. Bonizzi}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Feasibility of {ECG} reconstruction from minimal
+  lead sets using convolutional neural networks}.
+\newblock \bibinfo{journal}{\emph{{CinC} Proceedings}} (\bibinfo{year}{2020}).
+\newblock
+\href{https://doi.org/10.22489/cinc.2020.164}{doi:\nolinkurl{10.22489/cinc.2020.164}}
+
+
+\bibitem[McKeen et~al\mbox{.}(2025)]%
+        {ref61}
+\bibfield{author}{\bibinfo{person}{Kaden McKeen}, \bibinfo{person}{Sameer
+  Masood}, \bibinfo{person}{Augustin Toma}, \bibinfo{person}{Barry Rubin},
+  {and} \bibinfo{person}{Bo Wang}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{{ECG-FM}: An open electrocardiogram foundation
+  model}.
+\newblock \bibinfo{journal}{\emph{JAMIA Open}} \bibinfo{volume}{8},
+  \bibinfo{number}{5} (\bibinfo{year}{2025}), \bibinfo{pages}{ooaf122}.
+\newblock
+\href{https://doi.org/10.1093/jamiaopen/ooaf122}{doi:\nolinkurl{10.1093/jamiaopen/ooaf122}}
+\newblock
+\shownote{1.5M ECG transformer foundation model: AF AUROC 0.996, LVEF
+  $\leq$40\% AUROC 0.929, hybrid SSL (masked reconstruction + contrastive),
+  publicly released weights}.
+
+
+\bibitem[Milic et~al\mbox{.}(2023)]%
+        {ref78}
+\bibfield{author}{\bibinfo{person}{M. Milic}, \bibinfo{person}{M. Stojkovic},
+  \bibinfo{person}{N. Zivkovic}, {et~al\mbox{.}}}
+  \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{Telemedicine in the Era of a Pandemic: Usefulness
+  of a Novel Three-Lead {ECG}}.
+\newblock \bibinfo{journal}{\emph{Diagnostics}} \bibinfo{volume}{13},
+  \bibinfo{number}{15} (\bibinfo{year}{2023}), \bibinfo{pages}{2525}.
+\newblock
+\href{https://doi.org/10.3390/diagnostics13152525}{doi:\nolinkurl{10.3390/diagnostics13152525}}
+\newblock
+\shownote{Prospective single-center trial (N=102): 3-lead reconstructed 12-lead
+  ECG, 99\% feasibility, 96.3\% specificity, 95.8\% sensitivity, 96.1\%
+  diagnostic accuracy vs standard; real-life clinical workflow assessment}.
+
+
+\bibitem[Obianom et~al\mbox{.}(2025)]%
+        {ref65}
+\bibfield{author}{\bibinfo{person}{Ezendu~N. Obianom} {et~al\mbox{.}}}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Reconstruction of 12-lead {ECG}: a review of
+  algorithms}.
+\newblock \bibinfo{journal}{\emph{Frontiers in Physiology}}
+  \bibinfo{volume}{16} (\bibinfo{year}{2025}), \bibinfo{pages}{1532284}.
+\newblock
+\href{https://doi.org/10.3389/fphys.2025.1532284}{doi:\nolinkurl{10.3389/fphys.2025.1532284}}
+\newblock
+\shownote{Systematic review: 3-lead optimal (99.12\% information content), r >
+  0.90 correlation, generic vs patient-specific comparison, no universal
+  algorithm}.
+
+
+\bibitem[Presacan et~al\mbox{.}(2025)]%
+        {ref57}
+\bibfield{author}{\bibinfo{person}{O. Presacan}, \bibinfo{person}{M. Lyng},
+  \bibinfo{person}{H. Christensen}, \bibinfo{person}{K.~H. Haugaa},
+  \bibinfo{person}{K.~G.~M. Moons}, \bibinfo{person}{E.~W. Steyerberg},
+  {et~al\mbox{.}}} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Evaluating the feasibility of 12-lead
+  electrocardiogram reconstruction from single-lead and dual-lead {ECG}s using
+  deep learning}.
+\newblock \bibinfo{journal}{\emph{Communications Medicine}}
+  \bibinfo{volume}{5} (\bibinfo{year}{2025}), \bibinfo{pages}{814}.
+\newblock
+\href{https://doi.org/10.1038/s43856-025-00814-w}{doi:\nolinkurl{10.1038/s43856-025-00814-w}}
+\newblock
+\shownote{CRITICAL: First rigorous demonstration of GAN regression-to-mean
+  ($R^2 = 0.92$ between error and amplitude), 9514 PTB-XL subjects, challenges
+  field evaluation practices}.
+
+
+\bibitem[Rajbhandary et~al\mbox{.}(2022)]%
+        {ref41}
+\bibfield{author}{\bibinfo{person}{P. Rajbhandary}, \bibinfo{person}{G.
+  Nallathambi}, \bibinfo{person}{N. Selvaraj}, \bibinfo{person}{T. Tran}, {and}
+  \bibinfo{person}{O. Colliou}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{{ECG} signal quality assessments of a small bipolar
+  single-lead wearable patch sensor}.
+\newblock \bibinfo{journal}{\emph{Cardiovascular Engineering and Technology}}
+  \bibinfo{volume}{13}, \bibinfo{number}{5} (\bibinfo{year}{2022}),
+  \bibinfo{pages}{783--796}.
+\newblock
+\href{https://doi.org/10.1007/s13239-022-00617-3}{doi:\nolinkurl{10.1007/s13239-022-00617-3}}
+
+
+\bibitem[Rao et~al\mbox{.}(2025)]%
+        {ref83}
+\bibfield{author}{\bibinfo{person}{S.~V. Rao}, \bibinfo{person}{P.~T. O'Gara},
+  \bibinfo{person}{J.~A. Joglar}, {et~al\mbox{.}}}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{2025 {ACC/AHA/ACEP/NAEMSP/SCAI} Guideline for the
+  Management of Patients With Acute Coronary Syndromes}.
+\newblock \bibinfo{journal}{\emph{Circulation}}  \bibinfo{volume}{151}
+  (\bibinfo{year}{2025}), \bibinfo{pages}{e123--e321}.
+\newblock
+\href{https://doi.org/10.1161/CIR.0000000000001309}{doi:\nolinkurl{10.1161/CIR.0000000000001309}}
+\newblock
+\shownote{Standard of care: 12-lead ECG within 10 minutes for ACS, posterior
+  leads (V7-V9) for posterior STEMI; NO mention of reconstructed ECG
+  acceptability}.
+
+
+\bibitem[Rautaharju et~al\mbox{.}(1979)]%
+        {ref33}
+\bibfield{author}{\bibinfo{person}{P. Rautaharju}, \bibinfo{person}{A.
+  Davignon}, \bibinfo{person}{F. Soumis}, \bibinfo{person}{E. Boiselle}, {and}
+  \bibinfo{person}{A. Choquette}.} \bibinfo{year}{1979}\natexlab{}.
+\newblock \showarticletitle{Evolution of {QRS}-{T} relationship from birth to
+  adolescence in {F}rank-lead orthogonal electrocardiograms of 1492 normal
+  children}.
+\newblock \bibinfo{journal}{\emph{Circulation}} \bibinfo{volume}{60},
+  \bibinfo{number}{1} (\bibinfo{year}{1979}), \bibinfo{pages}{196--204}.
+\newblock
+\href{https://doi.org/10.1161/01.cir.60.1.196}{doi:\nolinkurl{10.1161/01.cir.60.1.196}}
+
+
+\bibitem[Santos et~al\mbox{.}(2025)]%
+        {ref74}
+\bibfield{author}{\bibinfo{person}{C. Santos}, \bibinfo{person}{S. Benatti},
+  \bibinfo{person}{D. Brunelli}, {et~al\mbox{.}}}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Real-Time, Single-Ear, Wearable {ECG}
+  Reconstruction, {R-Peak} Detection and {HR}/{HRV} Estimation on {BioGAP}}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2505.01738}}
+  (\bibinfo{year}{2025}).
+\newblock
+\href{https://doi.org/10.48550/arxiv.2505.01738}{doi:\nolinkurl{10.48550/arxiv.2505.01738}}
+\newblock
+\shownote{Inference time 0.95 ms, energy 36.7 µJ, battery life 36h, HR error
+  0.49 bpm, HRV error 25.82 ms, deployed on ultra-low-power wearable platform}.
+
+
+\bibitem[Sviridov and Egorov(2025)]%
+        {ref59}
+\bibfield{author}{\bibinfo{person}{Ivan Sviridov} {and}
+  \bibinfo{person}{Konstantin Egorov}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Conditional Electrocardiogram Generation Using
+  Hierarchical Variational Autoencoders}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2503.13469}}
+  (\bibinfo{year}{2025}).
+\newblock
+\href{https://doi.org/10.48550/arxiv.2503.13469}{doi:\nolinkurl{10.48550/arxiv.2503.13469}}
+\newblock
+\shownote{cNVAE-ECG: Hierarchical VAE outperforming GANs by up to 2\% AUROC on
+  downstream classification, multi-pathology high-resolution generation,
+  publicly available}.
+
+
+\bibitem[Toyosu et~al\mbox{.}(2015)]%
+        {ref56}
+\bibfield{author}{\bibinfo{person}{Y. Toyosu}, \bibinfo{person}{S. Inui},
+  \bibinfo{person}{Z. Wang}, \bibinfo{person}{M. Akutagawa},
+  \bibinfo{person}{S. Konaka}, {and} \bibinfo{person}{Y. Kinouchi}.}
+  \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{High-resolution body-surface electrocardiograph
+  system and survey of possible applications}.
+\newblock \bibinfo{journal}{\emph{SpringerPlus}} \bibinfo{volume}{4},
+  \bibinfo{number}{1} (\bibinfo{year}{2015}).
+\newblock
+\href{https://doi.org/10.1186/s40064-015-1325-8}{doi:\nolinkurl{10.1186/s40064-015-1325-8}}
+
+
+\bibitem[Tripathy and Dandapat(2017)]%
+        {ref15}
+\bibfield{author}{\bibinfo{person}{R. Tripathy} {and} \bibinfo{person}{S.
+  Dandapat}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Automated detection of heart ailments from 12-lead
+  {ECG} using complex wavelet sub-band bi-spectrum features}.
+\newblock \bibinfo{journal}{\emph{Healthcare Technology Letters}}
+  \bibinfo{volume}{4}, \bibinfo{number}{2} (\bibinfo{year}{2017}),
+  \bibinfo{pages}{57--63}.
+\newblock
+\href{https://doi.org/10.1049/htl.2016.0089}{doi:\nolinkurl{10.1049/htl.2016.0089}}
+
+
+\bibitem[Vullings et~al\mbox{.}(2010)]%
+        {ref20}
+\bibfield{author}{\bibinfo{person}{R. Vullings}, \bibinfo{person}{C. Peters},
+  \bibinfo{person}{I. Mossavat}, \bibinfo{person}{S. Oei}, {and}
+  \bibinfo{person}{J. Bergmans}.} \bibinfo{year}{2010}\natexlab{}.
+\newblock \showarticletitle{Bayesian approach to patient-tailored
+  vectorcardiography}.
+\newblock \bibinfo{journal}{\emph{{IEEE} Transactions on Biomedical
+  Engineering}} \bibinfo{volume}{57}, \bibinfo{number}{3}
+  (\bibinfo{year}{2010}), \bibinfo{pages}{586--595}.
+\newblock
+\href{https://doi.org/10.1109/tbme.2009.2033664}{doi:\nolinkurl{10.1109/tbme.2009.2033664}}
+
+
+\bibitem[Wan et~al\mbox{.}(2025)]%
+        {ref64}
+\bibfield{author}{\bibinfo{person}{Zhijiang Wan}, \bibinfo{person}{Qianhao Yu},
+  \bibinfo{person}{Jia Mao}, \bibinfo{person}{Wenfeng Duan}, {and}
+  \bibinfo{person}{Cheng Ding}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{{OpenECG}: Benchmarking {ECG} Foundation Models
+  with Public 1.2 Million Records}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2503.00711}}
+  (\bibinfo{year}{2025}).
+\newblock
+\href{https://doi.org/10.48550/arxiv.2503.00711}{doi:\nolinkurl{10.48550/arxiv.2503.00711}}
+\newblock
+\shownote{Multi-center benchmark: 1.2M ECGs from 9 centers, compares
+  SimCLR/BYOL/MAE with ResNet-50 and ViT, cross-dataset generalization
+  analysis}.
+
+
+\bibitem[Wang et~al\mbox{.}(2025)]%
+        {ref58}
+\bibfield{author}{\bibinfo{person}{Xiaoda Wang}, \bibinfo{person}{Kaiqiao Han},
+  \bibinfo{person}{Yuhao Xu}, \bibinfo{person}{Xiao Luo},
+  \bibinfo{person}{Yizhou Sun}, \bibinfo{person}{Wei Wang}, {and}
+  \bibinfo{person}{Carl Yang}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Simulator and Experience Enhanced Diffusion Model
+  for Comprehensive {ECG} Generation}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2511.09895}}
+  (\bibinfo{year}{2025}).
+\newblock
+\href{https://doi.org/10.48550/arxiv.2511.09895}{doi:\nolinkurl{10.48550/arxiv.2511.09895}}
+\newblock
+\shownote{SE-Diff: Physics-informed ODE-based ECG simulator integrated with
+  latent diffusion, MAE 0.0923, NRMSE 0.0714, MAE\_HR 8.43, 10s 12-lead
+  generation}.
+
+
+\bibitem[Wang et~al\mbox{.}(2024)]%
+        {ref68}
+\bibfield{author}{\bibinfo{person}{Yue Wang} {et~al\mbox{.}}}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{{AnyECG}: Foundational Models for Multitask Cardiac
+  Analysis}.
+\newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2411.17711}}
+  (\bibinfo{year}{2024}).
+\newblock
+\href{https://doi.org/10.48550/arxiv.2411.17711}{doi:\nolinkurl{10.48550/arxiv.2411.17711}}
+\newblock
+\shownote{Multi-task foundation model combining morphology, frequency,
+  demographic reconstruction, explicitly addresses demographic bias through
+  metadata incorporation}.
+
+
+\bibitem[Wei(2001)]%
+        {ref34}
+\bibfield{author}{\bibinfo{person}{D. Wei}.} \bibinfo{year}{2001}\natexlab{}.
+\newblock \showarticletitle{Deriving the 12-lead electrocardiogram from four
+  standard leads based on the {F}rank torso model}.
+\newblock \bibinfo{journal}{\emph{IEMBS Proceedings}}  \bibinfo{volume}{1}
+  (\bibinfo{year}{2001}), \bibinfo{pages}{381--384}.
+\newblock
+\href{https://doi.org/10.1109/iembs.2001.1018940}{doi:\nolinkurl{10.1109/iembs.2001.1018940}}
+
+
+\bibitem[Yan et~al\mbox{.}(2025)]%
+        {ref66}
+\bibfield{author}{\bibinfo{person}{Yucheng Yan} {et~al\mbox{.}}}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Parameter-Efficient 12-Lead {ECG} Reconstruction
+  from a Single Lead}.
+\newblock \bibinfo{journal}{\emph{MICCAI Proceedings}} (\bibinfo{year}{2025}).
+\newblock
+\href{https://doi.org/10.1007/978-3-031-XXXXX-X}{doi:\nolinkurl{10.1007/978-3-031-XXXXX-X}}
+\newblock
+\shownote{mEcgNet: 22.1\% lower MSE than baseline UNet, parameter reduction
+  >50\% for wearable deployment}.
+
+
+\bibitem[Ye et~al\mbox{.}(2025)]%
+        {ref84}
+\bibfield{author}{\bibinfo{person}{Y. Ye}, \bibinfo{person}{Z. Chen},
+  \bibinfo{person}{L. Wang}, {et~al\mbox{.}}} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Hybrid {CNN-BLSTM} architecture for classification
+  and arrhythmia detection in {ECG} signals with inference time
+  quantification}.
+\newblock \bibinfo{journal}{\emph{Scientific Reports}}  \bibinfo{volume}{15}
+  (\bibinfo{year}{2025}), \bibinfo{pages}{9371}.
+\newblock
+\href{https://doi.org/10.1038/s41598-025-17671-1}{doi:\nolinkurl{10.1038/s41598-025-17671-1}}
+\newblock
+\shownote{NVIDIA RTX 3080 GPU: 14 milliseconds inference time per ECG record;
+  high-end hardware requirements for real-time performance}.
+
+
+\bibitem[Zhang et~al\mbox{.}(2019)]%
+        {ref1}
+\bibfield{author}{\bibinfo{person}{Z. Zhang}, \bibinfo{person}{X. Liu},
+  \bibinfo{person}{S. Wei}, \bibinfo{person}{H. Gan}, \bibinfo{person}{F. Liu},
+  {and} \bibinfo{person}{Y. Li}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Electrocardiogram reconstruction based on
+  compressed sensing}.
+\newblock \bibinfo{journal}{\emph{IEEE Access}}  \bibinfo{volume}{7}
+  (\bibinfo{year}{2019}), \bibinfo{pages}{37228--37237}.
+\newblock
+\href{https://doi.org/10.1109/access.2019.2905000}{doi:\nolinkurl{10.1109/access.2019.2905000}}
+
+
+\bibitem[Zhao et~al\mbox{.}(2019)]%
+        {ref23}
+\bibfield{author}{\bibinfo{person}{Z. Zhao}, \bibinfo{person}{C. Liu},
+  \bibinfo{person}{Y. Li}, \bibinfo{person}{Y. Li}, \bibinfo{person}{J. Wang},
+  {and} \bibinfo{person}{B. Lin}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Noise rejection for wearable {ECG}s using modified
+  frequency slice wavelet transform and convolutional neural networks}.
+\newblock \bibinfo{journal}{\emph{{IEEE} Access}}  \bibinfo{volume}{7}
+  (\bibinfo{year}{2019}), \bibinfo{pages}{34060--34067}.
+\newblock
+\href{https://doi.org/10.1109/access.2019.2900719}{doi:\nolinkurl{10.1109/access.2019.2900719}}
+
+
+\end{thebibliography}
