@@ -45,11 +45,14 @@ def calculate_metrics(y_true, y_pred):
         ])
         metrics['rmse'][lead] = np.sqrt(metrics['mse'][lead])
         
-        # Pearson correlation
-        metrics['correlation'][lead] = np.mean([
-            pearsonr(lead_true[b], lead_pred[b])[0]
-            for b in range(batch_size)
-        ])
+        # Pearson correlation (handle constant signals gracefully)
+        correlations = []
+        for b in range(batch_size):
+            # Skip if either signal is constant (would cause NaN)
+            if np.std(lead_true[b]) < 1e-8 or np.std(lead_pred[b]) < 1e-8:
+                continue
+            correlations.append(pearsonr(lead_true[b], lead_pred[b])[0])
+        metrics['correlation'][lead] = np.mean(correlations) if correlations else 0.0
         
         # SNR
         signal_power = np.mean(lead_true**2)

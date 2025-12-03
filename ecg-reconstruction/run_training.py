@@ -40,7 +40,7 @@ from tqdm import tqdm
 
 from src.config import Config, get_default_config, get_vm_config
 from data.data_modules import get_dataloaders
-from src.models.unet_1d import UNet1D
+from src.models.unet_1d import UNet1D, UNet1DLeadSpecific
 from src.utils import set_seed, save_model, evaluate_reconstruction, plot_reconstruction
 from src.physics import reconstruct_12_leads
 
@@ -60,6 +60,9 @@ Examples:
     
     # Use VM-optimized config
     python run_training.py --vm_mode
+    
+    # Train with lead-specific decoders (recommended for best performance)
+    python run_training.py --model unet_lead_specific --data_dir data/processed_full
         """
     )
     
@@ -79,7 +82,8 @@ Examples:
     
     # Model architecture
     parser.add_argument('--model', type=str, default='unet_1d',
-                       choices=['unet_1d'], help='Model architecture')
+                       choices=['unet_1d', 'unet_lead_specific'],
+                       help='Model architecture: unet_1d (shared decoder) or unet_lead_specific (per-lead decoders)')
     parser.add_argument('--features', type=int, default=64,
                        help='Base features for UNet')
     parser.add_argument('--depth', type=int, default=4,
@@ -298,15 +302,29 @@ def main():
         num_workers=config.training.num_workers
     )
     
-    # Create model
+    # Create model based on architecture selection
     print("\nCreating model...")
-    model = UNet1D(
-        in_channels=config.model.in_channels,
-        out_channels=config.model.out_channels,
-        features=config.model.features,
-        depth=config.model.depth,
-        dropout=config.model.dropout
-    )
+    model_name = args.model if hasattr(args, 'model') else config.model.name
+    
+    if model_name == 'unet_lead_specific':
+        print("Using UNet1D with Lead-Specific Decoders")
+        model = UNet1DLeadSpecific(
+            in_channels=config.model.in_channels,
+            out_channels=config.model.out_channels,
+            features=config.model.features,
+            depth=config.model.depth,
+            dropout=config.model.dropout
+        )
+    else:
+        print("Using UNet1D with Shared Decoder")
+        model = UNet1D(
+            in_channels=config.model.in_channels,
+            out_channels=config.model.out_channels,
+            features=config.model.features,
+            depth=config.model.depth,
+            dropout=config.model.dropout
+        )
+    
     model = model.to(device)
     
     # Print model summary

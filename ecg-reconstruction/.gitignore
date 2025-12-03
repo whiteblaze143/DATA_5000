@@ -49,4 +49,14 @@ env/
 *.swo
 
 # OS-specific
-.DS_Store
+.DS_Store# Data directories - large files
+data/ptb_xl_full/
+data/ptb_xl/
+*.dat
+*.hea
+# Training logs
+*_training.log
+download_log.txt
+download_missing.txt
+# Model run outputs
+models/run_*/
