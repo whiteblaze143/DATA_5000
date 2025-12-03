@@ -886,6 +886,85 @@
     \end{columns}
 \end{frame}
 
+
+\begin{frame}{Information Bottleneck Analysis}
+    \begin{columns}[c]
+        \column{0.48\textwidth}
+        \textbf{Ground Truth Inter-Lead Correlations:}
+        
+        \vspace{0.2cm}
+        \small
+        \begin{tabular}{@{}lcc@{}}
+            \toprule
+            \textbf{Target} & \textbf{Max Input $r$} & \textbf{Best Source} \\
+            \midrule
+            V1 & 0.49 & Lead I \\
+            V2 & 0.36 & V4 \\
+            V3 & 0.71 & V4 \\
+            V5 & 0.79 & V4 \\
+            V6 & 0.69 & Lead I \\
+            \bottomrule
+        \end{tabular}
+        
+        \vspace{0.3cm}
+        \textbf{Key Insight:}
+        \begin{itemize}
+            \item V1/V2 have \textcolor{red}{low correlation} with input leads
+            \item Model cannot reconstruct information \textbf{not present} in input
+            \item Explains gap with literature ($r = 0.74$ vs $0.85-0.90$)
+        \end{itemize}
+        
+        \column{0.5\textwidth}
+        \includegraphics[width=\textwidth]{docs/figures/ground_truth_correlations.png}
+        
+        \vspace{0.2cm}
+        \footnotesize
+        Green boxes = input leads (I, II, V4). V1/V2 are poorly correlated with all input leads.
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Statistical Caveats and Future Validation}
+    \begin{columns}[c]
+        \column{0.48\textwidth}
+        \textbf{Convergence Analysis:}
+        \begin{itemize}
+            \item Both models: best epoch near 150 (147/148)
+            \item Suggests \textcolor{orange}{extended training may help}
+            \item Lead-specific model may benefit from 300+ epochs
+        \end{itemize}
+        
+        \vspace{0.3cm}
+        \textbf{Experimental Limitations:}
+        \begin{enumerate}
+            \item \textbf{Single seed}: Need multi-seed runs for variance
+            \item \textbf{Unfair parameter count}: 17.1M vs 40.8M
+            \item \textbf{Same hyperparameters}: Lead-specific may need different LR
+            \item \textbf{No cross-validation}: Single train/val/test split
+        \end{enumerate}
+        
+        \column{0.5\textwidth}
+        \textbf{Scripts Created for Validation:}
+        \begin{itemize}
+            \item \texttt{train\_multiseed.py}: Multi-seed training
+            \item \texttt{hyperparam\_sweep.py}: LR tuning
+        \end{itemize}
+        
+        \vspace{0.3cm}
+        \textbf{Before Final Conclusions:}
+        \begin{enumerate}
+            \item Run with 3+ random seeds
+            \item Tune LR separately for each architecture
+            \item Extend training to 300 epochs
+            \item Report confidence intervals
+        \end{enumerate}
+        
+        \vspace{0.3cm}
+        \begin{alertblock}{Current Verdict}
+            Shared decoder \textit{likely} better, but definitive claim requires fair comparison with tuned hyperparameters.
+        \end{alertblock}
+    \end{columns}
+\end{frame}
+
 \begin{frame}{Limitations and Future Work}
     \begin{columns}[c]
         \column{0.48\textwidth}
