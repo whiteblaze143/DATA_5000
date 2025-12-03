@@ -60,3 +60,13 @@ download_log.txt
 download_missing.txt
 # Model run outputs
 models/run_*/
+
+# LaTeX output files
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.pdf
+texput.log
