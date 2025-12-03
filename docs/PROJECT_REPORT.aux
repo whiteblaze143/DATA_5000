@@ -13,7 +13,7 @@
 \@writefile{toc}{\contentsline {section}{\numberline {2}Background}{1}{section.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}ECG Lead System}{1}{subsection.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}Limb Leads (Frontal Plane)}{1}{subsubsection.2.1.1}\protected@file@percent }
-\newlabel{eq:einthoven}{{4}{1}{Limb Leads (Frontal Plane)}{equation.4}{}}
+\newlabel{eq:einthoven}{{4}{1}{Limb Leads (Frontal Plane)}{equation.2.4}{}}
 \citation{ref33}
 \citation{ref35,ref38}
 \citation{ref52}
@@ -38,9 +38,9 @@
 \citation{ref65}
 \citation{ref9}
 \citation{ref63}
-\newlabel{eq:avr}{{5}{2}{Limb Leads (Frontal Plane)}{equation.5}{}}
-\newlabel{eq:avl}{{6}{2}{Limb Leads (Frontal Plane)}{equation.6}{}}
-\newlabel{eq:avf}{{7}{2}{Limb Leads (Frontal Plane)}{equation.7}{}}
+\newlabel{eq:avr}{{5}{2}{Limb Leads (Frontal Plane)}{equation.2.5}{}}
+\newlabel{eq:avl}{{6}{2}{Limb Leads (Frontal Plane)}{equation.2.6}{}}
+\newlabel{eq:avf}{{7}{2}{Limb Leads (Frontal Plane)}{equation.2.7}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.2}Chest Leads (Horizontal Plane)}{2}{subsubsection.2.1.2}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Precordial Lead Positions and Anatomical Views}}{2}{table.caption.5}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
@@ -99,15 +99,6 @@
 \@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Diagnostic Classification Tasks}}{4}{table.caption.13}\protected@file@percent }
 \newlabel{tab:tasks}{{8}{4}{Diagnostic Classification Tasks}{table.caption.13}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.1}Classification Tasks}{4}{table.caption.13}\protected@file@percent }
-\citation{ref72}
-\citation{ref63}
-\citation{ref61}
-\citation{ref58}
-\citation{ref66}
-\citation{ref57}
-\citation{ref73,ref80}
-\citation{ref73}
-\citation{ref74,ref84}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.2}Non-Inferiority Framework}{5}{subsubsection.6.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Evaluation Targets}{5}{subsection.6.4}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Target Performance Metrics}}{5}{table.caption.14}\protected@file@percent }
@@ -119,16 +110,17 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Deep Learning Leads}{5}{subsection.7.2}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces Deep Learning Lead Reconstruction}}{5}{table.caption.16}\protected@file@percent }
 \newlabel{tab:dl_results}{{11}{5}{Deep Learning Lead Reconstruction}{table.caption.16}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces Classification Performance Comparison}}{5}{table.caption.17}\protected@file@percent }
-\newlabel{tab:classification}{{12}{5}{Classification Performance Comparison}{table.caption.17}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Diagnostic Utility}{5}{subsection.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Model Comparison: Shared vs Lead-Specific Decoders}{5}{subsection.7.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces Model Architecture Comparison}}{5}{table.caption.17}\protected@file@percent }
+\newlabel{tab:model_comparison}{{12}{5}{Model Architecture Comparison}{table.caption.17}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {8}Discussion}{5}{section.8}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Key Findings}{5}{subsection.8.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Comparison with State-of-the-Art}{5}{subsection.8.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces Comparison with Recent Methods}}{5}{table.caption.18}\protected@file@percent }
-\newlabel{tab:sota_comparison}{{13}{5}{Comparison with Recent Methods}{table.caption.18}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Individual-Level Fidelity Considerations}{5}{subsection.8.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.4}Clinical Deployment Considerations}{5}{subsection.8.4}\protected@file@percent }
+\citation{ref57}
+\citation{ref73,ref80}
+\citation{ref73}
+\citation{ref74,ref84}
 \citation{ref83}
 \citation{ref45}
 \citation{ref47}
@@ -140,6 +132,17 @@
 \citation{ref74}
 \citation{ref78}
 \citation{ref61,ref68}
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces Comparison with Recent Methods}}{6}{table.caption.18}\protected@file@percent }
+\newlabel{tab:sota_comparison}{{13}{6}{Comparison with Recent Methods}{table.caption.18}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Information Bottleneck Analysis}{6}{subsection.8.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces Ground Truth Correlation Between Input and Target Leads}}{6}{table.caption.19}\protected@file@percent }
+\newlabel{tab:ground_truth_corr}{{14}{6}{Ground Truth Correlation Between Input and Target Leads}{table.caption.19}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.4}Individual-Level Fidelity Considerations}{6}{subsection.8.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.5}Clinical Deployment Considerations}{6}{subsection.8.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.6}Clinical Implications}{6}{subsection.8.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.7}Limitations}{6}{subsection.8.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusion}{6}{section.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}Future Work}{6}{subsection.9.1}\protected@file@percent }
 \bibstyle{ACM-Reference-Format}
 \bibdata{references}
 \bibcite{ref60}{{1}{2023}{{Alcaraz and Strodthoff}}{{}}}
@@ -162,12 +165,6 @@
 \bibcite{ref35}{{18}{2017}{{Kurtul and Duran}}{{}}}
 \bibcite{ref62}{{19}{2025}{{Lai et~al\mbox  {.}}}{{}}}
 \bibcite{ref39}{{20}{2008}{{Lancia et~al\mbox  {.}}}{{}}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.5}Clinical Implications}{6}{subsection.8.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.6}Limitations}{6}{subsection.8.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusion}{6}{section.9}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}Future Work}{6}{subsection.9.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{Acknowledgments}{6}{section*.20}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{6}{section*.22}\protected@file@percent }
 \bibcite{ref25}{{21}{2020}{{Lee et~al\mbox  {.}}}{{}}}
 \bibcite{ref72}{{22}{2025}{{Li et~al\mbox  {.}}}{{}}}
 \bibcite{ref5}{{23}{2020}{{Matyschik et~al\mbox  {.}}}{{}}}
@@ -183,6 +180,8 @@
 \bibcite{ref56}{{33}{2015}{{Toyosu et~al\mbox  {.}}}{{}}}
 \bibcite{ref15}{{34}{2017}{{Tripathy and Dandapat}}{{}}}
 \bibcite{ref20}{{35}{2010}{{Vullings et~al\mbox  {.}}}{{}}}
+\@writefile{toc}{\contentsline {section}{Acknowledgments}{7}{section*.21}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{7}{section*.23}\protected@file@percent }
 \bibcite{ref64}{{36}{2025}{{Wan et~al\mbox  {.}}}{{}}}
 \bibcite{ref58}{{37}{2025}{{Wang et~al\mbox  {.}}}{{}}}
 \bibcite{ref68}{{38}{2024}{{Wang et~al\mbox  {.}}}{{}}}
@@ -193,9 +192,6 @@
 \bibcite{ref23}{{43}{2019}{{Zhao et~al\mbox  {.}}}{{}}}
 \citation{ref33}
 \citation{ref34}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Einthoven's Triangle}{7}{appendix.A}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {B}Goldberger's Augmented Leads}{7}{appendix.B}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {C}Project Repository Structure}{7}{appendix.C}\protected@file@percent }
 \citation{ref65}
 \citation{ref72}
 \newlabel{tocindent-1}{0pt}
@@ -203,10 +199,11 @@
 \newlabel{tocindent1}{6.30899pt}
 \newlabel{tocindent2}{10.34999pt}
 \newlabel{tocindent3}{18.198pt}
-\newlabel{tocindent4}{0pt}
-\newlabel{tocindent5}{0pt}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Einthoven's Triangle}{8}{appendix.A}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {B}Goldberger's Augmented Leads}{8}{appendix.B}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {C}Project Repository Structure}{8}{appendix.C}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {D}Input Configuration Exploration}{8}{appendix.D}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces Input Lead Configurations}}{8}{table.caption.23}\protected@file@percent }
-\newlabel{tab:configs}{{14}{8}{Input Lead Configurations}{table.caption.23}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {15}{\ignorespaces Input Lead Configurations}}{8}{table.caption.24}\protected@file@percent }
+\newlabel{tab:configs}{{15}{8}{Input Lead Configurations}{table.caption.24}{}}
 \newlabel{TotPages}{{8}{8}{}{page.8}{}}
 \gdef \@abspage@last{8}

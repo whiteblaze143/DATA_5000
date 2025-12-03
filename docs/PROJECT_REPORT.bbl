@@ -8,20 +8,21 @@
 %%% NOTE TO THE USER: you can override these defaults by providing
 %%% customized versions of any of these macros before the \bibliography
 %%% command.  Each of them MUST provide its own final punctuation,
-%%% except for \shownote{} and \showURL{}.  The latter two
+%%% except for \shownote{}, \showDOI{}, and \showURL{}.  The latter two
 %%% do not use final punctuation, in order to avoid confusing it with
 %%% the Web address.
 %%%
 %%% To suppress output of a particular field, define its macro to expand
 %%% to an empty string, or better, \unskip, like this:
 %%%
-%%% \newcommand{\showURL}[1]{\unskip}   % LaTeX syntax
+%%% \newcommand{\showDOI}[1]{\unskip}   % LaTeX syntax
 %%%
-%%% \def \showURL #1{\unskip}           % plain TeX syntax
+%%% \def \showDOI #1{\unskip}           % plain TeX syntax
 %%%
 %%% ====================================================================
 
 \ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showDOI      \undefined \def \showDOI       #1{#1}\fi
 \ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
 \ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
 \ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
@@ -45,7 +46,9 @@
 \newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2301.08227}}
   (\bibinfo{year}{2023}).
 \newblock
-\href{https://doi.org/10.48550/arxiv.2301.08227}{doi:\nolinkurl{10.48550/arxiv.2301.08227}}
+\urldef\tempurl%
+\url{https://doi.org/10.48550/arxiv.2301.08227}
+\showDOI{\tempurl}
 \newblock
 \shownote{SSSD-ECG: First S4 state-space model + diffusion for ECG synthesis,
   captures long-term dependencies efficiently}.
@@ -64,7 +67,9 @@
   \bibinfo{volume}{18}, \bibinfo{number}{2} (\bibinfo{year}{2012}),
   \bibinfo{pages}{104--108}.
 \newblock
-\href{https://doi.org/10.1258/jtt.2011.110613}{doi:\nolinkurl{10.1258/jtt.2011.110613}}
+\urldef\tempurl%
+\url{https://doi.org/10.1258/jtt.2011.110613}
+\showDOI{\tempurl}
 
 
 \bibitem[Avina-Cervantes et~al\mbox{.}(2006)]%
@@ -77,7 +82,9 @@
 \newblock \bibinfo{journal}{\emph{{MEP} Proceedings}} (\bibinfo{year}{2006}),
   \bibinfo{pages}{257--261}.
 \newblock
-\href{https://doi.org/10.1109/mep.2006.335676}{doi:\nolinkurl{10.1109/mep.2006.335676}}
+\urldef\tempurl%
+\url{https://doi.org/10.1109/mep.2006.335676}
+\showDOI{\tempurl}
 
 
 \bibitem[Chatterjee and Changawala(2010)]%
@@ -89,7 +96,9 @@
 \newblock \bibinfo{journal}{\emph{Clinical Cardiology}} \bibinfo{volume}{33},
   \bibinfo{number}{2} (\bibinfo{year}{2010}), \bibinfo{pages}{68--71}.
 \newblock
-\href{https://doi.org/10.1002/clc.20709}{doi:\nolinkurl{10.1002/clc.20709}}
+\urldef\tempurl%
+\url{https://doi.org/10.1002/clc.20709}
+\showDOI{\tempurl}
 
 
 \bibitem[Chen et~al\mbox{.}(2024)]%
@@ -102,7 +111,9 @@
 \newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2407.11481}}
   (\bibinfo{year}{2024}).
 \newblock
-\href{https://doi.org/10.48550/arxiv.2407.11481}{doi:\nolinkurl{10.48550/arxiv.2407.11481}}
+\urldef\tempurl%
+\url{https://doi.org/10.48550/arxiv.2407.11481}
+\showDOI{\tempurl}
 \newblock
 \shownote{ECGGenEval benchmark: MSE 0.0317, Pearson 0.7885, comprehensive
   3-level evaluation (signal + feature + diagnostic), PTB-XL + CPSC2018 +
@@ -118,7 +129,9 @@
 \newblock \bibinfo{journal}{\emph{Frontiers in Cardiovascular Medicine}}
   \bibinfo{volume}{6} (\bibinfo{year}{2019}).
 \newblock
-\href{https://doi.org/10.3389/fcvm.2019.00053}{doi:\nolinkurl{10.3389/fcvm.2019.00053}}
+\urldef\tempurl%
+\url{https://doi.org/10.3389/fcvm.2019.00053}
+\showDOI{\tempurl}
 
 
 \bibitem[Deering et~al\mbox{.}(2025)]%
@@ -152,7 +165,9 @@
   \bibinfo{volume}{18}, \bibinfo{number}{2} (\bibinfo{year}{2022}),
   \bibinfo{pages}{e1009862}.
 \newblock
-\href{https://doi.org/10.1371/journal.pcbi.1009862}{doi:\nolinkurl{10.1371/journal.pcbi.1009862}}
+\urldef\tempurl%
+\url{https://doi.org/10.1371/journal.pcbi.1009862}
+\showDOI{\tempurl}
 
 
 \bibitem[Dzikowicz et~al\mbox{.}(2025)]%
@@ -164,7 +179,9 @@
 \newblock \bibinfo{journal}{\emph{Annals of Noninvasive Electrocardiology}}
   (\bibinfo{year}{2025}).
 \newblock
-\href{https://doi.org/10.1111/anec.XXXXX}{doi:\nolinkurl{10.1111/anec.XXXXX}}
+\urldef\tempurl%
+\url{https://doi.org/10.1111/anec.XXXXX}
+\showDOI{\tempurl}
 \newblock
 \shownote{First BMI stratification study: Obese Class II/III 66-67\% compliance
   vs 75\% normal/overweight (p<0.01), 256 AF patients, adhesive failure
@@ -180,7 +197,9 @@
 \newblock \bibinfo{journal}{\emph{Discoveries}} \bibinfo{volume}{13},
   \bibinfo{number}{2} (\bibinfo{year}{2025}), \bibinfo{pages}{e215}.
 \newblock
-\href{https://doi.org/10.15190/d.2025.2}{doi:\nolinkurl{10.15190/d.2025.2}}
+\urldef\tempurl%
+\url{https://doi.org/10.15190/d.2025.2}
+\showDOI{\tempurl}
 \newblock
 \shownote{Comprehensive review of AI workflow integration barriers: EHR
   incompatibility, PACS limitations, medicolegal liability frameworks, FDA
@@ -198,7 +217,9 @@
 \newblock \bibinfo{journal}{\emph{Bioengineering}} \bibinfo{volume}{11},
   \bibinfo{number}{3} (\bibinfo{year}{2024}), \bibinfo{pages}{293}.
 \newblock
-\href{https://doi.org/10.3390/bioengineering11030293}{doi:\nolinkurl{10.3390/bioengineering11030293}}
+\urldef\tempurl%
+\url{https://doi.org/10.3390/bioengineering11030293}
+\showDOI{\tempurl}
 
 
 \bibitem[Fung et~al\mbox{.}(2015)]%
@@ -212,7 +233,9 @@
 \newblock \bibinfo{journal}{\emph{Frontiers in Physiology}}
   \bibinfo{volume}{6} (\bibinfo{year}{2015}).
 \newblock
-\href{https://doi.org/10.3389/fphys.2015.00149}{doi:\nolinkurl{10.3389/fphys.2015.00149}}
+\urldef\tempurl%
+\url{https://doi.org/10.3389/fphys.2015.00149}
+\showDOI{\tempurl}
 
 
 \bibitem[Gwynn et~al\mbox{.}(2021)]%
@@ -228,7 +251,9 @@
   \bibinfo{volume}{30}, \bibinfo{number}{2} (\bibinfo{year}{2021}),
   \bibinfo{pages}{267--274}.
 \newblock
-\href{https://doi.org/10.1016/j.hlc.2020.06.009}{doi:\nolinkurl{10.1016/j.hlc.2020.06.009}}
+\urldef\tempurl%
+\url{https://doi.org/10.1016/j.hlc.2020.06.009}
+\showDOI{\tempurl}
 
 
 \bibitem[Ikeda(2021)]%
@@ -239,7 +264,9 @@
 \newblock \bibinfo{journal}{\emph{Internal Medicine}} \bibinfo{volume}{60},
   \bibinfo{number}{1} (\bibinfo{year}{2021}), \bibinfo{pages}{9--14}.
 \newblock
-\href{https://doi.org/10.2169/internalmedicine.5691-20}{doi:\nolinkurl{10.2169/internalmedicine.5691-20}}
+\urldef\tempurl%
+\url{https://doi.org/10.2169/internalmedicine.5691-20}
+\showDOI{\tempurl}
 
 
 \bibitem[Jagminas et~al\mbox{.}(2024)]%
@@ -252,7 +279,9 @@
 \newblock \bibinfo{journal}{\emph{Medicina}} \bibinfo{volume}{61},
   \bibinfo{number}{1} (\bibinfo{year}{2024}), \bibinfo{pages}{32}.
 \newblock
-\href{https://doi.org/10.3390/medicina61010032}{doi:\nolinkurl{10.3390/medicina61010032}}
+\urldef\tempurl%
+\url{https://doi.org/10.3390/medicina61010032}
+\showDOI{\tempurl}
 
 
 \bibitem[Kligfield et~al\mbox{.}(2007)]%
@@ -267,7 +296,9 @@
   Cardiology}} \bibinfo{volume}{49}, \bibinfo{number}{10}
   (\bibinfo{year}{2007}), \bibinfo{pages}{1109--1127}.
 \newblock
-\href{https://doi.org/10.1016/j.jacc.2007.01.024}{doi:\nolinkurl{10.1016/j.jacc.2007.01.024}}
+\urldef\tempurl%
+\url{https://doi.org/10.1016/j.jacc.2007.01.024}
+\showDOI{\tempurl}
 
 
 \bibitem[Krasteva et~al\mbox{.}(2019)]%
@@ -279,7 +310,9 @@
 \newblock \bibinfo{journal}{\emph{Sensors}} \bibinfo{volume}{19},
   \bibinfo{number}{13} (\bibinfo{year}{2019}), \bibinfo{pages}{2920}.
 \newblock
-\href{https://doi.org/10.3390/s19132920}{doi:\nolinkurl{10.3390/s19132920}}
+\urldef\tempurl%
+\url{https://doi.org/10.3390/s19132920}
+\showDOI{\tempurl}
 
 
 \bibitem[Kurtul and Duran(2017)]%
@@ -292,7 +325,9 @@
 \newblock \bibinfo{journal}{\emph{Clinical Cardiology}} \bibinfo{volume}{40},
   \bibinfo{number}{4} (\bibinfo{year}{2017}), \bibinfo{pages}{235--242}.
 \newblock
-\href{https://doi.org/10.1002/clc.22651}{doi:\nolinkurl{10.1002/clc.22651}}
+\urldef\tempurl%
+\url{https://doi.org/10.1002/clc.22651}
+\showDOI{\tempurl}
 
 
 \bibitem[Lai et~al\mbox{.}(2025)]%
@@ -304,7 +339,9 @@
 \newblock \bibinfo{journal}{\emph{Cell Reports Medicine}} \bibinfo{volume}{6},
   \bibinfo{number}{6} (\bibinfo{year}{2025}).
 \newblock
-\href{https://doi.org/10.1016/j.xcrm.2025.101XXX}{doi:\nolinkurl{10.1016/j.xcrm.2025.101XXX}}
+\urldef\tempurl%
+\url{https://doi.org/10.1016/j.xcrm.2025.101XXX}
+\showDOI{\tempurl}
 \newblock
 \shownote{Text-to-ECG diffusion with 3-level evaluation framework (signal,
   feature, diagnostic), CLIP score for text-ECG alignment}.
@@ -321,7 +358,9 @@
   \bibinfo{volume}{17}, \bibinfo{number}{3} (\bibinfo{year}{2008}),
   \bibinfo{pages}{370--377}.
 \newblock
-\href{https://doi.org/10.1111/j.1365-2702.2007.01935.x}{doi:\nolinkurl{10.1111/j.1365-2702.2007.01935.x}}
+\urldef\tempurl%
+\url{https://doi.org/10.1111/j.1365-2702.2007.01935.x}
+\showDOI{\tempurl}
 
 
 \bibitem[Lee et~al\mbox{.}(2020)]%
@@ -335,7 +374,9 @@
 \newblock \bibinfo{journal}{\emph{Sensors}} \bibinfo{volume}{20},
   \bibinfo{number}{4} (\bibinfo{year}{2020}), \bibinfo{pages}{963}.
 \newblock
-\href{https://doi.org/10.3390/s20040963}{doi:\nolinkurl{10.3390/s20040963}}
+\urldef\tempurl%
+\url{https://doi.org/10.3390/s20040963}
+\showDOI{\tempurl}
 
 
 \bibitem[Li et~al\mbox{.}(2025)]%
@@ -347,7 +388,9 @@
 \newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2502.00559}}
   (\bibinfo{year}{2025}).
 \newblock
-\href{https://doi.org/10.48550/arxiv.2502.00559}{doi:\nolinkurl{10.48550/arxiv.2502.00559}}
+\urldef\tempurl%
+\url{https://doi.org/10.48550/arxiv.2502.00559}
+\showDOI{\tempurl}
 \newblock
 \shownote{Quantifies information content and inter-lead correlations per ECG
   lead, directly relevant to optimal lead selection}.
@@ -362,7 +405,9 @@
   lead sets using convolutional neural networks}.
 \newblock \bibinfo{journal}{\emph{{CinC} Proceedings}} (\bibinfo{year}{2020}).
 \newblock
-\href{https://doi.org/10.22489/cinc.2020.164}{doi:\nolinkurl{10.22489/cinc.2020.164}}
+\urldef\tempurl%
+\url{https://doi.org/10.22489/cinc.2020.164}
+\showDOI{\tempurl}
 
 
 \bibitem[McKeen et~al\mbox{.}(2025)]%
@@ -375,7 +420,9 @@
 \newblock \bibinfo{journal}{\emph{JAMIA Open}} \bibinfo{volume}{8},
   \bibinfo{number}{5} (\bibinfo{year}{2025}), \bibinfo{pages}{ooaf122}.
 \newblock
-\href{https://doi.org/10.1093/jamiaopen/ooaf122}{doi:\nolinkurl{10.1093/jamiaopen/ooaf122}}
+\urldef\tempurl%
+\url{https://doi.org/10.1093/jamiaopen/ooaf122}
+\showDOI{\tempurl}
 \newblock
 \shownote{1.5M ECG transformer foundation model: AF AUROC 0.996, LVEF
   $\leq$40\% AUROC 0.929, hybrid SSL (masked reconstruction + contrastive),
@@ -392,7 +439,9 @@
 \newblock \bibinfo{journal}{\emph{Diagnostics}} \bibinfo{volume}{13},
   \bibinfo{number}{15} (\bibinfo{year}{2023}), \bibinfo{pages}{2525}.
 \newblock
-\href{https://doi.org/10.3390/diagnostics13152525}{doi:\nolinkurl{10.3390/diagnostics13152525}}
+\urldef\tempurl%
+\url{https://doi.org/10.3390/diagnostics13152525}
+\showDOI{\tempurl}
 \newblock
 \shownote{Prospective single-center trial (N=102): 3-lead reconstructed 12-lead
   ECG, 99\% feasibility, 96.3\% specificity, 95.8\% sensitivity, 96.1\%
@@ -408,7 +457,9 @@
 \newblock \bibinfo{journal}{\emph{Frontiers in Physiology}}
   \bibinfo{volume}{16} (\bibinfo{year}{2025}), \bibinfo{pages}{1532284}.
 \newblock
-\href{https://doi.org/10.3389/fphys.2025.1532284}{doi:\nolinkurl{10.3389/fphys.2025.1532284}}
+\urldef\tempurl%
+\url{https://doi.org/10.3389/fphys.2025.1532284}
+\showDOI{\tempurl}
 \newblock
 \shownote{Systematic review: 3-lead optimal (99.12\% information content), r >
   0.90 correlation, generic vs patient-specific comparison, no universal
@@ -427,7 +478,9 @@
 \newblock \bibinfo{journal}{\emph{Communications Medicine}}
   \bibinfo{volume}{5} (\bibinfo{year}{2025}), \bibinfo{pages}{814}.
 \newblock
-\href{https://doi.org/10.1038/s43856-025-00814-w}{doi:\nolinkurl{10.1038/s43856-025-00814-w}}
+\urldef\tempurl%
+\url{https://doi.org/10.1038/s43856-025-00814-w}
+\showDOI{\tempurl}
 \newblock
 \shownote{CRITICAL: First rigorous demonstration of GAN regression-to-mean
   ($R^2 = 0.92$ between error and amplitude), 9514 PTB-XL subjects, challenges
@@ -445,7 +498,9 @@
   \bibinfo{volume}{13}, \bibinfo{number}{5} (\bibinfo{year}{2022}),
   \bibinfo{pages}{783--796}.
 \newblock
-\href{https://doi.org/10.1007/s13239-022-00617-3}{doi:\nolinkurl{10.1007/s13239-022-00617-3}}
+\urldef\tempurl%
+\url{https://doi.org/10.1007/s13239-022-00617-3}
+\showDOI{\tempurl}
 
 
 \bibitem[Rao et~al\mbox{.}(2025)]%
@@ -458,7 +513,9 @@
 \newblock \bibinfo{journal}{\emph{Circulation}}  \bibinfo{volume}{151}
   (\bibinfo{year}{2025}), \bibinfo{pages}{e123--e321}.
 \newblock
-\href{https://doi.org/10.1161/CIR.0000000000001309}{doi:\nolinkurl{10.1161/CIR.0000000000001309}}
+\urldef\tempurl%
+\url{https://doi.org/10.1161/CIR.0000000000001309}
+\showDOI{\tempurl}
 \newblock
 \shownote{Standard of care: 12-lead ECG within 10 minutes for ACS, posterior
   leads (V7-V9) for posterior STEMI; NO mention of reconstructed ECG
@@ -476,7 +533,9 @@
 \newblock \bibinfo{journal}{\emph{Circulation}} \bibinfo{volume}{60},
   \bibinfo{number}{1} (\bibinfo{year}{1979}), \bibinfo{pages}{196--204}.
 \newblock
-\href{https://doi.org/10.1161/01.cir.60.1.196}{doi:\nolinkurl{10.1161/01.cir.60.1.196}}
+\urldef\tempurl%
+\url{https://doi.org/10.1161/01.cir.60.1.196}
+\showDOI{\tempurl}
 
 
 \bibitem[Santos et~al\mbox{.}(2025)]%
@@ -489,7 +548,9 @@
 \newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2505.01738}}
   (\bibinfo{year}{2025}).
 \newblock
-\href{https://doi.org/10.48550/arxiv.2505.01738}{doi:\nolinkurl{10.48550/arxiv.2505.01738}}
+\urldef\tempurl%
+\url{https://doi.org/10.48550/arxiv.2505.01738}
+\showDOI{\tempurl}
 \newblock
 \shownote{Inference time 0.95 ms, energy 36.7 µJ, battery life 36h, HR error
   0.49 bpm, HRV error 25.82 ms, deployed on ultra-low-power wearable platform}.
@@ -504,7 +565,9 @@
 \newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2503.13469}}
   (\bibinfo{year}{2025}).
 \newblock
-\href{https://doi.org/10.48550/arxiv.2503.13469}{doi:\nolinkurl{10.48550/arxiv.2503.13469}}
+\urldef\tempurl%
+\url{https://doi.org/10.48550/arxiv.2503.13469}
+\showDOI{\tempurl}
 \newblock
 \shownote{cNVAE-ECG: Hierarchical VAE outperforming GANs by up to 2\% AUROC on
   downstream classification, multi-pathology high-resolution generation,
@@ -522,7 +585,9 @@
 \newblock \bibinfo{journal}{\emph{SpringerPlus}} \bibinfo{volume}{4},
   \bibinfo{number}{1} (\bibinfo{year}{2015}).
 \newblock
-\href{https://doi.org/10.1186/s40064-015-1325-8}{doi:\nolinkurl{10.1186/s40064-015-1325-8}}
+\urldef\tempurl%
+\url{https://doi.org/10.1186/s40064-015-1325-8}
+\showDOI{\tempurl}
 
 
 \bibitem[Tripathy and Dandapat(2017)]%
@@ -535,7 +600,9 @@
   \bibinfo{volume}{4}, \bibinfo{number}{2} (\bibinfo{year}{2017}),
   \bibinfo{pages}{57--63}.
 \newblock
-\href{https://doi.org/10.1049/htl.2016.0089}{doi:\nolinkurl{10.1049/htl.2016.0089}}
+\urldef\tempurl%
+\url{https://doi.org/10.1049/htl.2016.0089}
+\showDOI{\tempurl}
 
 
 \bibitem[Vullings et~al\mbox{.}(2010)]%
@@ -549,7 +616,9 @@
   Engineering}} \bibinfo{volume}{57}, \bibinfo{number}{3}
   (\bibinfo{year}{2010}), \bibinfo{pages}{586--595}.
 \newblock
-\href{https://doi.org/10.1109/tbme.2009.2033664}{doi:\nolinkurl{10.1109/tbme.2009.2033664}}
+\urldef\tempurl%
+\url{https://doi.org/10.1109/tbme.2009.2033664}
+\showDOI{\tempurl}
 
 
 \bibitem[Wan et~al\mbox{.}(2025)]%
@@ -562,7 +631,9 @@
 \newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2503.00711}}
   (\bibinfo{year}{2025}).
 \newblock
-\href{https://doi.org/10.48550/arxiv.2503.00711}{doi:\nolinkurl{10.48550/arxiv.2503.00711}}
+\urldef\tempurl%
+\url{https://doi.org/10.48550/arxiv.2503.00711}
+\showDOI{\tempurl}
 \newblock
 \shownote{Multi-center benchmark: 1.2M ECGs from 9 centers, compares
   SimCLR/BYOL/MAE with ResNet-50 and ViT, cross-dataset generalization
@@ -580,7 +651,9 @@
 \newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2511.09895}}
   (\bibinfo{year}{2025}).
 \newblock
-\href{https://doi.org/10.48550/arxiv.2511.09895}{doi:\nolinkurl{10.48550/arxiv.2511.09895}}
+\urldef\tempurl%
+\url{https://doi.org/10.48550/arxiv.2511.09895}
+\showDOI{\tempurl}
 \newblock
 \shownote{SE-Diff: Physics-informed ODE-based ECG simulator integrated with
   latent diffusion, MAE 0.0923, NRMSE 0.0714, MAE\_HR 8.43, 10s 12-lead
@@ -596,7 +669,9 @@
 \newblock \bibinfo{journal}{\emph{arXiv preprint arXiv:2411.17711}}
   (\bibinfo{year}{2024}).
 \newblock
-\href{https://doi.org/10.48550/arxiv.2411.17711}{doi:\nolinkurl{10.48550/arxiv.2411.17711}}
+\urldef\tempurl%
+\url{https://doi.org/10.48550/arxiv.2411.17711}
+\showDOI{\tempurl}
 \newblock
 \shownote{Multi-task foundation model combining morphology, frequency,
   demographic reconstruction, explicitly addresses demographic bias through
@@ -611,7 +686,9 @@
 \newblock \bibinfo{journal}{\emph{IEMBS Proceedings}}  \bibinfo{volume}{1}
   (\bibinfo{year}{2001}), \bibinfo{pages}{381--384}.
 \newblock
-\href{https://doi.org/10.1109/iembs.2001.1018940}{doi:\nolinkurl{10.1109/iembs.2001.1018940}}
+\urldef\tempurl%
+\url{https://doi.org/10.1109/iembs.2001.1018940}
+\showDOI{\tempurl}
 
 
 \bibitem[Yan et~al\mbox{.}(2025)]%
@@ -622,7 +699,9 @@
   from a Single Lead}.
 \newblock \bibinfo{journal}{\emph{MICCAI Proceedings}} (\bibinfo{year}{2025}).
 \newblock
-\href{https://doi.org/10.1007/978-3-031-XXXXX-X}{doi:\nolinkurl{10.1007/978-3-031-XXXXX-X}}
+\urldef\tempurl%
+\url{https://doi.org/10.1007/978-3-031-XXXXX-X}
+\showDOI{\tempurl}
 \newblock
 \shownote{mEcgNet: 22.1\% lower MSE than baseline UNet, parameter reduction
   >50\% for wearable deployment}.
@@ -638,7 +717,9 @@
 \newblock \bibinfo{journal}{\emph{Scientific Reports}}  \bibinfo{volume}{15}
   (\bibinfo{year}{2025}), \bibinfo{pages}{9371}.
 \newblock
-\href{https://doi.org/10.1038/s41598-025-17671-1}{doi:\nolinkurl{10.1038/s41598-025-17671-1}}
+\urldef\tempurl%
+\url{https://doi.org/10.1038/s41598-025-17671-1}
+\showDOI{\tempurl}
 \newblock
 \shownote{NVIDIA RTX 3080 GPU: 14 milliseconds inference time per ECG record;
   high-end hardware requirements for real-time performance}.
@@ -654,7 +735,9 @@
 \newblock \bibinfo{journal}{\emph{IEEE Access}}  \bibinfo{volume}{7}
   (\bibinfo{year}{2019}), \bibinfo{pages}{37228--37237}.
 \newblock
-\href{https://doi.org/10.1109/access.2019.2905000}{doi:\nolinkurl{10.1109/access.2019.2905000}}
+\urldef\tempurl%
+\url{https://doi.org/10.1109/access.2019.2905000}
+\showDOI{\tempurl}
 
 
 \bibitem[Zhao et~al\mbox{.}(2019)]%
@@ -667,7 +750,9 @@
 \newblock \bibinfo{journal}{\emph{{IEEE} Access}}  \bibinfo{volume}{7}
   (\bibinfo{year}{2019}), \bibinfo{pages}{34060--34067}.
 \newblock
-\href{https://doi.org/10.1109/access.2019.2900719}{doi:\nolinkurl{10.1109/access.2019.2900719}}
+\urldef\tempurl%
+\url{https://doi.org/10.1109/access.2019.2900719}
+\showDOI{\tempurl}
 
 
 \end{thebibliography}

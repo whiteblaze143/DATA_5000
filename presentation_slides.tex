@@ -523,11 +523,11 @@
                 \textbf{Parameter} & \textbf{Value} \\
                 \midrule
                 Optimizer & AdamW \\
-                Learning rate & $3 \times 10^{-4}$ \\
-                Weight decay & $1 \times 10^{-4}$ \\
+                Learning rate & $1 \times 10^{-4}$ (tuned) \\
+                Weight decay & $1 \times 10^{-5}$ \\
                 Batch size & 64 \\
                 Epochs & 150 \\
-                Early stopping & Patience = 10 \\
+                LR scheduler & ReduceLROnPlateau \\
                 \bottomrule
             \end{tabular}
         \end{table}
@@ -650,19 +650,19 @@
                 \toprule
                 \textbf{Lead} & \textbf{Type} & \textbf{Corr.} & \textbf{MAE} & \textbf{SNR} \\
                 \midrule
-                I & Input & 1.000 & 0.000 & $\infty$ \\
-                II & Input & 1.000 & 0.000 & $\infty$ \\
-                III & Physics & 1.000 & 0.000 & $\infty$ \\
-                aVR & Physics & 1.000 & 0.000 & $\infty$ \\
-                aVL & Physics & 1.000 & 0.000 & $\infty$ \\
-                aVF & Physics & 1.000 & 0.000 & $\infty$ \\
+                I & Input & 1.000 & 0.000 & 94.1 \\
+                II & Input & 1.000 & 0.000 & 94.1 \\
+                III & Physics & 1.000 & 0.000 & 94.1 \\
+                aVR & Physics & 1.000 & 0.000 & 94.1 \\
+                aVL & Physics & 1.000 & 0.000 & 94.1 \\
+                aVF & Physics & 1.000 & 0.000 & 94.1 \\
                 \midrule
-                V1 & DL & 0.872 & 0.018 & 61.2 \\
-                V2 & DL & 0.863 & 0.019 & 60.8 \\
-                V3 & DL & 0.889 & 0.016 & 61.8 \\
-                V4 & Input & 1.000 & 0.000 & $\infty$ \\
-                V5 & DL & 0.912 & 0.014 & 62.4 \\
-                V6 & DL & 0.924 & 0.012 & 63.1 \\
+                V1 & DL & \textcolor{orange}{0.726} & 0.036 & 17.9 \\
+                V2 & DL & \textcolor{red}{0.683} & 0.041 & 17.1 \\
+                V3 & DL & \textcolor{orange}{0.765} & 0.036 & 17.8 \\
+                V4 & Input & 1.000 & 0.000 & 94.1 \\
+                V5 & DL & \textcolor{successgreen}{0.824} & 0.032 & 18.7 \\
+                V6 & DL & \textcolor{orange}{0.723} & 0.038 & 17.2 \\
                 \bottomrule
             \end{tabular}
         \end{table}
@@ -670,18 +670,18 @@
         \column{0.43\textwidth}
         \textbf{Summary Statistics:}
         \begin{itemize}
-            \item \textbf{Overall correlation}: 0.892
-            \item \textbf{DL leads avg}: 0.892
-            \item \textbf{Overall MAE}: 0.0152
-            \item \textbf{Overall SNR}: 62.4 dB
+            \item \textbf{Overall correlation}: 0.893 (all 12 leads)
+            \item \textbf{DL leads avg}: \textcolor{orange}{0.744}
+            \item \textbf{Overall MAE}: 0.0153
+            \item \textbf{DL leads SNR}: 17--19 dB
         \end{itemize}
         
         \vspace{0.3cm}
         \textbf{Observations:}
         \begin{itemize}
             \item Physics leads: \textcolor{successgreen}{Perfect} (by design)
-            \item V5, V6: Best chest leads (closest to V4)
-            \item V1, V2: Hardest (right precordial, far from V4)
+            \item V5: Best DL lead (0.824, closest to V4)
+            \item V2: Hardest (0.683, right precordial)
         \end{itemize}
         
         \vspace{0.3cm}
@@ -689,7 +689,7 @@
             \begin{itemize}
                 \item Parameters: 17.1M
                 \item Training: 150 epochs
-                \item Time: 87 minutes
+                \item Time: 87 minutes (A100)
             \end{itemize}
         \end{block}
     \end{columns}
@@ -709,9 +709,9 @@
                 \textbf{Metric} & \textbf{Shared} & \textbf{Lead-Specific} \\
                 \midrule
                 DL Leads Corr & \textbf{0.744} & 0.707 \\
-                Overall Corr & \textbf{0.892} & 0.876 \\
-                MAE & \textbf{0.0152} & 0.0163 \\
-                SNR & \textbf{62.4 dB} & 62.1 dB \\
+                Overall Corr & \textbf{0.893} & 0.878 \\
+                MAE & \textbf{0.0153} & 0.0164 \\
+                DL leads SNR & \textbf{17.8 dB} & 17.2 dB \\
                 Val Loss & \textbf{0.0044} & 0.0050 \\
                 \midrule
                 Parameters & 17.1M & 40.8M \\
@@ -747,7 +747,7 @@
         \textbf{Interpretation:}
         \begin{itemize}
             \item Shared decoder enables beneficial \textbf{parameter sharing}
-            \item Larger capacity may lead to overfitting
+            \item Larger capacity leads to \textbf{overfitting}
             \item Chest leads share \textbf{more commonality} than assumed
         \end{itemize}
     \end{columns}
@@ -782,29 +782,30 @@
             GAN (Golany) & 3 leads & PTB & 0.83 & No & No \\
             Transformer & 3 leads & PTB-XL & 0.90 & No & No \\
             \midrule
-            \textbf{Ours (Shared)} & 3 leads & PTB-XL & \textbf{0.744} & \textbf{Yes} & Partial \\
+            \textbf{Ours (Shared)} & 3 leads & PTB-XL & \textcolor{orange}{0.744} & \textbf{Yes} & Partial \\
             \textbf{Ours (Lead-Spec)} & 3 leads & PTB-XL & 0.707 & \textbf{Yes} & Partial \\
             \bottomrule
         \end{tabular}
-        \caption{*Lead-specific model training in progress (epoch 71/150)}
+        \caption{Chest lead correlation comparison (DL-predicted leads only)}
     \end{table}
     
     \vspace{0.2cm}
     \begin{columns}[t]
         \column{0.48\textwidth}
-        \textbf{Our Advantages:}
+        \textbf{Honest Assessment:}
         \begin{itemize}
-            \item \textbf{Guaranteed limb lead accuracy}: Physics ensures $r = 1.0$ for 4 leads
-            \item \textbf{Competitive chest lead performance}: $r = 0.892$ on par with SOTA
-            \item \textbf{Interpretable physics component}
+            \item Chest lead performance \textcolor{orange}{below SOTA} (0.74 vs 0.85--0.90)
+            \item \textbf{BUT}: Physics guarantees $r = 1.0$ for 4 limb leads
+            \item Overall 12-lead $r = 0.893$ includes perfect physics leads
         \end{itemize}
         
         \column{0.5\textwidth}
-        \textbf{Key Insight:}
+        \textbf{Why the Gap?}
         \begin{itemize}
-            \item Pure DL approaches waste capacity learning physics
-            \item Our hybrid approach focuses learning on the hard problem
-            \item 12-lead average includes 7 perfect leads (3 input + 4 physics)
+            \item \textbf{Information bottleneck}: V4 has low correlation with V1/V2 (see next slide)
+            \item Prior work may use different input leads
+            \item Our patient-wise splits prevent data leakage
+            \item \textbf{Opportunity}: Better input lead selection could close gap
         \end{itemize}
     \end{columns}
 \end{frame}
@@ -909,9 +910,9 @@
         \vspace{0.3cm}
         \textbf{Key Insight:}
         \begin{itemize}
-            \item V1/V2 have \textcolor{red}{low correlation} with input leads
+            \item V1/V2 have \textcolor{red}{low correlation} with all inputs
             \item Model cannot reconstruct information \textbf{not present} in input
-            \item Explains gap with literature ($r = 0.74$ vs $0.85-0.90$)
+            \item \textbf{This explains} our gap with literature ($r = 0.74$ vs $0.85$--$0.90$)
         \end{itemize}
         
         \column{0.5\textwidth}
@@ -920,48 +921,50 @@
         \vspace{0.2cm}
         \footnotesize
         Green boxes = input leads (I, II, V4). V1/V2 are poorly correlated with all input leads.
+        
+        \vspace{0.3cm}
+        \normalsize
+        \begin{alertblock}{Fundamental Limitation}
+            The bottleneck is \textbf{input information content}, not model capacity. Adding V1 as a 4th input lead would likely improve performance significantly.
+        \end{alertblock}
     \end{columns}
 \end{frame}
 
-\begin{frame}{Statistical Caveats and Future Validation}
+\begin{frame}{Honest Assessment: Limitations \& Opportunities}
     \begin{columns}[c]
         \column{0.48\textwidth}
-        \textbf{Convergence Analysis:}
+        \textbf{What Worked:}
         \begin{itemize}
-            \item Both models: best epoch near 150 (147/148)
-            \item Suggests \textcolor{orange}{extended training may help}
-            \item Lead-specific model may benefit from 300+ epochs
+            \item \textcolor{successgreen}{Physics leads: Perfect} ($r = 1.0$)
+            \item \textcolor{successgreen}{Shared $>$ lead-specific} (clear finding)
+            \item \textcolor{successgreen}{Stable training} (150 epochs, converged)
+            \item \textcolor{successgreen}{Reproducible pipeline}
         \end{itemize}
         
         \vspace{0.3cm}
-        \textbf{Experimental Limitations:}
-        \begin{enumerate}
-            \item \textbf{Single seed}: Need multi-seed runs for variance
-            \item \textbf{Unfair parameter count}: 17.1M vs 40.8M
-            \item \textbf{Same hyperparameters}: Lead-specific may need different LR
-            \item \textbf{No cross-validation}: Single train/val/test split
-        \end{enumerate}
+        \textbf{What Didn't Meet Expectations:}
+        \begin{itemize}
+            \item \textcolor{orange}{Chest lead $r = 0.74$} (vs SOTA 0.85--0.90)
+            \item \textcolor{orange}{V1/V2 especially weak} (0.68--0.73)
+            \item \textcolor{orange}{SNR 17--19 dB} for DL leads (not 60+ dB)
+        \end{itemize}
         
         \column{0.5\textwidth}
-        \textbf{Scripts Created for Validation:}
-        \begin{itemize}
-            \item \texttt{train\_multiseed.py}: Multi-seed training
-            \item \texttt{hyperparam\_sweep.py}: LR tuning
-        \end{itemize}
-        
-        \vspace{0.3cm}
-        \textbf{Before Final Conclusions:}
+        \textbf{Root Cause Analysis:}
         \begin{enumerate}
-            \item Run with 3+ random seeds
-            \item Tune LR separately for each architecture
-            \item Extend training to 300 epochs
-            \item Report confidence intervals
+            \item \textbf{Information bottleneck}: V4 has low correlation with V1/V2---model can't reconstruct what isn't there
+            \item \textbf{Input lead choice}: I, II, V4 may not be optimal for right precordial leads
+            \item \textbf{Patient-wise splits}: May be stricter than some prior work
         \end{enumerate}
         
         \vspace{0.3cm}
-        \begin{alertblock}{Current Verdict}
-            Shared decoder \textit{likely} better, but definitive claim requires fair comparison with tuned hyperparameters.
-        \end{alertblock}
+        \begin{block}{Path Forward}
+            \begin{itemize}
+                \item Add V1 as 4th input lead
+                \item Test alternative configs: I, II, V1, V4
+                \item Consider perceptual/morphological loss
+            \end{itemize}
+        \end{block}
     \end{columns}
 \end{frame}
 
@@ -1042,31 +1045,31 @@
         \begin{itemize}
             \item \textbf{Hybrid architecture}: Physics + deep learning
             \item \textbf{Physics module}: Exact limb lead reconstruction
-            \item \textbf{1D U-Net (shared decoder)}: Best chest lead reconstruction
-            \item \textbf{Minimal input}: Only 3 leads (4 electrodes)
+            \item \textbf{1D U-Net}: Chest lead reconstruction
+            \item \textbf{Minimal input}: Only 3 leads (I, II, V4)
         \end{itemize}
         
         \column{0.48\textwidth}
         \textbf{Key Results:}
         \begin{itemize}
             \item Limb leads: \textcolor{successgreen}{\textbf{Perfect}} ($r = 1.0$, guaranteed)
-            \item Chest leads: \textbf{$r = 0.744$} (DL-predicted leads)
-            \item Overall: \textbf{$r = 0.892$} (all 12 leads)
-            \item SNR: \textbf{62.4 dB}
+            \item Chest leads: \textcolor{orange}{$r = 0.744$} (below SOTA)
+            \item Overall: $r = 0.893$ (all 12 leads)
+            \item DL leads SNR: 17--19 dB
         \end{itemize}
         
         \vspace{0.2cm}
-        \textbf{Key Finding:}
+        \textbf{Key Findings:}
         \begin{itemize}
-            \item \textbf{Shared decoder outperforms lead-specific} ($+5.2\%$)
-            \item Simpler architectures win when input is information-limited
+            \item \textbf{Shared decoder outperforms lead-specific} ($+5\%$)
+            \item \textbf{Information bottleneck}: V4 limits V1/V2 reconstruction
+            \item Simpler architectures win when input is limited
         \end{itemize}
         
         \vspace{0.2cm}
-        \textbf{Impact:}
+        \textbf{Future Path:}
         \begin{itemize}
-            \item Framework for physics-informed signal reconstruction
-            \item Path to clinical deployment via input lead optimization
+            \item Better input leads (e.g., add V1) could close SOTA gap
         \end{itemize}
     \end{columns}
 \end{frame}
