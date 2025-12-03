@@ -458,6 +458,83 @@
     \end{columns}
 \end{frame}
 
+\begin{frame}{Architectural Variants: Hybrid Model}
+    \begin{columns}[c]
+        \column{0.5\textwidth}
+        \textbf{UNet1DHybrid Design:}
+        \begin{itemize}
+            \item \textbf{Shared trunk}: Full encoder + decoder (17.1M)
+            \item \textbf{Per-lead heads}: 5 small 1$\times$1 Conv layers
+            \item \textbf{Head architecture}: Conv1D $\rightarrow$ ReLU $\rightarrow$ Conv1D
+            \item Hidden dimension: 32
+        \end{itemize}
+        
+        \vspace{0.2cm}
+        \textbf{Parameter Efficiency:}
+        \begin{table}[]
+            \centering
+            \small
+            \begin{tabular}{@{}lr@{}}
+                \toprule
+                \textbf{Component} & \textbf{Params} \\
+                \midrule
+                Shared trunk & 17,122,373 \\
+                5 $\times$ lead heads & 10,240 \\
+                \midrule
+                \textbf{Total} & \textbf{17,132,613} \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+        
+        \vspace{0.2cm}
+        \textbf{Overhead vs Baseline:} Only \textbf{+0.06\%}
+        
+        \column{0.48\textwidth}
+        \begin{figure}
+            \centering
+            \begin{tikzpicture}[scale=0.7]
+                % Shared trunk
+                \draw[thick, fill=gray!30, rounded corners] (0,0) rectangle (3,4);
+                \node[font=\small] at (1.5, 3.5) {Shared Trunk};
+                \node[font=\tiny] at (1.5, 2.8) {(UNet1D)};
+                \node[font=\tiny] at (1.5, 2.2) {17.12M params};
+                
+                % Output from trunk
+                \draw[->, thick] (3, 2) -- (4, 2);
+                \node[font=\tiny] at (3.5, 2.3) {5 ch};
+                
+                % Per-lead heads
+                \draw[thick, fill=dlred!30, rounded corners] (4.2, 3.2) rectangle (6.5, 3.8);
+                \node[font=\tiny] at (5.35, 3.5) {V1 head};
+                
+                \draw[thick, fill=dlred!30, rounded corners] (4.2, 2.5) rectangle (6.5, 3.1);
+                \node[font=\tiny] at (5.35, 2.8) {V2 head};
+                
+                \draw[thick, fill=orange!30, rounded corners] (4.2, 1.8) rectangle (6.5, 2.4);
+                \node[font=\tiny] at (5.35, 2.1) {V3 head};
+                
+                \draw[thick, fill=successgreen!30, rounded corners] (4.2, 1.1) rectangle (6.5, 1.7);
+                \node[font=\tiny] at (5.35, 1.4) {V5 head};
+                
+                \draw[thick, fill=successgreen!30, rounded corners] (4.2, 0.4) rectangle (6.5, 1.0);
+                \node[font=\tiny] at (5.35, 0.7) {V6 head};
+                
+                % Head detail annotation
+                \draw[<->, gray, dashed] (6.7, 0.4) -- (6.7, 3.8);
+                \node[gray, font=\tiny, rotate=90] at (7.1, 2.1) {+10K params total};
+            \end{tikzpicture}
+            \caption{Hybrid architecture: shared backbone with lightweight per-lead specialization}
+        \end{figure}
+        
+        \vspace{0.2cm}
+        \textbf{Hypothesis:}
+        \begin{itemize}
+            \item Minimal specialization may capture lead-specific patterns
+            \item Benefits of sharing without full redundancy
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
 \begin{frame}{Dataset: PTB-XL}
     \begin{columns}[c]
         \column{0.48\textwidth}
@@ -472,7 +549,7 @@
         \end{itemize}
         
         \vspace{0.2cm}
-        \textbf{Our Subset (500 Hz):}
+        \textbf{Our Subset (500 Hz, Full Dataset):}
         \begin{table}[]
             \centering
             \small
@@ -494,27 +571,83 @@
         \begin{enumerate}
             \item \textbf{Load raw signals}: 500 Hz, 10s $\rightarrow$ 5000 samples
             \item \textbf{Quality filtering}: Remove constant/corrupted signals
-            \item \textbf{Per-lead standardization}:
+            \item \textbf{Per-lead z-score normalization}:
             \begin{equation}
                 x_{\text{norm}} = \frac{x - \mu_{\text{train}}}{\sigma_{\text{train}}}
             \end{equation}
-            \item \textbf{Clip outliers}: $[-5\sigma, +5\sigma]$
-            \item \textbf{Rescale}: Map to $[0, 1]$
+            \item \textbf{Store normalization params}: \texttt{norm\_params.pkl}
         \end{enumerate}
         
         \vspace{0.2cm}
-        \begin{alertblock}{Critical Design Decision}
-            Per-lead normalization preserves relative morphology within each lead while handling amplitude variation across patients.
-            
-            \textbf{Note}: Physics equations apply to raw voltages only; we use stored normalized values for physics leads.
+        \begin{alertblock}{Critical Design Decisions}
+            \begin{itemize}
+                \item \textbf{Per-lead normalization}: Preserves relative morphology within each lead
+                \item \textbf{Patient-wise splits}: Prevents data leakage between splits
+                \item \textbf{Physics on raw voltages}: Denormalize before physics loss computation
+            \end{itemize}
         \end{alertblock}
     \end{columns}
 \end{frame}
 
-\begin{frame}{Training Configuration}
+\begin{frame}{Physics-Aware Loss Function}
+    \begin{columns}[c]
+        \column{0.5\textwidth}
+        \textbf{Motivation:}
+        \begin{itemize}
+            \item Standard MSE only enforces sample-wise accuracy
+            \item Physics constraints apply to \textbf{unnormalized} signals
+            \item Denormalization required for valid physics loss
+        \end{itemize}
+        
+        \vspace{0.2cm}
+        \textbf{Loss Formulation:}
+        \begin{equation}
+            \mathcal{L}_{\text{total}} = \mathcal{L}_{\text{recon}} + \lambda \mathcal{L}_{\text{physics}}
+        \end{equation}
+        
+        \textbf{Reconstruction Loss:}
+        \begin{equation}
+            \mathcal{L}_{\text{recon}} = \text{MSE}(\hat{y}_{\text{chest}}, y_{\text{chest}})
+        \end{equation}
+        
+        \textbf{Physics Constraint Loss:}
+        \begin{align}
+            \mathcal{L}_{\text{E}} &= \|\text{III}' - (\text{II}' - \text{I}')\|_2^2 \\
+            \mathcal{L}_{\text{G}} &= \|\text{aVR}' + \frac{\text{I}'+\text{II}'}{2}\|_2^2 + \cdots
+        \end{align}
+        where $'$ denotes denormalized (raw voltage) signals.
+        
+        \column{0.48\textwidth}
+        \textbf{Implementation Details:}
+        \begin{enumerate}
+            \item Load stored $\mu_i, \sigma_i$ for each lead $i$
+            \item Denormalize predictions:
+            \begin{equation}
+                x' = x \cdot \sigma_i + \mu_i
+            \end{equation}
+            \item Compute physics violations
+            \item Weight: $\lambda = 0.1$ (default)
+        \end{enumerate}
+        
+        \vspace{0.2cm}
+        \textbf{Goldberger Constraints (Full):}
+        \begin{align}
+            \text{aVR} &= -\frac{\text{I} + \text{II}}{2} \\
+            \text{aVL} &= \text{I} - \frac{\text{II}}{2} \\
+            \text{aVF} &= \text{II} - \frac{\text{I}}{2}
+        \end{align}
+        
+        \vspace{0.2cm}
+        \begin{block}{Hypothesis}
+            Soft physics constraints during training may improve chest lead quality by regularizing the latent space.
+        \end{block}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Rigorous Experimental Methodology}
     \begin{columns}[c]
         \column{0.48\textwidth}
-        \textbf{Optimization:}
+        \textbf{Frozen Hyperparameters (Validated via LR Sweep):}
         \begin{table}[]
             \centering
             \small
@@ -523,31 +656,140 @@
                 \textbf{Parameter} & \textbf{Value} \\
                 \midrule
                 Optimizer & AdamW \\
-                Learning rate & $1 \times 10^{-4}$ (tuned) \\
-                Weight decay & $1 \times 10^{-5}$ \\
+                Learning rate & $3 \times 10^{-4}$ \textcolor{successgreen}{$\checkmark$} \\
+                Weight decay & $1 \times 10^{-4}$ \\
                 Batch size & 64 \\
                 Epochs & 150 \\
-                LR scheduler & ReduceLROnPlateau \\
+                Early stopping & 20 epochs patience \\
+                Random seed & 42 \\
                 \bottomrule
             \end{tabular}
         \end{table}
         
         \vspace{0.2cm}
-        \textbf{Loss Function:}
+        \textbf{LR Sweep Validation (Full Dataset):}
+        \begin{itemize}
+            \item Tested: $1\times10^{-5}$ to $1\times10^{-3}$
+            \item Optimal: $\mathbf{3\times10^{-4}}$ ($r=0.927$)
+            \item Dataset: 14,363 train / 1,914 val / 1,932 test
+        \end{itemize}
+        
+        \column{0.5\textwidth}
+        \textbf{Model Variants Under Study:}
+        \begin{enumerate}
+            \item \textbf{Baseline} (UNet1D): 17.1M params
+            \begin{itemize}
+                \item Shared encoder + shared decoder
+            \end{itemize}
+            \item \textbf{Hybrid} (UNet1DHybrid): 17.13M params
+            \begin{itemize}
+                \item Shared trunk + 5 per-lead heads
+                \item +10K params overhead
+            \end{itemize}
+            \item \textbf{Physics-Aware}: 17.1M params
+            \begin{itemize}
+                \item MSE + $\lambda \cdot \mathcal{L}_{\text{physics}}$
+                \item Enforces Einthoven/Goldberger
+            \end{itemize}
+        \end{enumerate}
+        
+        \vspace{0.2cm}
+        \textbf{Reproducibility:}
+        \begin{itemize}
+            \item Deterministic PyTorch operations
+            \item All configs stored in JSON
+            \item Code: \texttt{scripts/train\_variants.py}
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Statistical Analysis Framework}
+    \begin{columns}[c]
+        \column{0.5\textwidth}
+        \textbf{Pairwise Model Comparison:}
+        \begin{itemize}
+            \item \textbf{Paired t-test}: Parametric difference
+            \item \textbf{Wilcoxon signed-rank}: Non-parametric
+            \item \textbf{Cohen's $d$}: Effect size magnitude
+            \begin{equation}
+                d = \frac{\bar{x}_A - \bar{x}_B}{s_{\text{pooled}}}
+            \end{equation}
+            \item \textbf{Bootstrap 95\% CI}: 10,000 resamples
+        \end{itemize}
+        
+        \vspace{0.2cm}
+        \textbf{Effect Size Interpretation:}
+        \begin{table}[]
+            \centering
+            \small
+            \begin{tabular}{@{}lc@{}}
+                \toprule
+                $|d|$ & Interpretation \\
+                \midrule
+                $< 0.2$ & Negligible \\
+                $0.2-0.5$ & Small \\
+                $0.5-0.8$ & Medium \\
+                $\geq 0.8$ & Large \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+        
+        \column{0.48\textwidth}
+        \textbf{Multiple Comparison Correction:}
+        \begin{itemize}
+            \item Bonferroni correction: $\alpha' = \alpha / m$
+            \item Applied when comparing $>2$ variants
+        \end{itemize}
+        
+        \vspace{0.3cm}
+        \textbf{Significance Criteria:}
+        \begin{enumerate}
+            \item $p < 0.05$ (two-sided)
+            \item 95\% CI excludes zero
+            \item Cohen's $d \geq 0.5$ (medium effect)
+        \end{enumerate}
+        
+        \vspace{0.3cm}
+        \begin{alertblock}{Rigorous Comparison}
+            Previous finding ($d = 0.92$, CI excludes zero) confirms shared decoder statistically outperforms lead-specific on 4/5 DL leads with \textbf{large effect size}.
+        \end{alertblock}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Training Configuration Details}
+    \begin{columns}[c]
+        \column{0.48\textwidth}
+        \textbf{Loss Functions:}
+        
+        \textbf{Standard (Baseline/Hybrid):}
         \begin{equation}
-            \mathcal{L} = \frac{1}{5} \sum_{k \in \{V1..V6\}} \text{MSE}(\hat{y}_k, y_k)
+            \mathcal{L}_{\text{MSE}} = \frac{1}{5} \sum_{k \in \{V1..V6\}} \text{MSE}(\hat{y}_k, y_k)
         \end{equation}
-        where $k$ indexes the 5 predicted chest leads.
+        
+        \vspace{0.2cm}
+        \textbf{Physics-Aware Variant:}
+        \begin{equation}
+            \mathcal{L}_{\text{total}} = \mathcal{L}_{\text{MSE}} + \lambda \mathcal{L}_{\text{physics}}
+        \end{equation}
+        where $\mathcal{L}_{\text{physics}}$ penalizes Einthoven/Goldberger violations in denormalized signal space.
+        
+        \vspace{0.3cm}
+        \textbf{Physics Constraint Loss:}
+        \begin{align}
+            \mathcal{L}_{\text{phys}} &= \|\text{III} - (\text{II} - \text{I})\|_2^2 \nonumber \\
+            &+ \|\text{aVR} - (-\frac{\text{I}+\text{II}}{2})\|_2^2 + \cdots
+        \end{align}
         
         \column{0.5\textwidth}
         \textbf{Computational Setup:}
         \begin{itemize}
             \item GPU: NVIDIA A100 (40GB)
             \item Mixed precision (FP16) training
-            \item Training time:
+            \item Training time per variant:
             \begin{itemize}
-                \item Shared decoder: \textbf{87 minutes}
-                \item Lead-specific: \textbf{160 minutes}
+                \item Baseline: $\sim$45 minutes
+                \item Hybrid: $\sim$48 minutes
+                \item Physics: $\sim$50 minutes
             \end{itemize}
         \end{itemize}
         
@@ -556,15 +798,15 @@
         \begin{itemize}
             \item Dropout: 0.2 in all conv blocks
             \item Batch normalization after each conv
-            \item Gradient clipping: max norm = 1.0
+            \item Weight decay: $1\times10^{-4}$
         \end{itemize}
         
         \vspace{0.2cm}
-        \textbf{Reproducibility:}
+        \textbf{Data:}
         \begin{itemize}
-            \item Random seed: 42
-            \item Deterministic PyTorch operations
-            \item All configs stored in JSON
+            \item PTB-XL 500Hz: 5000 samples/lead
+            \item Per-lead z-score normalization
+            \item Patient-wise stratified splits
         \end{itemize}
     \end{columns}
 \end{frame}

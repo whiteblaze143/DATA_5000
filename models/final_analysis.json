@@ -1,0 +1,15 @@
+{
+  "shared_dl_avg": 0.7443320393562317,
+  "leadspec_dl_avg": 0.7067494988441467,
+  "improvement": 0.03758254051208498,
+  "effect_size": 0.92,
+  "p_value": 0.1087,
+  "bootstrap_ci": [
+    0.006,
+    0.072
+  ],
+  "shared_wins": 4,
+  "total_leads": 5,
+  "hyperparameter_validated": true,
+  "optimal_lr": 0.0003
+}

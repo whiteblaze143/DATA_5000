@@ -371,3 +371,145 @@ class UNet1DLeadSpecific(nn.Module):
             skips.append(x)
         bottleneck = self.bottleneck(x)
         return bottleneck, skips[:-1]
+
+
+class UNet1DHybrid(nn.Module):
+    """
+    Hybrid 1D U-Net for ECG lead reconstruction.
+    
+    Architecture:
+    - Shared encoder: Same as baseline UNet1D
+    - Shared decoder trunk: All layers except final output
+    - Lead-specific heads: Tiny 1x1 Conv per lead for specialization
+    
+    This provides a middle ground between:
+    - UNet1D (fully shared): 17.1M params, best generalization
+    - UNet1DLeadSpecific (fully split): 40.8M params, overfits
+    
+    The hybrid adds minimal parameters (~5K per lead = ~25K total overhead)
+    while allowing each lead to learn specialized output transformations.
+    
+    Design rationale:
+    - Most features ARE shared (anatomical structure, temporal patterns)
+    - Lead-specific differences are primarily in OUTPUT mapping, not deep features
+    - Tiny heads can capture lead-specific gain/offset/minor morphological adjustments
+    """
+    def __init__(self, in_channels=3, out_channels=5, features=64, depth=4, dropout=0.2, 
+                 head_hidden_dim=32):
+        """
+        Args:
+            in_channels: Number of input channels (default: 3 for leads I, II, V4)
+            out_channels: Number of output channels (default: 5 for V1, V2, V3, V5, V6)
+            features: Number of base features (doubled at each downsampling level)
+            depth: Depth of U-Net (number of downsampling operations)
+            dropout: Dropout rate
+            head_hidden_dim: Hidden dimension for per-lead heads (default: 32)
+        """
+        super().__init__()
+        
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        
+        # ============ SHARED ENCODER (same as UNet1D) ============
+        self.input_conv = nn.Sequential(
+            ConvBlock1D(in_channels, features, dropout=dropout),
+            ConvBlock1D(features, features, dropout=dropout)
+        )
+        
+        self.down_blocks = nn.ModuleList()
+        for i in range(depth):
+            self.down_blocks.append(
+                DownBlock1D(
+                    features * (2**i),
+                    features * (2**(i+1)),
+                    dropout=dropout
+                )
+            )
+        
+        # Middle convolution
+        mid_features = features * (2**depth)
+        self.middle_conv = nn.Sequential(
+            ConvBlock1D(mid_features, mid_features, dropout=dropout),
+            ConvBlock1D(mid_features, mid_features, dropout=dropout)
+        )
+        
+        # ============ SHARED DECODER TRUNK ============
+        self.up_blocks = nn.ModuleList()
+        for i in range(depth):
+            self.up_blocks.append(
+                UpBlock1D(
+                    features * (2**(depth-i)),
+                    features * (2**(depth-i-1)),
+                    dropout=dropout
+                )
+            )
+        
+        # ============ LEAD-SPECIFIC HEADS ============
+        # Tiny 1x1 conv heads for each output lead
+        # Each head: features -> head_hidden_dim -> 1
+        # Adds ~(features * head_hidden_dim + head_hidden_dim * 1) * 5 ≈ 10K params
+        self.lead_heads = nn.ModuleList()
+        for i in range(out_channels):
+            self.lead_heads.append(nn.Sequential(
+                nn.Conv1d(features, head_hidden_dim, kernel_size=1),
+                nn.ReLU(inplace=True),
+                nn.Dropout(dropout),
+                nn.Conv1d(head_hidden_dim, 1, kernel_size=1)
+            ))
+        
+    def forward(self, x):
+        """
+        Forward pass with shared encoder/decoder trunk and lead-specific heads.
+        
+        Args:
+            x: Input tensor [batch, in_channels, seq_len]
+            
+        Returns:
+            Output tensor [batch, out_channels, seq_len]
+        """
+        # Initial convolution
+        x = self.input_conv(x)
+        
+        # Store skip connections
+        skips = [x]
+        
+        # Downsampling path (shared encoder)
+        for down_block in self.down_blocks:
+            x = down_block(x)
+            skips.append(x)
+        
+        # Remove the last skip connection (bottom of U-Net)
+        skips = skips[:-1]
+        
+        # Middle convolution
+        x = self.middle_conv(x)
+        
+        # Upsampling path (shared decoder trunk)
+        for up_block, skip in zip(self.up_blocks, reversed(skips)):
+            x = up_block(x, skip)
+        
+        # Lead-specific output heads
+        # x is now [B, features, seq_len]
+        outputs = []
+        for head in self.lead_heads:
+            lead_out = head(x)  # [B, 1, seq_len]
+            outputs.append(lead_out)
+        
+        # Concatenate all leads: [B, out_channels, seq_len]
+        return torch.cat(outputs, dim=1)
+    
+    def get_shared_features(self, x):
+        """
+        Extract shared decoder features before lead-specific heads.
+        Useful for analysis and visualization.
+        """
+        x = self.input_conv(x)
+        skips = [x]
+        for down_block in self.down_blocks:
+            x = down_block(x)
+            skips.append(x)
+        skips = skips[:-1]
+        x = self.middle_conv(x)
+        for up_block, skip in zip(self.up_blocks, reversed(skips)):
+            x = up_block(x, skip)
+        return x
