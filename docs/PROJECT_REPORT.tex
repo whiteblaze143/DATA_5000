@@ -332,25 +332,35 @@ The physics module exploits Einthoven's and Goldberger's laws to compute limb le
 
 \subsubsection{Deep Learning Component (1D U-Net)}
 
-For chest lead reconstruction, we employ a 1D U-Net architecture optimized for temporal signal processing~\cite{ref66}. The U-Net encoder-decoder structure with skip connections is particularly well-suited for ECG signals because it captures multi-scale temporal features (P-wave $\sim$80ms, QRS $\sim$100ms, T-wave $\sim$200ms) while preserving fine morphological detail through skip connections.
+\textbf{Why U-Net?} ECG reconstruction is fundamentally a signal-to-signal translation problem: we have 3 input waveforms and need to produce 5 output waveforms of the same length. This rules out classification architectures (ResNet, VGG) and sequence-to-class models. We need something that outputs a full temporal signal.
 
-\textbf{Encoder Path:}
+Several architectures could work---LSTMs, Transformers, autoencoders, or fully convolutional networks. We chose U-Net for three reasons specific to ECG signals:
+
+\begin{enumerate}
+    \item \textbf{Multi-scale feature capture:} ECG waveforms contain clinically important features at vastly different timescales. The P-wave lasts $\sim$80ms, the QRS complex $\sim$100ms, and the T-wave $\sim$200ms. At 500 Hz sampling, that's 40--100 samples per feature. U-Net's progressive downsampling (via MaxPool) naturally captures these different scales---shallow layers see fine QRS morphology while deep layers capture beat-to-beat rhythm patterns.
+
+    \item \textbf{Skip connections preserve sharp features:} The most diagnostically critical ECG features are sharp transitions---the R-wave peak, ST-segment onset, T-wave polarity. Pure encoder-decoder architectures (like vanilla autoencoders) tend to blur these features because all information must pass through the bottleneck. U-Net's skip connections bypass the bottleneck, allowing high-frequency morphological details to flow directly from input to output. This is crucial for preserving the crisp QRS peaks that cardiologists rely on.
+
+    \item \textbf{Proven track record in biomedical signals:} U-Net was originally designed for biomedical image segmentation~\cite{ref66}, where preserving boundary precision matters enormously. ECG reconstruction has similar requirements---we need sample-level precision, not just ``approximately correct'' waveforms. The architecture has been successfully adapted for 1D signals in prior ECG work~\cite{ref5,ref17}.
+\end{enumerate}
+
+\textbf{Why not Transformers?} While attention-based models excel at capturing long-range dependencies, they typically require more data and compute. Our dataset (14,363 training samples) is modest by deep learning standards. Transformers also lack the inductive bias toward local patterns that convolutions provide---and ECG features \textit{are} fundamentally local (a QRS complex is $\sim$50 samples wide, regardless of where it appears in the 5,000-sample recording). For our problem size and data regime, the convolutional U-Net offers a better efficiency-performance tradeoff.
+
+\textbf{Architecture Details:}
+
+The encoder progressively compresses the temporal signal while expanding the channel dimension:
 \begin{itemize}
     \item Conv1D blocks with increasing channels: 64 $\rightarrow$ 128 $\rightarrow$ 256 $\rightarrow$ 512
     \item Each block: Conv1D $\rightarrow$ BatchNorm $\rightarrow$ ReLU $\rightarrow$ Conv1D $\rightarrow$ BatchNorm $\rightarrow$ ReLU
-    \item MaxPool1D (kernel=2) for downsampling
+    \item MaxPool1D (kernel=2) halves temporal resolution at each level
 \end{itemize}
 
-\textbf{Bottleneck:}
-\begin{itemize}
-    \item Maximum channel count (512 or 1024)
-    \item Largest receptive field---captures multi-beat context
-\end{itemize}
+The bottleneck operates at 1/16th temporal resolution with maximum channel count, capturing the broadest context (multi-beat patterns, overall rhythm).
 
-\textbf{Decoder Path:}
+The decoder mirrors the encoder, progressively upsampling while reducing channels:
 \begin{itemize}
-    \item ConvTranspose1D for upsampling
-    \item Skip connections from encoder (concatenation)
+    \item ConvTranspose1D doubles temporal resolution
+    \item Skip connections concatenate encoder features at matching resolutions
     \item Channels decrease: 512 $\rightarrow$ 256 $\rightarrow$ 128 $\rightarrow$ 64
 \end{itemize}
 
