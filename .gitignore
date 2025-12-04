@@ -23,16 +23,17 @@ var/
 # Jupyter Notebooks
 .ipynb_checkpoints
 
-# Model files
-*.pt
-*.pth
+# Model files (except trained models we want to keep)
+# *.pt
+# *.pth
 
 # Data files
 data/processed/
 *.npy
 *.h5
 *.pkl
-*.csv
+# Keep CSV for metadata
+# *.csv
 
 # Results and logs
 results/
@@ -49,24 +50,55 @@ env/
 *.swo
 
 # OS-specific
-.DS_Store# Data directories - large files
+.DS_Store
+
+# Data directories - large files
 data/ptb_xl_full/
 data/ptb_xl/
 *.dat
 *.hea
+
 # Training logs
 *_training.log
 download_log.txt
 download_missing.txt
-# Model run outputs
+
+# Model run outputs (intermediate runs, not final experiments)
 models/run_*/
 
-# LaTeX output files
+# LaTeX auxiliary files
 *.aux
+*.bbl
+*.blg
 *.log
 *.nav
 *.out
 *.snm
 *.toc
-*.pdf
 texput.log
+# Keep PDF files for documentation
+# *.pdf
+
+# Presentation duplicates - only keep final versions
+ECG_Presentation_Focused.pptx
+ECG_Presentation_Generated.pptx
+ECG_Reconstruction_Presentation.pptx
+create_pptx.py
+
+# ACM class files (can be downloaded)
+acmart.cls
+
+# Redundant/duplicate scripts
+scripts/create_presentation_focused.py
+scripts/create_presentation_final.py
+scripts/create_comprehensive_presentation.py
+scripts/final_presentation_workflow.py
+scripts/visualize_training_history.py
+scripts/create_final_report.py
+scripts/train_lead_specific.py
+scripts/train_all_variants.py
+scripts/run_final_training.py
+scripts/create_training_plots.py
+scripts/generate_report_figures.py
+scripts/train_models.py
+
