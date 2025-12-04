@@ -6,9 +6,9 @@
 
 A hybrid physics-informed deep learning approach to reconstruct the full 12-lead ECG from only 3 measured leads (I, II, V4).
 
-**DATA 5000 Capstone Project - Carleton University (December 2025)**
+**DATA 5000 Final Project - Carleton University (December 2025)**
 
-**Team 4:** Damilola Olaiya & Mithun Mani
+**Team 4:** Damilola Olaiya & Mithun Manivannan
 
 ---
 
@@ -255,7 +255,7 @@ pdflatex presentation_slides.tex
 
 ```bibtex
 @misc{olaiya2025ecg,
-  author = {Olaiya, Damilola and Mani, Mithun},
+  author = {Olaiya, Damilola and Manivannan, Mithun},
   title = {12-Lead ECG Reconstruction from Reduced Lead Sets: A Hybrid Physics-Informed Deep Learning Approach},
   year = {2025},
   institution = {Carleton University},
@@ -277,4 +277,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - PhysioNet for providing open access to PTB-XL dataset
 - PyTorch team for the deep learning framework
  
+
  
