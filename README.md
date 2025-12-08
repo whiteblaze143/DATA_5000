@@ -167,6 +167,7 @@ DATA_5000/
 ├── run_training.py          # Main training script
 ├── train.sh                  # Shell script for VM training
 ├── requirements.txt          # Python dependencies
+├── pyproject.toml            # Project configuration
 │
 ├── src/                      # Source code
 │   ├── config.py            # Configuration management
@@ -175,35 +176,29 @@ DATA_5000/
 │   ├── evaluation.py        # Metrics (MAE, correlation, SNR)
 │   ├── utils.py             # Utilities
 │   └── models/
-│       ├── unet_1d.py       # 1D U-Net architectures
+│       ├── unet_1d.py       # 1D U-Net architecture
 │       └── baseline.py      # Baseline models
 │
 ├── data/                     # Data handling
 │   ├── data_modules.py      # PyTorch Dataset/DataLoader
 │   ├── get_data.py          # Data preparation
-│   └── ptb_xl/              # PTB-XL dataset files
+│   ├── generate_test_data.py # Synthetic data for testing
+│   └── README_DATA.md       # Data documentation
 │
 ├── scripts/                  # Utility scripts
-│   ├── download_ptb_xl.py   # Download PTB-XL
-│   ├── train_all_variants.py # Train all model variants
+│   ├── download_ptb_xl.py   # Download PTB-XL dataset
 │   └── quick_eval.py        # Quick model evaluation
 │
-├── models/                   # Saved models and results
-│   ├── final_exp_baseline/  # Best performing model
-│   ├── final_exp_hybrid/    # Hybrid variant
-│   └── final_exp_physics/   # Physics-aware variant
+├── models/                   # Trained models
+│   └── final_exp_baseline/
+│       ├── best_model.pt    # Best trained model weights
+│       └── test_results.json # Evaluation metrics
 │
-├── docs/                     # Documentation
-│   ├── PROJECT_REPORT.tex   # LaTeX report
-│   ├── PROJECT_REPORT.pdf   # Compiled report
-│   ├── references.bib       # Bibliography
-│   └── figures/             # Figures for report
-│
-├── notebooks/                # Jupyter notebooks
-│   ├── 01_data_exploration.ipynb
-│   └── 02_baseline_testing.ipynb
-│
-└── presentation_slides.tex   # LaTeX Beamer slides
+└── docs/                     # Documentation
+    ├── PROJECT_REPORT.tex   # LaTeX report source
+    ├── PROJECT_REPORT.pdf   # Compiled report
+    ├── references.bib       # Bibliography
+    └── figures/             # Figures for report
 ```
 
 ---
@@ -230,17 +225,11 @@ python run_training.py \
 | Document | Description |
 |----------|-------------|
 | [`docs/PROJECT_REPORT.pdf`](docs/PROJECT_REPORT.pdf) | Full academic report |
-| [`presentation_slides.pdf`](presentation_slides.pdf) | LaTeX Beamer slides |
-| [`ECG_Reconstruction_FINAL.pptx`](ECG_Reconstruction_FINAL.pptx) | PowerPoint presentation |
 
-### Compiling LaTeX Documents
+### Compiling LaTeX Report
 
 ```bash
-# Report
-cd docs && pdflatex PROJECT_REPORT.tex && bibtex PROJECT_REPORT && pdflatex PROJECT_REPORT.tex
-
-# Slides
-pdflatex presentation_slides.tex
+cd docs && pdflatex PROJECT_REPORT.tex && bibtex PROJECT_REPORT && pdflatex PROJECT_REPORT.tex && pdflatex PROJECT_REPORT.tex
 ```
 
 ---

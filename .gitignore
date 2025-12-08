@@ -163,3 +163,42 @@ presentation_slides.tex
 presentation_slides.*
 compile_presentation.sh
 scripts/generate_presentation_plots.py
+
+# ============================================
+# Repository cleanup - removed from tracking
+# ============================================
+
+# PTB-XL data (users download via scripts/download_ptb_xl.py)
+data/ptb_xl/
+data/ptb_xl_full/
+
+# Jupyter notebooks (exploratory only)
+notebooks/
+
+# Duplicate model files (keep only best_model.pt)
+models/final_exp_*/final_model.pt
+models/final_exp_*/training_history.json
+models/final_exp_*/training_curves.png
+models/final_exp_*/reconstruction_sample_*.png
+
+# Variant experiments (keep only baseline)
+models/final_exp_hybrid/
+models/final_exp_physics/
+models/final_exp_all_results.json
+
+# Redundant scripts
+scripts/compare_models.py
+scripts/compare_variants.py
+scripts/eda_analysis.py
+scripts/generate_academic_figures.py
+scripts/generate_final_figures.py
+scripts/hyperparam_sweep.py
+scripts/lead_ablation.py
+scripts/prepare_data.sh
+scripts/run_all_variants.sh
+scripts/run_experiment_pipeline.sh
+scripts/test_training.py
+scripts/train_all_variants.py
+scripts/train_baseline.sh
+scripts/train_multiseed.py
+scripts/train_variants.py
