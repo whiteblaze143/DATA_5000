@@ -378,13 +378,14 @@ We evaluate three model architectures with controlled parameter counts:
 \begin{table}[h]
 \caption{Model Variant Specifications}
 \label{tab:variants}
-\begin{tabular}{lccc}
+\small
+\begin{tabular}{lp{2.2cm}rr}
 \toprule
-\textbf{Variant} & \textbf{Architecture} & \textbf{Parameters} & \textbf{Overhead} \\
+\textbf{Variant} & \textbf{Architecture} & \textbf{Params} & \textbf{Overhead} \\
 \midrule
-Baseline (UNet1D) & Shared encoder + decoder & 17,122,373 & --- \\
-Hybrid (UNet1DHybrid) & Shared trunk + 5 heads & 17,132,613 & +0.06\% \\
-Lead-Specific & Shared encoder + 5 decoders & 40,831,237 & +138\% \\
+Baseline & Shared enc + dec & 17.1M & --- \\
+Hybrid & Trunk + 5 heads & 17.1M & +0.06\% \\
+Lead-Spec & Enc + 5 decoders & 40.8M & +138\% \\
 \bottomrule
 \end{tabular}
 \end{table}
