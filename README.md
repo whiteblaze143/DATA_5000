@@ -12,7 +12,7 @@ A hybrid physics-informed deep learning approach to reconstruct the full 12-lead
 
 ---
 
-## 🎯 Key Results
+## Key Results
 
 | Metric | Value |
 |--------|-------|
@@ -35,7 +35,7 @@ A hybrid physics-informed deep learning approach to reconstruct the full 12-lead
 
 ---
 
-## 🧠 Approach
+## Approach
 
 Our hybrid approach combines **physics** and **deep learning**:
 
@@ -50,33 +50,35 @@ Exploits Einthoven's law and Goldberger's equations to compute 4 limb leads exac
 1D U-Net reconstructs chest leads (V1, V2, V3, V5, V6) from input leads (I, II, V4).
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                 INPUT: 3 Measured Leads                     │
-│                    Lead I, Lead II, Lead V4                 │
-└─────────────────────────┬───────────────────────────────────┘
-                          ↓
-        ┌─────────────────┴─────────────────┐
-        ↓                                   ↓
-┌───────────────────┐             ┌───────────────────────────┐
-│  PHYSICS MODULE   │             │      1D U-Net             │
-│  (Exact Formulas) │             │  (Deep Learning)          │
-│                   │             │                           │
-│  III, aVR,        │             │  V1, V2, V3, V5, V6       │
-│  aVL, aVF         │             │                           │
-│                   │             │                           │
-│  r = 1.000 ✓      │             │  r = 0.846                │
-└─────────┬─────────┘             └─────────────┬─────────────┘
-          ↓                                     ↓
-          └──────────────┬──────────────────────┘
-                         ↓
-┌─────────────────────────────────────────────────────────────┐
-│              OUTPUT: Complete 12-Lead ECG                   │
-└─────────────────────────────────────────────────────────────┘
++-------------------------------------------------------------+
+|                 INPUT: 3 Measured Leads                     |
+|                    Lead I, Lead II, Lead V4                 |
++-----------------------------+-------------------------------+
+                              |
+              +---------------+---------------+
+              |                               |
+              v                               v
++-------------------+             +---------------------------+
+|  PHYSICS MODULE   |             |      1D U-Net             |
+|  (Exact Formulas) |             |  (Deep Learning)          |
+|                   |             |                           |
+|  III, aVR,        |             |  V1, V2, V3, V5, V6       |
+|  aVL, aVF         |             |                           |
+|                   |             |                           |
+|  r = 1.000        |             |  r = 0.846                |
++---------+---------+             +-------------+-------------+
+          |                                     |
+          +------------------+------------------+
+                             |
+                             v
++-------------------------------------------------------------+
+|              OUTPUT: Complete 12-Lead ECG                   |
++-------------------------------------------------------------+
 ```
 
 ---
 
-## 🔬 Key Findings
+## Key Findings
 
 ### 1. Physics Guarantees Work
 4 of 12 leads reconstructed **perfectly** (r = 1.000) with zero learned parameters.
@@ -95,7 +97,7 @@ Performance bounded by ground-truth inter-lead correlations:
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -134,7 +136,7 @@ python scripts/quick_eval.py --model_path models/final_exp_baseline/best_model.p
 
 ---
 
-## 📊 Dataset
+## Dataset
 
 We use the [PTB-XL dataset](https://physionet.org/content/ptb-xl/1.0.3/):
 
@@ -158,7 +160,7 @@ We use the [PTB-XL dataset](https://physionet.org/content/ptb-xl/1.0.3/):
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 DATA_5000/
@@ -206,7 +208,7 @@ DATA_5000/
 
 ---
 
-## 🛠️ Training Options
+## Training Options
 
 ```bash
 python run_training.py \
@@ -223,7 +225,7 @@ python run_training.py \
 
 ---
 
-## 📄 Documentation
+## Documentation
 
 | Document | Description |
 |----------|-------------|
@@ -243,7 +245,7 @@ pdflatex presentation_slides.tex
 
 ---
 
-## 📚 References
+## References
 
 1. Wagner, P., et al. "PTB-XL, a large publicly available electrocardiography dataset." Scientific Data, 2020.
 2. Mason, F., et al. "AI-enhanced reconstruction of the 12-lead ECG via 3-leads." npj Digital Medicine, 2024.
@@ -251,7 +253,7 @@ pdflatex presentation_slides.tex
 
 ---
 
-## 📝 Citation
+## Citation
 
 ```bibtex
 @misc{olaiya2025ecg,
@@ -265,13 +267,13 @@ pdflatex presentation_slides.tex
 
 ---
 
-## 📜 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - DATA 5000 course instructors and TAs at Carleton University
 - PhysioNet for providing open access to PTB-XL dataset

@@ -102,3 +102,58 @@ scripts/create_training_plots.py
 scripts/generate_report_figures.py
 scripts/train_models.py
 
+# ============================================
+# AI/LLM Tool Artifacts - DO NOT COMMIT
+# ============================================
+
+# GitHub Copilot instructions
+.github/copilot-instructions.md
+
+# AI coding assistant configurations
+.aider*
+.continue/
+.cursor/
+.codeium/
+.tabnine/
+.chatgpt/
+*.aider.chat.history.md
+
+# Draft markdown files (may contain AI-generated content)
+docs/PROJECT_REPORT.md
+docs/PROJECT_PLAN.md
+models/model_comparison_report.md
+
+# Any files with AI tool names
+*copilot*
+*claude*
+*chatgpt*
+
+# ============================================
+# Additional cleanup
+# ============================================
+
+# Intermediate experiment directories
+models/exp_*/
+models/lr_sweep/
+
+# Training logs (large files)
+models/*.log
+*.log
+
+# Temporary analysis files
+models/final_analysis.json
+models/model_comparison_metrics.json
+models/ground_truth_correlations.npy
+models/reconstruction_*.png
+
+# LaTeX comment files
+docs/comment.cut
+docs/references_backup.bib
+
+# Presentation intermediate versions
+ECG_Reconstruction_10min.pptx
+ECG_Reconstruction_Final.pptx
+ECG_Reconstruction_Presentation_v2.pptx
+presentation_slides.out
+presentation_slides.tex
+
