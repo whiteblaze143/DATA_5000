@@ -46,6 +46,11 @@
 
 The standard 12-lead electrocardiogram (ECG) remains the gold standard for cardiac diagnostics, but requires 10 physical electrodes and specialized equipment. This work presents a hybrid physics-informed deep learning approach that reconstructs the complete 12-lead ECG from only 3 measured leads (I, II, V4). The method exploits Einthoven's law and Goldberger's equations for deterministic reconstruction of limb leads, while a 1D U-Net architecture learns to reconstruct the remaining precordial leads. Evaluated on the PTB-XL dataset (21,837 recordings), our approach achieves an overall Pearson correlation of r = 0.936 with clinical-grade signal quality (SNR = 63.0 dB).
 
+<p align="center">
+  <img src="docs/figures/problem_visualization.png" alt="Problem Visualization" width="700">
+</p>
+<p align="center"><em>Figure 1: 3-lead to 12-lead ECG reconstruction problem formulation</em></p>
+
 ---
 
 ## Results
@@ -70,6 +75,21 @@ The standard 12-lead electrocardiogram (ECG) remains the gold standard for cardi
 | V3 | 0.860 | 0.027 | 20.0 |
 | V5 | **0.891** | 0.026 | 20.3 |
 | V6 | 0.836 | 0.033 | 18.3 |
+
+<p align="center">
+  <img src="docs/figures/per_lead_performance.png" alt="Per-Lead Performance" width="600">
+</p>
+<p align="center"><em>Figure 2: Reconstruction quality across all leads (physics-based vs. learned)</em></p>
+
+<details>
+<summary><strong>View Reconstruction Examples</strong></summary>
+
+<p align="center">
+  <img src="docs/figures/reconstruction_sample_1.png" alt="Reconstruction Sample 1" width="700">
+</p>
+<p align="center"><em>Example reconstruction showing ground truth vs. predicted signals</em></p>
+
+</details>
 
 ---
 
@@ -100,6 +120,14 @@ A 1D U-Net architecture reconstructs the precordial leads (V1, V2, V3, V5, V6) f
 
 ### Architecture Overview
 
+<p align="center">
+  <img src="docs/figures/architecture_diagram_clean.png" alt="Architecture Diagram" width="700">
+</p>
+<p align="center"><em>Figure 3: Hybrid physics-informed deep learning architecture</em></p>
+
+<details>
+<summary><strong>Text Diagram</strong></summary>
+
 ```
                     +-------------------------------------+
                     |     INPUT: 3 Measured Leads        |
@@ -128,6 +156,8 @@ A 1D U-Net architecture reconstructs the precordial leads (V1, V2, V3, V5, V6) f
                     |    OUTPUT: Complete 12-Lead ECG    |
                     +-------------------------------------+
 ```
+
+</details>
 
 ---
 
@@ -158,6 +188,30 @@ Reconstruction quality is fundamentally bounded by the ground-truth inter-lead c
 - **V1** is most challenging (r = 0.818): anatomically distant from V4 (ground-truth correlation = 0.49)
 
 **Implication:** Input lead selection is more critical than model architecture for maximizing reconstruction quality.
+
+</details>
+
+<details>
+<summary><strong>4. Training Convergence Analysis</strong></summary>
+
+<p align="center">
+  <img src="docs/figures/training_curves.png" alt="Training Curves" width="600">
+</p>
+<p align="center"><em>Training and validation loss over epochs</em></p>
+
+The model converges smoothly without overfitting, with validation loss closely tracking training loss throughout the optimization process.
+
+</details>
+
+<details>
+<summary><strong>5. Inter-Lead Correlation Analysis</strong></summary>
+
+<p align="center">
+  <img src="docs/figures/lead_correlation_heatmap.png" alt="Lead Correlation Heatmap" width="500">
+</p>
+<p align="center"><em>Ground-truth inter-lead correlations in PTB-XL dataset</em></p>
+
+The heatmap reveals the fundamental information structure: precordial leads (V1-V6) show strong mutual correlations, while limb and precordial lead groups are more weakly coupled.
 
 </details>
 
@@ -244,10 +298,20 @@ We use the [PTB-XL dataset](https://physionet.org/content/ptb-xl/1.0.3/), a larg
 Patient-wise stratified splits prevent data leakage between partitions:
 
 | Split | Records | Percentage | Purpose |
-|-------|---------|------------|---------|
+|-------|---------|------------|----------|
 | Train | 14,363 | 70% | Model optimization |
 | Validation | 1,914 | 15% | Hyperparameter tuning |
 | Test | 1,932 | 15% | Final evaluation |
+
+<details>
+<summary><strong>View Sample ECG Signal</strong></summary>
+
+<p align="center">
+  <img src="docs/figures/sample_ecg.png" alt="Sample ECG" width="700">
+</p>
+<p align="center"><em>Sample 12-lead ECG from PTB-XL dataset</em></p>
+
+</details>
 
 ---
 
