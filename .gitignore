@@ -157,3 +157,9 @@ ECG_Reconstruction_Presentation_v2.pptx
 presentation_slides.out
 presentation_slides.tex
 
+
+# Presentation files - not needed for submission
+*.pptx
+presentation_slides.*
+compile_presentation.sh
+scripts/generate_presentation_plots.py
