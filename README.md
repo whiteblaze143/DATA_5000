@@ -267,6 +267,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - DATA 5000 course instructors and TAs at Carleton University
 - PhysioNet for providing open access to PTB-XL dataset
 - PyTorch team for the deep learning framework
- 
 
- 
