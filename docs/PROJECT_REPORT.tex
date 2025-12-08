@@ -1,7 +1,7 @@
 %%
 %% 12-Lead ECG Reconstruction from Reduced Lead Sets
 %% DATA 5000 Final Project Report
-%% Team 4: Damilola Olaiya & Mithun Mani
+%% Team 4: Damilola Olaiya & Mithun Manivannan
 %%
 %% Based on ACM sigconf template
 %%
@@ -48,8 +48,8 @@
   \country{Canada}
 }
 
-\author{Mithun Mani}
-\email{mithunmani@cmail.carleton.ca}
+\author{Mithun Manivannan}
+\email{mithun.manivannan@cmail.carleton.ca}
 \affiliation{%
   \institution{Carleton University}
   \city{Ottawa}
@@ -122,14 +122,21 @@ However, standard 12-lead ECG acquisition faces significant accessibility barrie
     \item \textbf{Consumer devices:} Wearables (Apple Watch, Fitbit) record only 1--2 leads~\cite{ref45,ref48}
 \end{itemize}
 
-This gap between diagnostic capability and practical accessibility motivates our research into reduced-lead ECG reconstruction. We propose a \textbf{hybrid physics-informed deep learning approach} that reconstructs the full 12-lead ECG from only 3 measured leads, combining deterministic physiological relationships with learned neural network mappings.
+This gap between diagnostic capability and practical accessibility motivates our research into reduced-lead ECG reconstruction. We propose a \textbf{hybrid physics-informed deep learning approach} that reconstructs the full 12-lead ECG from only 3 measured leads, combining deterministic physiological relationships with learned neural network mappings (Figure~\ref{fig:approach_overview}).
 
-\begin{figure}[h]
+% \begin{figure}[h]
+% \centering
+% \includegraphics[width=0.95\columnwidth]{approach_diagram.png}
+% \caption{Overview of our hybrid reconstruction approach. From 3 measured leads (I, II, V4), we reconstruct the full 12-lead ECG by exploiting known physics for limb leads and learning the mapping for chest leads.}
+% \label{fig:approach_overview}
+% \end{figure}
+
+\begin{figure*}[t]
 \centering
-\includegraphics[width=0.95\columnwidth]{approach_diagram.png}
+\includegraphics[width=\textwidth]{approach_diagram.png}
 \caption{Overview of our hybrid reconstruction approach. From 3 measured leads (I, II, V4), we reconstruct the full 12-lead ECG by exploiting known physics for limb leads and learning the mapping for chest leads.}
 \label{fig:approach_overview}
-\end{figure}
+\end{figure*}
 
 \subsection{Contributions}
 
@@ -271,20 +278,6 @@ Our work addresses gaps by:
     \item Exploring multiple input lead configurations systematically
 \end{itemize}
 
-\begin{table}[h]
-\caption{Comparison with Prior Approaches}
-\label{tab:comparison}
-\begin{tabular}{lcc}
-\toprule
-Aspect & Prior Work & Our Approach \\
-\midrule
-Physics integration & Rare & Yes (limb leads) \\
-Data split & Often record-wise & Patient-wise \\
-Evaluation & Single-level & Multi-level \\
-Input configurations & Single & Multiple explored \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 %% ============================================================================
 %% METHODOLOGY
@@ -332,7 +325,16 @@ The physics module exploits Einthoven's and Goldberger's laws to compute limb le
 
 \subsubsection{Deep Learning Component (1D U-Net)}
 
-For chest lead reconstruction, we employ a 1D U-Net architecture optimized for temporal signal processing~\cite{ref66}. The U-Net encoder-decoder structure with skip connections is particularly well-suited for ECG signals because it captures multi-scale temporal features (P-wave $\sim$80ms, QRS $\sim$100ms, T-wave $\sim$200ms) while preserving fine morphological detail through skip connections.
+For chest lead reconstruction, we employ a 1D U-Net architecture optimized for temporal signal processing~\cite{ref66} (Figure~\ref{fig:unet_architecture}).
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/unet_fig.jpg}
+\caption{U-Net architecture overview. The contracting path (encoder) progressively downsamples the input through Conv-ReLU-MaxPool blocks, while the expansive path (decoder) upsamples through ConvTranspose operations. Skip connections preserve fine-grained temporal details by concatenating encoder features with decoder outputs at each level. Our 1D adaptation replaces 2D convolutions with 1D convolutions optimized for temporal ECG signals.}
+\label{fig:unet_architecture}
+\end{figure*}
+
+The U-Net encoder-decoder structure with skip connections is particularly well-suited for ECG signals because it captures multi-scale temporal features (P-wave $\sim$80ms, QRS $\sim$100ms, T-wave $\sim$200ms) while preserving fine morphological detail through skip connections.
 
 \textbf{Encoder Path:}
 \begin{itemize}
@@ -730,7 +732,7 @@ V6 & 0.836 & 0.033 & 18.28 & 3rd \\
 \end{tabular}
 \end{table}
 
-\textbf{Performance Hierarchy:} V5 $>$ V3 $>$ V6 $>$ V2 $>$ V1. This ordering directly correlates with ground-truth inter-lead correlations with the input lead V4 (see Section~\ref{sec:bottleneck}).
+\textbf{Performance Hierarchy:} V5 $>$ V3 $>$ V6 $>$ V2 $>$ V1. This ordering directly correlates with ground-truth inter-lead correlations with the input lead V4 (see Section~\ref{sec:bottleneck}). Figure~\ref{fig:training_curves} shows the training convergence.
 
 \begin{figure}[h]
 \centering
@@ -828,7 +830,7 @@ Figure~\ref{fig:reconstruction} shows sample reconstructions from the test set, 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.95\columnwidth]{../models/final_exp_baseline/reconstruction_sample_1.png}
+\includegraphics[width=0.95\columnwidth]{figures/reconstruction_sample_1.png}
 \caption{Sample ECG reconstruction. Blue: Ground truth. Red: Reconstructed. Physics leads (III, aVR, aVL, aVF) show exact overlay. Learned leads (V1-V3, V5-V6) preserve QRS morphology and T-wave polarity with minor amplitude variations.}
 \label{fig:reconstruction}
 \end{figure}
@@ -878,7 +880,7 @@ V1 & 0.49 & 0.818 & +0.33 \\
 \label{fig:correlation_heatmap}
 \end{figure}
 
-\textbf{Key Observation:} V5 is easiest to reconstruct ($r = 0.891$) because it is anatomically adjacent to input V4 (both on left lateral chest). V1 and V2 are hardest ($r \approx 0.82$) because they capture right ventricular and septal activity distant from V4.
+\textbf{Key Observation:} V5 is easiest to reconstruct ($r = 0.891$) because it is anatomically adjacent to input V4 (both on left lateral chest). V1 and V2 are hardest ($r \approx 0.82$) because they capture right ventricular and septal activity distant from V4 (Figure~\ref{fig:correlation_heatmap}).
 
 \textbf{Implication:} No architectural improvement can overcome this information bottleneck. To improve V1/V2 reconstruction, one must \textit{change the input leads} (e.g., use I, II, V1, V4 or I, II, V2, V4).
 
@@ -1027,6 +1029,8 @@ We thank the course instructors and teaching assistants of DATA 5000 at Carleton
 %% ============================================================================
 \appendix
 
+\section*{Appendix}
+
 \section{Einthoven's Triangle}
 
 Einthoven's Triangle describes the geometric relationship between the three bipolar limb leads~\cite{ref33}. The leads form an equilateral triangle with the heart at its center:
@@ -1080,7 +1084,7 @@ ecg-reconstruction/
 
 We plan to evaluate multiple input configurations based on systematic review findings~\cite{ref65}:
 
-\begin{table}[h]
+\begin{table}[H]
 \caption{Input Lead Configurations}
 \label{tab:configs}
 \begin{tabular}{lll}
