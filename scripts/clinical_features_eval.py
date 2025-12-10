@@ -14,6 +14,12 @@ Following the methodology from:
 
 import numpy as np
 import matplotlib.pyplot as plt
+try:
+    import seaborn as sns
+    sns.set(style='whitegrid')
+    HAS_SEABORN = True
+except Exception:
+    HAS_SEABORN = False
 from scipy import signal
 from scipy.stats import pearsonr
 from scipy.ndimage import gaussian_filter1d
@@ -394,7 +400,7 @@ def evaluate_batch(y_true_batch, y_pred_batch, fs=FS):
     return aggregated
 
 
-def create_clinical_features_figure(results, save_path='figures/clinical_features_evaluation.png'):
+def create_clinical_features_figure(results, save_path='figures/clinical_features_evaluation.png', per_sample_df=None):
     """
     Create comprehensive figure for clinical feature evaluation.
     
@@ -402,10 +408,10 @@ def create_clinical_features_figure(results, save_path='figures/clinical_feature
         results: Dictionary with metrics from evaluate_batch
         save_path: Path to save figure
     """
-    fig = plt.figure(figsize=(12, 8))
-    
-    # Create a 2x2 grid for cleaner academic presentation
-    gs = fig.add_gridspec(2, 2, hspace=0.35, wspace=0.3)
+    if HAS_SEABORN:
+        sns.set_palette('tab10')
+    fig = plt.figure(figsize=(14, 10))
+    gs = fig.add_gridspec(2, 2, hspace=0.45, wspace=0.4)
     
     # Color scheme
     colors = {'true': '#2196F3', 'pred': '#FF5722', 'bar': '#4CAF50'}
@@ -438,10 +444,30 @@ def create_clinical_features_figure(results, save_path='figures/clinical_feature
         results.get('qt_interval_pred_std', 0)
     ]
     
-    bars1 = ax1.bar(x - width/2, true_vals, width, yerr=true_stds, 
-                    label='Ground Truth', color=colors['true'], capsize=3, alpha=0.8)
-    bars2 = ax1.bar(x + width/2, pred_vals, width, yerr=pred_stds,
-                    label='Reconstructed', color=colors['pred'], capsize=3, alpha=0.8)
+    # If we have per-sample data, show violin plots; else fallback to grouped bar chart
+    if per_sample_df is not None and HAS_SEABORN:
+        # Build a tidy dataframe for seaborn: columns=['metric', 'value', 'type'] where type in ['true','pred']
+        import pandas as pd
+        rows = []
+        metrics_map = [('qrs_duration', 'QRS Duration'), ('pr_interval', 'PR Interval'), ('qt_interval', 'QT Interval')]
+        for metric_key, metric_name in metrics_map:
+            true_vals_samples = per_sample_df[f'{metric_key}_true'].astype(float).dropna()
+            pred_vals_samples = per_sample_df[f'{metric_key}_pred'].astype(float).dropna()
+            for v in true_vals_samples:
+                rows.append({'metric': metric_name, 'value': v, 'type': 'Ground Truth'})
+            for v in pred_vals_samples:
+                rows.append({'metric': metric_name, 'value': v, 'type': 'Reconstructed'})
+        df_plot = pd.DataFrame(rows)
+        sns.violinplot(data=df_plot, x='metric', y='value', hue='type', split=True, inner='quartile', ax=ax1)
+        ax1.set_ylabel('Duration (ms)')
+        ax1.set_title('(a) Interval distributions (violin plot)')
+        ax1.axhline(y=args.qrs_threshold if 'QRS' in metric_name else 0, color='gray', linestyle='--', linewidth=0.8)
+        ax1.legend()
+    else:
+        bars1 = ax1.bar(x - width/2, true_vals, width, yerr=true_stds, 
+                        label='Ground Truth', color=colors['true'], capsize=3, alpha=0.9)
+        bars2 = ax1.bar(x + width/2, pred_vals, width, yerr=pred_stds,
+                        label='Reconstructed', color=colors['pred'], capsize=3, alpha=0.9)
     
     ax1.set_ylabel('Duration (ms)', fontsize=11)
     ax1.set_title('(a) ECG Interval Measurements', fontsize=12, fontweight='bold')
@@ -465,12 +491,20 @@ def create_clinical_features_figure(results, save_path='figures/clinical_feature
     hr_error = results.get('hr_error_mean', 0)
     
     # Simulated scatter data for visualization
-    np.random.seed(42)
-    n_points = 50
-    hr_true_scatter = np.random.normal(hr_true, 15, n_points)
-    hr_pred_scatter = hr_true_scatter + np.random.normal(0, hr_error if not np.isnan(hr_error) else 2, n_points)
-    
-    ax2.scatter(hr_true_scatter, hr_pred_scatter, alpha=0.5, c=colors['bar'], s=30)
+    # If we have per-sample data, plot real scatter with regression and Bland-Altman
+    if per_sample_df is not None and HAS_SEABORN:
+        hr_true = per_sample_df['hr_true'].astype(float)
+        hr_pred = per_sample_df['hr_pred'].astype(float)
+        sns.scatterplot(x=hr_true, y=hr_pred, alpha=0.5, color=colors['bar'], s=30, ax=ax2)
+        sns.regplot(x=hr_true, y=hr_pred, scatter=False, ax=ax2, color='k', line_kws={'linewidth':1})
+        r = pearsonr(hr_true.dropna(), hr_pred.dropna())[0] if len(hr_true.dropna())>1 else np.nan
+    else:
+        np.random.seed(42)
+        n_points = 50
+        hr_true_scatter = np.random.normal(hr_true, 15, n_points)
+        hr_pred_scatter = hr_true_scatter + np.random.normal(0, hr_error if not np.isnan(hr_error) else 2, n_points)
+        ax2.scatter(hr_true_scatter, hr_pred_scatter, alpha=0.5, c=colors['bar'], s=30)
+        r = pearsonr(hr_true_scatter, hr_pred_scatter)[0]
     
     # Identity line
     hr_min, hr_max = min(hr_true_scatter.min(), hr_pred_scatter.min()), max(hr_true_scatter.max(), hr_pred_scatter.max())
@@ -504,9 +538,28 @@ def create_clinical_features_figure(results, save_path='figures/clinical_feature
         results.get('t_amplitude_corr_mean', 0.85)
     ]
     
-    x = np.arange(len(waves))
-    bars1 = ax3.bar(x - width/2, wave_true, width, label='Ground Truth', color=colors['true'], alpha=0.8)
-    bars2 = ax3.bar(x + width/2, wave_pred, width, label='Reconstructed', color=colors['pred'], alpha=0.8)
+    if per_sample_df is not None and HAS_SEABORN:
+        # scatter plots for morphology: true vs pred
+        morph_keys = [('p_amplitude', 'P-wave Amplitude'), ('t_amplitude', 'T-wave Amplitude')]
+        df_morph = pd.DataFrame({
+            'p_true': per_sample_df['p_amplitude_true'].astype(float),
+            'p_pred': per_sample_df['p_amplitude_pred'].astype(float),
+            't_true': per_sample_df['t_amplitude_true'].astype(float),
+            't_pred': per_sample_df['t_amplitude_pred'].astype(float)
+        })
+        axm = ax3
+        sns.scatterplot(x=df_morph['p_true'], y=df_morph['p_pred'], alpha=0.5, color=colors['true'], s=20, ax=axm, label='P-wave')
+        sns.scatterplot(x=df_morph['t_true'], y=df_morph['t_pred'], alpha=0.5, color=colors['pred'], s=20, ax=axm, label='T-wave')
+        sns.regplot(x=df_morph['p_true'], y=df_morph['p_pred'], scatter=False, ax=axm, color=colors['true'])
+        sns.regplot(x=df_morph['t_true'], y=df_morph['t_pred'], scatter=False, ax=axm, color=colors['pred'])
+        axm.set_xlabel('True amplitude (normalized)')
+        axm.set_ylabel('Reconstructed amplitude (normalized)')
+        axm.set_title('(c) Wave Morphology Preservation (scatter + regression)')
+        axm.legend()
+    else:
+        x = np.arange(len(waves))
+        bars1 = ax3.bar(x - width/2, wave_true, width, label='Ground Truth', color=colors['true'], alpha=0.8)
+        bars2 = ax3.bar(x + width/2, wave_pred, width, label='Reconstructed', color=colors['pred'], alpha=0.8)
     
     ax3.set_ylabel('Amplitude (normalized)', fontsize=11)
     ax3.set_title('(c) Wave Morphology Preservation', fontsize=12, fontweight='bold')
@@ -524,12 +577,36 @@ def create_clinical_features_figure(results, save_path='figures/clinical_feature
     # 4. Error Distribution (Box plot style)
     ax4 = fig.add_subplot(gs[1, 1])
     
-    errors = {
-        'QRS': results.get('qrs_duration_error_mean', 5),
-        'PR': results.get('pr_interval_error_mean', 8),
-        'QT': results.get('qt_interval_error_mean', 15),
-        'HR': results.get('hr_error_mean', 2)
-    }
+    if per_sample_df is not None and HAS_SEABORN:
+        # Plot violin/boxplot of absolute errors for each clinical metric using per_sample_df
+        df_err = per_sample_df[['qrs_duration_error','pr_interval_error','qt_interval_error','hr_error']].astype(float)
+        df_long = df_err.melt(var_name='metric', value_name='error')
+        df_long['metric'] = df_long['metric'].map({'qrs_duration_error':'QRS','pr_interval_error':'PR','qt_interval_error':'QT','hr_error':'HR'})
+        sns.boxplot(x='metric', y='error', data=df_long, ax=ax4, palette='Pastel1')
+        ax4.set_title('(d) Error distribution per clinical metric')
+        # Add threshold lines
+        thresholds_map = {'QRS': args.qrs_threshold, 'PR': args.pr_threshold, 'QT': args.qt_threshold, 'HR': args.hr_threshold}
+        y_max = df_long['error'].max() if not df_long['error'].isnull().all() else 1.0
+        for i, m in enumerate(['QRS','PR','QT','HR']):
+            thresh = thresholds_map[m]
+            ax4.hlines(y=thresh, xmin=i-0.4, xmax=i+0.4, colors='red', linestyles='--', linewidth=1)
+    else:
+        errors = {
+            'QRS': results.get('qrs_duration_error_mean', 5),
+            'PR': results.get('pr_interval_error_mean', 8),
+            'QT': results.get('qt_interval_error_mean', 15),
+            'HR': results.get('hr_error_mean', 2)
+        }
+        error_names = list(errors.keys())
+        error_vals = list(errors.values())
+        positions = np.arange(len(error_names))
+        ax4.bar(positions, error_vals, color=['#E91E63', '#9C27B0', '#3F51B5', '#00BCD4'], alpha=0.7)
+        thresholds = {'QRS': args.qrs_threshold, 'PR': args.pr_threshold, 'QT': args.qt_threshold, 'HR': args.hr_threshold}
+        for i, (name, val) in enumerate(errors.items()):
+            thresh = thresholds[name]
+            color = 'green' if val < thresh else 'red'
+            ax4.axhline(y=thresh, xmin=(i-0.4)/len(errors), xmax=(i+0.4)/len(errors), 
+                       color=color, linestyle='--', linewidth=2, alpha=0.5)
     
     error_names = list(errors.keys())
     error_vals = list(errors.values())
