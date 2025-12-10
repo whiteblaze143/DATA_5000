@@ -60,7 +60,6 @@ The standard 12-lead electrocardiogram (ECG) remains the gold standard for cardi
 | Metric | Value |
 |--------|-------|
 | Overall Correlation | r = 0.936 |
-| Physics-Based Leads (III, aVR, aVL, aVF) | r = 1.000 (exact) |
 | Learned Leads (V1-V3, V5-V6) | r = 0.846 |
 | Mean Absolute Error | 0.012 |
 | Signal-to-Noise Ratio | 63.0 dB |
