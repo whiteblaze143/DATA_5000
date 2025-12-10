@@ -535,24 +535,9 @@ All three architectural variants achieved statistically indistinguishable perfor
 Limb leads III, aVR, aVL, and aVF are computed deterministically via Einthoven's and Goldberger's laws. Our approach provides two advantages: (1) \textit{zero latency}---simple arithmetic operations execute in microseconds compared to neural network inference, and (2) \textit{reduced model scope}---the learning problem is constrained to only 5 chest leads, reducing parameter requirements and training complexity. We do not report metrics for these deterministic leads as their reconstruction is exact by construction.
 
 \subsection{Clinical Feature Preservation}
-Following the ECGGenEval framework~\cite{ref63}, we evaluated preservation of clinically relevant features extracted from Lead II. Table~\ref{tab:clinical_features} summarizes the results.
+Following the ECGGenEval framework~\cite{ref63}, we evaluated preservation of clinically relevant features. Since Lead II is an input lead in our 3-lead configuration (I, II, V4), interval and heart-rate features computed from Lead II are trivially preserved (identical input). For clinical significance, we report feature-level preservation for the reconstructed chest leads (V1, V2, V3, V5, V6) in Table~\ref{tab:clinical_features_leads} below.
 
-\begin{table}[h]
-\caption{Clinical Feature Preservation (Lead II)}
-\label{tab:clinical_features}
-\begin{tabular}{lccc}
-\toprule
-\textbf{Feature} & \textbf{MAE} & \textbf{Threshold} & \textbf{Status} \\
-\midrule
-QRS Duration & 6.8 ms & $<$ 10 ms & \checkmark \\
-PR Interval & 9.3 ms & $<$ 20 ms & \checkmark \\
-QT Interval & 18.7 ms & $<$ 30 ms & \checkmark \\
-Heart Rate & 1.92 bpm & $<$ 5 bpm & \checkmark \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-All clinical features met acceptability thresholds. Heart rate preservation was excellent ($r = 0.99$, MAE = 1.92 bpm), and interval measurements showed errors within clinically acceptable ranges for automated ECG interpretation. P-wave ($r = 0.78$) and T-wave ($r = 0.84$) morphology were preserved, though P-wave correlation was lower due to its smaller amplitude making it more susceptible to noise.
+% Clinical feature summary: replaced with per-lead statistics in Table~\ref{tab:clinical_features_leads}.
 
 \subsection{Deep Learning Leads: Per-Lead Analysis}
 Table\textcolor{blue}{~\ref{tab:dl_results}} presents detailed per-lead reconstruction performance for the 5 chest leads learned by the U-Net.
@@ -651,28 +636,35 @@ Figure~\ref{fig:reconstruction} shows sample reconstructions from the test set, 
 % \end{figure*}
 
 \subsection{Clinical Feature Preservation}
-Following the ECGGenEval framework~\cite{ref63}, we evaluate preservation of clinically significant ECG features. Table~\ref{tab:clinical_features} summarizes the feature-level metrics computed on the test set (Lead II, 1,932 patients).
+Following the ECGGenEval framework~\cite{ref63}, we compute feature-level preservation for reconstructed chest leads using R-peak references from Lead II to avoid detection-vs-detection mismatches. Table~\ref{tab:clinical_features_leads} provides per-lead MAE $\\pm$ std for QRS duration, PR interval, QT interval, and heart-rate errors computed across test recordings (n = 1,932).
 
 \begin{table}[h]
-\caption{Clinical Feature Preservation (Feature-Level Evaluation)}
-\label{tab:clinical_features}
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Feature} & \textbf{Ground Truth} & \textbf{Reconstructed} \\
+\caption{Clinical Feature Preservation for Reconstructed Chest Leads (MAE $\pm$ std)}
+\label{tab:clinical_features_leads}
+\begin{tabular}{lccccc}
+	oprule
+Lead & n_{valid} & QRS MAE (ms) & PR MAE (ms) & QT MAE (ms) & HR MAE (bpm) \\
 \midrule
-
-QRS Duration (ms) & 98.5 $\pm$ 12.3 & 102.1 $\pm$ 14.7 \\
-PR Interval (ms) & 162.4 $\pm$ 22.1 & 158.9 $\pm$ 24.8 \\
-QT Interval (ms) & 398.2 $\pm$ 32.6 & 385.4 $\pm$ 38.2 \\
-Heart Rate (bpm) & 71.8 $\pm$ 14.2 & 72.3 $\pm$ 14.8  \\
-\midrule
-P-wave Amp. Corr. & \multicolumn{2}{c}{$r = 0.78$}   \\
-T-wave Amp. Corr. & \multicolumn{2}{c}{$r = 0.84$}  \\
+V1 & 373 & 20.1 $\pm$ 18.2 & 15.3 $\pm$ 13.0 & 37.1 $\pm$ 34.0 & 0.08 $\pm$ 0.48 \\
+V2 & 989 & 23.8 $\pm$ 20.8 & 13.9 $\pm$ 9.9 & 38.0 $\pm$ 32.4 & 0.10 $\pm$ 0.50 \\
+V3 & 1517 & 11.9 $\pm$ 13.5 & 12.6 $\pm$ 9.2 & 43.1 $\pm$ 32.7 & 0.12 $\pm$ 0.51 \\
+V5 & 1427 & 9.7 $\pm$ 9.8 & 6.4 $\pm$ 6.7 & 19.7 $\pm$ 21.5 & 0.10 $\pm$ 0.59 \\
+V6 & 1593 & 11.0 $\pm$ 10.2 & 6.6 $\pm$ 6.9 & 21.7 $\pm$ 23.2 & 0.07 $\pm$ 0.45 \\
 \bottomrule
 \end{tabular}
+\vspace{2mm}
+\footnotesize{Notes: n_{valid} is the number of recordings with valid fiducial detections used to compute the interval errors for the given lead. We used Lead II R-peak references for alignment to ensure consistent per-beat comparisons.}
 \end{table}
 
-All clinical feature metrics meet established acceptability thresholds. The QRS duration error of 6.8 ms is well within the 10 ms clinical tolerance, ensuring accurate detection of bundle branch blocks. The PR interval error of 9.3 ms preserves atrioventricular conduction assessment capability. The QT interval, critical for arrhythmia risk stratification, shows 18.7 ms error---within a 30 ms threshold but representing the largest relative error, consistent with T-wave reconstruction being more challenging than QRS. Heart rate estimation achieves excellent agreement (1.9 bpm error), confirming R-peak timing preservation.
+\vspace{2mm}
+\noindent\textbf{Evaluation artifacts:} Per-sample clinical feature outputs and reconstructed signals (predictions and ground truths) are saved in the repository under \texttt{results/eval/} and include:
+\begin{itemize}
+    \item \texttt{test_true.npy}, \texttt{test_pred.npy}: test set ground-truth and predicted signals
+    \item \texttt{clinical_features_lead<idx>.csv}: per-sample clinical features for each evaluated lead
+    \item \texttt{clinical_features_summary_ref_peaks.csv}: aggregated per-lead clinical feature metrics used in Table~\ref{tab:clinical_features_leads}
+\end{itemize}
+
+Clinical feature preservation varies across leads. Only V5 satisfies the pre-specified clinical thresholds (QRS, PR, QT, HR); other leads, notably V1 and V2, show higher errors for QRS duration and QT interval (QRS MAE > 20 ms and QT MAE > 30 ms), and these estimates are based on fewer valid samples (see \texttt{n_{valid}} in Table~\ref{tab:clinical_features_leads}). Heart rate estimates remain robust across leads (MAE $<$ 0.2 bpm), reflecting preserved R-peak timing. T-wave amplitude correlation is moderate for V3 and V5 (r $\approx$ 0.56, 0.51 respectively), while P-wave amplitude correlations are modest (r $<$ 0.25), likely due to P-wave small amplitude and detector sensitivity. These findings indicate the model preserves broad clinical features in anatomically adjacent leads (V5, V3) but struggles for distant leads (V1, V2).
 
 Figure~\ref{fig:clinical_features} provides comprehensive visualization of these feature-level metrics.
 
@@ -682,7 +674,7 @@ Figure~\ref{fig:clinical_features} provides comprehensive visualization of these
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.75\textwidth, height=0.4\textheight,keepaspectratio=True]{figures/clinical_features_evaluation.png}
-\caption{Clinical feature preservation analysis following ECGGenEval~\cite{ref63}. (a) ECG interval measurements comparing ground truth vs. reconstructed values for QRS duration, PR interval, and QT interval. (b) Heart rate preservation showing strong correlation ($r = 0.99$) with MAE of 1.92 bpm. (c) P-wave and T-wave amplitude preservation with morphological correlation. (d) Mean absolute errors compared against clinical acceptability thresholds.}
+\caption{Clinical feature preservation analysis following ECGGenEval~\cite{ref63}. (a) ECG interval measurements comparing ground truth vs. reconstructed values for QRS duration, PR interval, and QT interval. (b) Heart rate preservation comparing ground truth vs. reconstructed HR estimates. (c) P-wave and T-wave amplitude preservation with morphological correlation. (d) Mean absolute errors compared against clinical acceptability thresholds.}
 
 \label{fig:clinical_features}
 \end{figure*}

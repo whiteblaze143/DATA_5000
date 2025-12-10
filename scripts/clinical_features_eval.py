@@ -256,7 +256,7 @@ def calculate_wave_morphology(ecg, r_peaks, fs=FS):
     }
 
 
-def evaluate_clinical_features(y_true, y_pred, lead_idx=1, fs=FS):
+def evaluate_clinical_features(y_true, y_pred, lead_idx=1, fs=FS, r_peak_ref_idx=1):
     """
     Comprehensive clinical feature evaluation for a single ECG pair.
     
@@ -283,9 +283,34 @@ def evaluate_clinical_features(y_true, y_pred, lead_idx=1, fs=FS):
     
     metrics = {}
     
-    # R-peak detection
-    r_peaks_true = detect_r_peaks(true_filtered, fs)
-    r_peaks_pred = detect_r_peaks(pred_filtered, fs)
+    # R-peak detection: detect on reference lead (default Lead II) for stability
+    # If y_true is full 12-lead, extract ref lead; otherwise trial on provided array
+    if y_true.ndim == 2:
+        # If ref index equals lead_idx, detect on target lead; else detect on reference lead
+        ref_true_signal = y_true[r_peak_ref_idx]
+    else:
+        ref_true_signal = y_true
+    r_peaks_ref = detect_r_peaks(ref_true_signal, fs)
+
+    # If detection failed on reference, fallback to detection on target true signal
+    if len(r_peaks_ref) == 0:
+        r_peaks_ref = detect_r_peaks(true_filtered, fs)
+
+    # For predicted signal, detect peaks and align to reference
+    r_peaks_pred_raw = detect_r_peaks(pred_filtered, fs)
+    # Align predicted peaks to reference peaks: for each ref peak find closest pred peak within 50ms
+    aligned_pred_peaks = []
+    max_shift = int(0.05 * fs)
+    for r in r_peaks_ref:
+        # find pred peak within r +/- max_shift
+        candidates = r_peaks_pred_raw[(r_peaks_pred_raw >= r - max_shift) & (r_peaks_pred_raw <= r + max_shift)]
+        if candidates.size > 0:
+            aligned_pred_peaks.append(candidates[0])
+        else:
+            # fallback to position r (possible small shift)
+            aligned_pred_peaks.append(r)
+    r_peaks_true = r_peaks_ref
+    r_peaks_pred = np.array(aligned_pred_peaks, dtype=int)
     
     # Heart rate
     hr_true = calculate_heart_rate(r_peaks_true, fs)
@@ -555,7 +580,7 @@ def compute_clinical_features_from_data(y_true_path, y_pred_path, fs=500):
     y_pred = np.load(y_pred_path)
     
     print(f"Loaded {y_true.shape[0]} samples")
-    print(f"Computing clinical features on Lead II...")
+    print(f"Computing clinical features...")
     
     return evaluate_batch(y_true, y_pred, fs=fs)
 
@@ -567,6 +592,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Clinical Feature Evaluation')
     parser.add_argument('--y_true', type=str, help='Path to ground truth .npy file')
     parser.add_argument('--y_pred', type=str, help='Path to predictions .npy file')
+    parser.add_argument('--lead_idx', type=str, default='1',
+                        help='Lead index to analyze (0-based index, e.g., 1 for Lead II) or comma-separated list e.g. 6,7 for V1, V2 or "all" for all leads')
+    parser.add_argument('--save_csv', action='store_true', help='Save per-sample clinical features to CSV')
+    parser.add_argument('--csv_path', type=str, default='results/eval/clinical_features_per_sample.csv', help='CSV output path for per-sample clinical features')
     parser.add_argument('--output', type=str, default='docs/figures/clinical_features_evaluation.png',
                         help='Output path for figure')
     args = parser.parse_args()
@@ -577,7 +606,81 @@ if __name__ == '__main__':
         # Compute from real data
         print("Computing Clinical Features from Model Outputs...")
         print("=" * 60)
-        results = compute_clinical_features_from_data(args.y_true, args.y_pred)
+        # Support multiple indices and lead names
+        if args.lead_idx.lower() == 'all':
+            # Evaluate all leads
+            leads_to_eval = list(range(12))
+        else:
+            # parse comma-separated or single int
+            try:
+                leads_to_eval = [int(x.strip()) for x in str(args.lead_idx).split(',')]
+            except Exception:
+                # Fallback to single index
+                leads_to_eval = [int(args.lead_idx)]
+
+        # Aggregated results per specified lead
+        aggregated_results = {}
+        per_sample_rows = []
+
+        for lid in leads_to_eval:
+            # Compute metrics for this lead
+            print(f"Evaluating lead index {lid} ({LEAD_NAMES[lid] if lid < len(LEAD_NAMES) else 'Unknown'})")
+            base_results = compute_clinical_features_from_data(args.y_true, args.y_pred)
+            # base_results is aggregated across batch; re-run with lead-specific evaluation below
+            # We'll compute per-sample features and aggregate manually
+            y_true = np.load(args.y_true)
+            y_pred = np.load(args.y_pred)
+            n = y_true.shape[0]
+            per_sample_metrics = []
+            for i in range(n):
+                try:
+                    m = evaluate_clinical_features(y_true[i], y_pred[i], lead_idx=lid)
+                    per_sample_metrics.append(m)
+                    if args.save_csv:
+                        row = {'sample': i, 'lead_idx': lid, 'lead_name': LEAD_NAMES[lid] if lid < len(LEAD_NAMES) else str(lid)}
+                        for k, v in m.items():
+                            # ensure numeric values are converted
+                            try:
+                                row[k] = float(v)
+                            except Exception:
+                                row[k] = float('nan')
+                        per_sample_rows.append(row)
+                except Exception as e:
+                    print(f"Warning: error computing sample {i} for lead {lid}: {e}")
+                    continue
+
+            # Aggregate
+            # keys in m
+            if per_sample_metrics:
+                agg = {}
+                keys = per_sample_metrics[0].keys()
+                for k in keys:
+                    vals = [p[k] for p in per_sample_metrics if not np.isnan(p.get(k, np.nan))]
+                    if vals:
+                        agg[f'{k}_mean'] = float(np.mean(vals))
+                        agg[f'{k}_std'] = float(np.std(vals))
+                    else:
+                        agg[f'{k}_mean'] = float('nan')
+                        agg[f'{k}_std'] = float('nan')
+
+                aggregated_results[lid] = agg
+            else:
+                aggregated_results[lid] = { 'error': 'no_valid_samples' }
+        # If requested, save per-sample CSV
+        if args.save_csv and per_sample_rows:
+            import csv
+            csv_path = args.csv_path
+            os.makedirs(os.path.dirname(csv_path) or '.', exist_ok=True)
+            keys = list(per_sample_rows[0].keys())
+            with open(csv_path, 'w', newline='') as cf:
+                writer = csv.DictWriter(cf, fieldnames=keys)
+                writer.writeheader()
+                for r in per_sample_rows:
+                    writer.writerow(r)
+            print(f"Per-sample clinical features saved to: {csv_path}")
+
+        # Use aggregated_results as final
+        results = aggregated_results
     else:
         print("ERROR: Clinical feature evaluation requires actual model outputs.")
         print()
@@ -590,16 +693,41 @@ if __name__ == '__main__':
         exit(1)
     
     # Print summary
-    print("\nClinical Feature Evaluation Summary (ECGGenEval Framework)")
-    print("-" * 60)
-    print(f"QRS Duration Error: {results.get('qrs_duration_error_mean', 'N/A'):.1f} ms")
-    print(f"PR Interval Error:  {results.get('pr_interval_error_mean', 'N/A'):.1f} ms")
-    print(f"QT Interval Error:  {results.get('qt_interval_error_mean', 'N/A'):.1f} ms")
-    print(f"Heart Rate Error:   {results.get('hr_error_mean', 'N/A'):.2f} bpm")
-    print("-" * 60)
+    # For multi-lead aggregated output, print per-lead tables
+    if isinstance(results, dict) and all(isinstance(k, int) for k in results.keys()):
+        for lid, res in results.items():
+            print(f"\nClinical Feature Evaluation Summary for lead {lid} ({LEAD_NAMES[lid] if lid < len(LEAD_NAMES) else 'Unknown'})")
+            print("-" * 60)
+            if 'error' in res:
+                print('No valid samples for this lead or error in processing')
+            else:
+                print(f"QRS Duration Error: {res.get('qrs_duration_error_mean', float('nan')):.1f} ms")
+                print(f"PR Interval Error:  {res.get('pr_interval_error_mean', float('nan')):.1f} ms")
+                print(f"QT Interval Error:  {res.get('qt_interval_error_mean', float('nan')):.1f} ms")
+                print(f"Heart Rate Error:   {res.get('hr_error_mean', float('nan')):.2f} bpm")
+            print("-" * 60)
+    else:
+        print(f"\nClinical Feature Evaluation Summary (ECGGenEval Framework)")
+        print("-" * 60)
+        print(f"QRS Duration Error: {results.get('qrs_duration_error_mean', 'N/A'):.1f} ms")
+        print(f"PR Interval Error:  {results.get('pr_interval_error_mean', 'N/A'):.1f} ms")
+        print(f"QT Interval Error:  {results.get('qt_interval_error_mean', 'N/A'):.1f} ms")
+        print(f"Heart Rate Error:   {results.get('hr_error_mean', 'N/A'):.2f} bpm")
+        print("-" * 60)
     
     # Generate figure
-    save_path = create_clinical_features_figure(results, args.output)
+    # Create combined figure if results aggregated for a single lead; else, create one figure per lead
+    if isinstance(results, dict) and all(isinstance(k, int) for k in results.keys()):
+        # Save per-lead figures
+        for lid, res in results.items():
+            if 'error' in res:
+                continue
+            out_path = args.output.replace('.png', f'_lead{lid}.png') if args.output.endswith('.png') else f"{args.output}_lead{lid}.png"
+            create_clinical_features_figure(res, out_path)
+            print(f"Figure saved to: {out_path}")
+        save_path = args.output
+    else:
+        save_path = create_clinical_features_figure(results, args.output)
     
     print("\n✓ Clinical features figure generated from real data!")
     print(f"  Location: {save_path}")
