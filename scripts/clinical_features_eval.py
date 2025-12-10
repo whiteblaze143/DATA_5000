@@ -539,79 +539,68 @@ def create_clinical_features_figure(results, save_path='figures/clinical_feature
     return save_path
 
 
-def generate_example_results():
+def compute_clinical_features_from_data(y_true_path, y_pred_path, fs=500):
     """
-    Generate example results based on typical reconstruction performance.
-    These values are representative of U-Net reconstruction on PTB-XL.
+    Compute clinical feature metrics from saved reconstruction data.
+    
+    Args:
+        y_true_path: Path to ground truth .npy file [N, 12, 5000]
+        y_pred_path: Path to predictions .npy file [N, 12, 5000]
+        fs: Sampling frequency
+    
+    Returns:
+        Dictionary with aggregated clinical feature metrics
     """
-    return {
-        # QRS Duration
-        'qrs_duration_true_mean': 98.5,
-        'qrs_duration_true_std': 12.3,
-        'qrs_duration_pred_mean': 102.1,
-        'qrs_duration_pred_std': 14.7,
-        'qrs_duration_error_mean': 6.8,
-        'qrs_duration_error_std': 4.2,
-        
-        # PR Interval
-        'pr_interval_true_mean': 162.4,
-        'pr_interval_true_std': 22.1,
-        'pr_interval_pred_mean': 158.9,
-        'pr_interval_pred_std': 24.8,
-        'pr_interval_error_mean': 9.3,
-        'pr_interval_error_std': 6.5,
-        
-        # QT Interval
-        'qt_interval_true_mean': 398.2,
-        'qt_interval_true_std': 32.6,
-        'qt_interval_pred_mean': 385.4,
-        'qt_interval_pred_std': 38.2,
-        'qt_interval_error_mean': 18.7,
-        'qt_interval_error_std': 12.1,
-        
-        # Heart Rate
-        'hr_true_mean': 71.8,
-        'hr_true_std': 14.2,
-        'hr_pred_mean': 72.3,
-        'hr_pred_std': 14.8,
-        'hr_error_mean': 1.92,
-        'hr_error_std': 1.45,
-        
-        # Wave Morphology
-        'p_amplitude_true_mean': 0.12,
-        'p_amplitude_pred_mean': 0.11,
-        'p_amplitude_corr_mean': 0.78,
-        't_amplitude_true_mean': 0.28,
-        't_amplitude_pred_mean': 0.26,
-        't_amplitude_corr_mean': 0.84,
-    }
+    y_true = np.load(y_true_path)
+    y_pred = np.load(y_pred_path)
+    
+    print(f"Loaded {y_true.shape[0]} samples")
+    print(f"Computing clinical features on Lead II...")
+    
+    return evaluate_batch(y_true, y_pred, fs=fs)
 
 
 if __name__ == '__main__':
     import os
+    import argparse
     
-    # Create figures directory if needed
-    os.makedirs('docs/figures', exist_ok=True)
+    parser = argparse.ArgumentParser(description='Clinical Feature Evaluation')
+    parser.add_argument('--y_true', type=str, help='Path to ground truth .npy file')
+    parser.add_argument('--y_pred', type=str, help='Path to predictions .npy file')
+    parser.add_argument('--output', type=str, default='docs/figures/clinical_features_evaluation.png',
+                        help='Output path for figure')
+    args = parser.parse_args()
     
-    # Generate example results (representative values)
-    print("Generating Clinical Feature Evaluation Figure...")
-    print("=" * 60)
+    os.makedirs(os.path.dirname(args.output) or '.', exist_ok=True)
     
-    results = generate_example_results()
+    if args.y_true and args.y_pred:
+        # Compute from real data
+        print("Computing Clinical Features from Model Outputs...")
+        print("=" * 60)
+        results = compute_clinical_features_from_data(args.y_true, args.y_pred)
+    else:
+        print("ERROR: Clinical feature evaluation requires actual model outputs.")
+        print()
+        print("Usage:")
+        print("  python scripts/clinical_features_eval.py \\")
+        print("      --y_true path/to/ground_truth.npy \\")
+        print("      --y_pred path/to/predictions.npy")
+        print()
+        print("To generate predictions, run evaluation with --save_predictions flag.")
+        exit(1)
     
     # Print summary
     print("\nClinical Feature Evaluation Summary (ECGGenEval Framework)")
     print("-" * 60)
-    print(f"QRS Duration Error: {results['qrs_duration_error_mean']:.1f} ± {results['qrs_duration_error_std']:.1f} ms")
-    print(f"PR Interval Error:  {results['pr_interval_error_mean']:.1f} ± {results['pr_interval_error_std']:.1f} ms")
-    print(f"QT Interval Error:  {results['qt_interval_error_mean']:.1f} ± {results['qt_interval_error_std']:.1f} ms")
-    print(f"Heart Rate Error:   {results['hr_error_mean']:.2f} ± {results['hr_error_std']:.2f} bpm")
-    print(f"P-wave Correlation: {results['p_amplitude_corr_mean']:.3f}")
-    print(f"T-wave Correlation: {results['t_amplitude_corr_mean']:.3f}")
+    print(f"QRS Duration Error: {results.get('qrs_duration_error_mean', 'N/A'):.1f} ms")
+    print(f"PR Interval Error:  {results.get('pr_interval_error_mean', 'N/A'):.1f} ms")
+    print(f"QT Interval Error:  {results.get('qt_interval_error_mean', 'N/A'):.1f} ms")
+    print(f"Heart Rate Error:   {results.get('hr_error_mean', 'N/A'):.2f} bpm")
     print("-" * 60)
     
     # Generate figure
-    save_path = create_clinical_features_figure(results, 'docs/figures/clinical_features_evaluation.png')
+    save_path = create_clinical_features_figure(results, args.output)
     
-    print("\n✓ Clinical features figure generated successfully!")
+    print("\n✓ Clinical features figure generated from real data!")
     print(f"  Location: {save_path}")
+

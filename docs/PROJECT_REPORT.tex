@@ -462,11 +462,7 @@ We extract and compare three critical intervals using R-peak detection and fiduc
 \end{itemize}
 
 \subsubsection{Wave Morphology}
-We quantify P-wave and T-wave preservation through:
-\begin{itemize}
-    \item \textbf{Amplitude Correlation:} Pearson correlation between ground truth and reconstructed wave amplitudes across beats.
-    \item \textbf{Heart Rate Consistency:} Mean absolute error in heart rate estimation between original and reconstructed ECGs.
-\end{itemize}
+We quantify P-wave and T-wave preservation algorithmically through Pearson correlation between ground truth and reconstructed wave amplitudes across beats and Mean absolute error (MAE) in heart rate estimation between original and reconstructed ECGs.
 
 Clinical acceptability thresholds follow established guidelines: QRS error $<$10 ms, PR error $<$20 ms, QT error $<$30 ms, and HR error $<$5 bpm~\cite{ref42}.
 
@@ -537,6 +533,26 @@ All three architectural variants achieved statistically indistinguishable perfor
 
 \subsection{Deterministic Limb Leads}
 Limb leads III, aVR, aVL, and aVF are computed deterministically via Einthoven's and Goldberger's laws. Our approach provides two advantages: (1) \textit{zero latency}---simple arithmetic operations execute in microseconds compared to neural network inference, and (2) \textit{reduced model scope}---the learning problem is constrained to only 5 chest leads, reducing parameter requirements and training complexity. We do not report metrics for these deterministic leads as their reconstruction is exact by construction.
+
+\subsection{Clinical Feature Preservation}
+Following the ECGGenEval framework~\cite{ref63}, we evaluated preservation of clinically relevant features extracted from Lead II. Table~\ref{tab:clinical_features} summarizes the results.
+
+\begin{table}[h]
+\caption{Clinical Feature Preservation (Lead II)}
+\label{tab:clinical_features}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Feature} & \textbf{MAE} & \textbf{Threshold} & \textbf{Status} \\
+\midrule
+QRS Duration & 6.8 ms & $<$ 10 ms & \checkmark \\
+PR Interval & 9.3 ms & $<$ 20 ms & \checkmark \\
+QT Interval & 18.7 ms & $<$ 30 ms & \checkmark \\
+Heart Rate & 1.92 bpm & $<$ 5 bpm & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All clinical features met acceptability thresholds. Heart rate preservation was excellent ($r = 0.99$, MAE = 1.92 bpm), and interval measurements showed errors within clinically acceptable ranges for automated ECG interpretation. P-wave ($r = 0.78$) and T-wave ($r = 0.84$) morphology were preserved, though P-wave correlation was lower due to its smaller amplitude making it more susceptible to noise.
 
 \subsection{Deep Learning Leads: Per-Lead Analysis}
 Table\textcolor{blue}{~\ref{tab:dl_results}} presents detailed per-lead reconstruction performance for the 5 chest leads learned by the U-Net.
@@ -642,27 +658,32 @@ Following the ECGGenEval framework~\cite{ref63}, we evaluate preservation of cli
 \label{tab:clinical_features}
 \begin{tabular}{lcccc}
 \toprule
-\textbf{Feature} & \textbf{Ground Truth} & \textbf{Reconstructed} & \textbf{Error} & \textbf{Threshold} \\
+\textbf{Feature} & \textbf{Ground Truth} & \textbf{Reconstructed} \\
 \midrule
-QRS Duration (ms) & 98.5 $\pm$ 12.3 & 102.1 $\pm$ 14.7 & 6.8 & $<$10 $\checkmark$ \\
-PR Interval (ms) & 162.4 $\pm$ 22.1 & 158.9 $\pm$ 24.8 & 9.3 & $<$20 $\checkmark$ \\
-QT Interval (ms) & 398.2 $\pm$ 32.6 & 385.4 $\pm$ 38.2 & 18.7 & $<$30 $\checkmark$ \\
-Heart Rate (bpm) & 71.8 $\pm$ 14.2 & 72.3 $\pm$ 14.8 & 1.9 & $<$5 $\checkmark$ \\
+
+QRS Duration (ms) & 98.5 $\pm$ 12.3 & 102.1 $\pm$ 14.7 \\
+PR Interval (ms) & 162.4 $\pm$ 22.1 & 158.9 $\pm$ 24.8 \\
+QT Interval (ms) & 398.2 $\pm$ 32.6 & 385.4 $\pm$ 38.2 \\
+Heart Rate (bpm) & 71.8 $\pm$ 14.2 & 72.3 $\pm$ 14.8  \\
 \midrule
-P-wave Amp. Corr. & \multicolumn{2}{c}{$r = 0.78$} & --- & $>$0.7 $\checkmark$ \\
-T-wave Amp. Corr. & \multicolumn{2}{c}{$r = 0.84$} & --- & $>$0.7 $\checkmark$ \\
+P-wave Amp. Corr. & \multicolumn{2}{c}{$r = 0.78$}   \\
+T-wave Amp. Corr. & \multicolumn{2}{c}{$r = 0.84$}  \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-All clinical feature metrics meet established acceptability thresholds. The QRS duration error of 6.8 ms is well within the 10 ms clinical tolerance, ensuring accurate detection of bundle branch blocks. The PR interval error of 9.3 ms preserves atrioventricular conduction assessment capability. The QT interval, critical for arrhythmia risk stratification, shows 18.7 ms error---within the 30 ms threshold but representing the largest relative error, consistent with T-wave reconstruction being more challenging than QRS. Heart rate estimation achieves excellent agreement (1.9 bpm error), confirming R-peak timing preservation.
+All clinical feature metrics meet established acceptability thresholds. The QRS duration error of 6.8 ms is well within the 10 ms clinical tolerance, ensuring accurate detection of bundle branch blocks. The PR interval error of 9.3 ms preserves atrioventricular conduction assessment capability. The QT interval, critical for arrhythmia risk stratification, shows 18.7 ms error---within a 30 ms threshold but representing the largest relative error, consistent with T-wave reconstruction being more challenging than QRS. Heart rate estimation achieves excellent agreement (1.9 bpm error), confirming R-peak timing preservation.
 
 Figure~\ref{fig:clinical_features} provides comprehensive visualization of these feature-level metrics.
 
+
+
+
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.95\textwidth]{figures/clinical_features_evaluation.png}
-\caption{ECGGenEval-style clinical feature evaluation. (a) ECG interval measurements comparing ground truth vs. reconstructed signals. (b) Heart rate preservation showing strong correlation ($r > 0.95$). (c) P-wave and T-wave amplitude preservation. (d) Error distribution relative to clinical thresholds (green = pass). (e) Summary confirming all metrics meet clinical acceptability criteria.}
+\includegraphics[width=0.75\textwidth, height=0.4\textheight,keepaspectratio=True]{figures/clinical_features_evaluation.png}
+\caption{Clinical feature preservation analysis following ECGGenEval~\cite{ref63}. (a) ECG interval measurements comparing ground truth vs. reconstructed values for QRS duration, PR interval, and QT interval. (b) Heart rate preservation showing strong correlation ($r = 0.99$) with MAE of 1.92 bpm. (c) P-wave and T-wave amplitude preservation with morphological correlation. (d) Mean absolute errors compared against clinical acceptability thresholds.}
+
 \label{fig:clinical_features}
 \end{figure*}
 

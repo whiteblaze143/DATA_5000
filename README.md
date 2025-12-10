@@ -71,16 +71,13 @@ python run_training.py --data_dir data/ptb_xl --epochs 150 --batch_size 128 --lr
 
 **Deep Learning**: 1D U-Net with 4-level encoder-decoder, 64 base features, skip connections. Trained with MSE loss, AdamW optimizer (lr=3×10⁻⁴), patient-wise train/val/test splits (70/15/15%).
 
-## Clinical Feature Preservation
+## Clinical Feature Evaluation
 
-Following ECGGenEval, we verify clinical utility:
+Script for ECGGenEval-style clinical feature extraction (QRS duration, PR/QT intervals, heart rate). Requires actual model predictions:
 
-| Feature | MAE | Threshold | Status |
-|---------|-----|-----------|--------|
-| QRS Duration | 6.8 ms | < 10 ms | ✓ |
-| PR Interval | 9.3 ms | < 20 ms | ✓ |
-| QT Interval | 18.7 ms | < 30 ms | ✓ |
-| Heart Rate | 1.9 bpm | < 5 bpm | ✓ |
+```bash
+python scripts/clinical_features_eval.py --y_true path/to/ground_truth.npy --y_pred path/to/predictions.npy
+```
 
 ## Citation
 
