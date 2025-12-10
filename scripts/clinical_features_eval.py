@@ -592,6 +592,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Clinical Feature Evaluation')
     parser.add_argument('--y_true', type=str, help='Path to ground truth .npy file')
     parser.add_argument('--y_pred', type=str, help='Path to predictions .npy file')
+    parser.add_argument('--qrs-threshold', type=float, default=10.0, help='QRS duration error threshold (ms)')
+    parser.add_argument('--pr-threshold', type=float, default=20.0, help='PR interval error threshold (ms)')
+    parser.add_argument('--qt-threshold', type=float, default=30.0, help='QT interval error threshold (ms)')
+    parser.add_argument('--hr-threshold', type=float, default=5.0, help='Heart rate error threshold (bpm)')
+    parser.add_argument('--out_dir', type=str, default='results/eval', help='Output directory to save summary JSON/CSV')
     parser.add_argument('--lead_idx', type=str, default='1',
                         help='Lead index to analyze (0-based index, e.g., 1 for Lead II) or comma-separated list e.g. 6,7 for V1, V2 or "all" for all leads')
     parser.add_argument('--save_csv', action='store_true', help='Save per-sample clinical features to CSV')
@@ -644,6 +649,28 @@ if __name__ == '__main__':
                                 row[k] = float(v)
                             except Exception:
                                 row[k] = float('nan')
+                        # Add exceedance booleans
+                        # QRS error field name: qrs_duration_error
+                        try:
+                            qrs_err = float(m.get('qrs_duration_error', float('nan')))
+                        except Exception:
+                            qrs_err = float('nan')
+                        try:
+                            pr_err = float(m.get('pr_interval_error', float('nan')))
+                        except Exception:
+                            pr_err = float('nan')
+                        try:
+                            qt_err = float(m.get('qt_interval_error', float('nan')))
+                        except Exception:
+                            qt_err = float('nan')
+                        try:
+                            hr_err = float(m.get('hr_error', float('nan')))
+                        except Exception:
+                            hr_err = float('nan')
+                        row['qrs_exceed'] = False if np.isnan(qrs_err) else (abs(qrs_err) > float(args.qrs_threshold))
+                        row['pr_exceed'] = False if np.isnan(pr_err) else (abs(pr_err) > float(args.pr_threshold))
+                        row['qt_exceed'] = False if np.isnan(qt_err) else (abs(qt_err) > float(args.qt_threshold))
+                        row['hr_exceed'] = False if np.isnan(hr_err) else (abs(hr_err) > float(args.hr_threshold))
                         per_sample_rows.append(row)
                 except Exception as e:
                     print(f"Warning: error computing sample {i} for lead {lid}: {e}")
@@ -666,6 +693,42 @@ if __name__ == '__main__':
                 aggregated_results[lid] = agg
             else:
                 aggregated_results[lid] = { 'error': 'no_valid_samples' }
+        # Compute percent exceedance per lead and add to aggregated_results
+        for lid in leads_to_eval:
+            # Only compute if we have per-sample CSV rows for this lead
+            exceed_counts = {'qrs': 0, 'pr': 0, 'qt': 0, 'hr': 0}
+            total_valid = 0
+            for r in per_sample_rows:
+                if int(r['lead_idx']) != lid:
+                    continue
+                # Only count sample rows that have non-nan error values (we used floats above)
+                # We consider sample valid if any of the key errors exist
+                try:
+                    _ = float(r.get('qrs_duration_error', float('nan')))
+                    # sample considered valid
+                    total_valid += 1
+                except Exception:
+                    # skip
+                    continue
+                exceed_counts['qrs'] += 1 if r.get('qrs_exceed', False) else 0
+                exceed_counts['pr'] += 1 if r.get('pr_exceed', False) else 0
+                exceed_counts['qt'] += 1 if r.get('qt_exceed', False) else 0
+                exceed_counts['hr'] += 1 if r.get('hr_exceed', False) else 0
+
+            if total_valid > 0:
+                aggregated_results.setdefault(lid, {})
+                aggregated_results[lid]['qrs_exceed_pct'] = 100.0 * exceed_counts['qrs'] / total_valid
+                aggregated_results[lid]['pr_exceed_pct'] = 100.0 * exceed_counts['pr'] / total_valid
+                aggregated_results[lid]['qt_exceed_pct'] = 100.0 * exceed_counts['qt'] / total_valid
+                aggregated_results[lid]['hr_exceed_pct'] = 100.0 * exceed_counts['hr'] / total_valid
+                aggregated_results[lid]['n_valid'] = total_valid
+            else:
+                aggregated_results.setdefault(lid, {})
+                aggregated_results[lid]['qrs_exceed_pct'] = float('nan')
+                aggregated_results[lid]['pr_exceed_pct'] = float('nan')
+                aggregated_results[lid]['qt_exceed_pct'] = float('nan')
+                aggregated_results[lid]['hr_exceed_pct'] = float('nan')
+                aggregated_results[lid]['n_valid'] = 0
         # If requested, save per-sample CSV
         if args.save_csv and per_sample_rows:
             import csv
@@ -678,6 +741,46 @@ if __name__ == '__main__':
                 for r in per_sample_rows:
                     writer.writerow(r)
             print(f"Per-sample clinical features saved to: {csv_path}")
+
+        # Save aggregated threshold exceedance summary JSON
+        out_dir = args.out_dir or os.path.dirname(args.csv_path) or '.'
+        os.makedirs(out_dir, exist_ok=True)
+        summary_json = os.path.join(out_dir, 'clinical_features_threshold_exceedance.json')
+        try:
+            import json
+            with open(summary_json, 'w') as jf:
+                json.dump({str(k): aggregated_results[k] for k in aggregated_results}, jf, indent=2)
+            print(f"Threshold exceedance summary saved to: {summary_json}")
+        except Exception as e:
+            print('Warning: failed to write summary JSON', e)
+
+        # Also write summary CSV for quick consumption
+        try:
+            csv_summary = os.path.join(out_dir, 'clinical_features_threshold_exceedance.csv')
+            keys = ['lead_idx', 'lead_name', 'n_valid', 'qrs_exceed_pct', 'pr_exceed_pct', 'qt_exceed_pct', 'hr_exceed_pct', 'qrs_duration_error_mean', 'pr_interval_error_mean', 'qt_interval_error_mean', 'hr_error_mean']
+            import csv as _csv
+            with open(csv_summary, 'w', newline='') as cf:
+                writer = _csv.DictWriter(cf, fieldnames=keys)
+                writer.writeheader()
+                for k in sorted(aggregated_results.keys(), key=lambda x: int(x)):
+                    ar = aggregated_results[k]
+                    row = {
+                        'lead_idx': int(k),
+                        'lead_name': LEAD_NAMES[int(k)] if int(k) < len(LEAD_NAMES) else str(k),
+                        'n_valid': int(ar.get('n_valid', 0)),
+                        'qrs_exceed_pct': ar.get('qrs_exceed_pct', float('nan')),
+                        'pr_exceed_pct': ar.get('pr_exceed_pct', float('nan')),
+                        'qt_exceed_pct': ar.get('qt_exceed_pct', float('nan')),
+                        'hr_exceed_pct': ar.get('hr_exceed_pct', float('nan')),
+                        'qrs_duration_error_mean': ar.get('qrs_duration_error_mean', float('nan')),
+                        'pr_interval_error_mean': ar.get('pr_interval_error_mean', float('nan')),
+                        'qt_interval_error_mean': ar.get('qt_interval_error_mean', float('nan')),
+                        'hr_error_mean': ar.get('hr_error_mean', float('nan'))
+                    }
+                    writer.writerow(row)
+            print(f"Threshold exceedance CSV saved to: {csv_summary}")
+        except Exception as e:
+            print('Warning: failed to write summary CSV', e)
 
         # Use aggregated_results as final
         results = aggregated_results

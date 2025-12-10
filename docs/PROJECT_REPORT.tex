@@ -641,15 +641,15 @@ Following the ECGGenEval framework~\cite{ref63}, we compute feature-level preser
 \begin{table}[h]
 \caption{Clinical Feature Preservation for Reconstructed Chest Leads (MAE $\pm$ std)}
 \label{tab:clinical_features_leads}
-\begin{tabular}{lccccc}
+\begin{tabular}{lcccccccc}
 	oprule
-Lead & n_{valid} & QRS MAE (ms) & PR MAE (ms) & QT MAE (ms) & HR MAE (bpm) \\
+Lead & n_{valid} & QRS MAE (ms) & PR MAE (ms) & QT MAE (ms) & HR MAE (bpm) & QRS>10\% & PR>20\% & QT>30\% \\
 \midrule
-V1 & 373 & 20.1 $\pm$ 18.2 & 15.3 $\pm$ 13.0 & 37.1 $\pm$ 34.0 & 0.08 $\pm$ 0.48 \\
-V2 & 989 & 23.8 $\pm$ 20.8 & 13.9 $\pm$ 9.9 & 38.0 $\pm$ 32.4 & 0.10 $\pm$ 0.50 \\
-V3 & 1517 & 11.9 $\pm$ 13.5 & 12.6 $\pm$ 9.2 & 43.1 $\pm$ 32.7 & 0.12 $\pm$ 0.51 \\
-V5 & 1427 & 9.7 $\pm$ 9.8 & 6.4 $\pm$ 6.7 & 19.7 $\pm$ 21.5 & 0.10 $\pm$ 0.59 \\
-V6 & 1593 & 11.0 $\pm$ 10.2 & 6.6 $\pm$ 6.9 & 21.7 $\pm$ 23.2 & 0.07 $\pm$ 0.45 \\
+V1 & 373 & 20.1 $\pm$ 18.2 & 15.3 $\pm$ 13.0 & 37.1 $\pm$ 34.0 & 0.08 $\pm$ 0.48 & 4.6\% & 28.0\% & 33.2\% \\
+V2 & 989 & 23.8 $\pm$ 20.8 & 13.9 $\pm$ 9.9 & 38.0 $\pm$ 32.4 & 0.10 $\pm$ 0.50 & 7.8\% & 24.5\% & 46.9\% \\
+V3 & 1517 & 11.9 $\pm$ 13.5 & 12.6 $\pm$ 9.2 & 43.1 $\pm$ 32.7 & 0.12 $\pm$ 0.51 & 15.8\% & 20.7\% & 56.1\% \\
+V5 & 1427 & 9.7 $\pm$ 9.8 & 6.4 $\pm$ 6.7 & 19.7 $\pm$ 21.5 & 0.10 $\pm$ 0.59 & 22.4\% & 4.6\% & 18.7\% \\
+V6 & 1593 & 11.0 $\pm$ 10.2 & 6.6 $\pm$ 6.9 & 21.7 $\pm$ 23.2 & 0.07 $\pm$ 0.45 & 31.1\% & 4.8\% & 21.9\% \\
 \bottomrule
 \end{tabular}
 \vspace{2mm}
