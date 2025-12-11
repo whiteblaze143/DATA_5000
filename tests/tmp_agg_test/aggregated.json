@@ -1,0 +1,24 @@
+{
+  "exp_name": "exp_meta",
+  "n_jobs": 1,
+  "jobs": [
+    {
+      "id": 0,
+      "cmd": "echo hi",
+      "exit_code": 0,
+      "git_commit": "abcd123",
+      "git_branch": "exp_meta/job_0",
+      "pr_url": "https://github.com/owner/repo/pull/1",
+      "duration_seconds": 1.23,
+      "artifacts": [
+        "model.pt",
+        "metrics.json"
+      ],
+      "log_tail": null
+    }
+  ],
+  "summary": {
+    "exp_name": "exp_meta",
+    "commands": 1
+  }
+}

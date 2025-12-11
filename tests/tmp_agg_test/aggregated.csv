@@ -1,0 +1,2 @@
+id,exit_code,cmd,git_commit,git_branch,pr_url,duration_seconds,artifacts
+0,0,echo hi,abcd123,exp_meta/job_0,https://github.com/owner/repo/pull/1,1.23,model.pt;metrics.json
