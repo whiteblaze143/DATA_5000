@@ -1,0 +1,41 @@
+name: Agents CI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      exp_name:
+        description: 'Experiment name'
+        required: true
+        default: 'manual_dispatch'
+      commands:
+        description: 'JSON array of commands or path'
+        required: true
+        default: '["echo hello"]'
+      parallel:
+        description: 'Parallel jobs'
+        required: false
+        default: '1'
+      use_worktree:
+        description: 'Use worktrees'
+        required: false
+        default: 'true'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run tests
+        run: |
+          pytest -q
