@@ -61,5 +61,16 @@ Best practices
 --------------
 - Start with `--dry_run` so the orchestrator prints a plan and you can review it before running.
 - Prefer `parallel` limited to available GPUs/CPUs; orchestrator creates per-job worktrees to avoid conflicts.
+ - New options:
+	 - `--auto_fix_before_pr`: Run the auto-fix agent (`scripts/agents/auto_fix_and_pr.sh`) inside each job's worktree before creating a PR.
+	 - `--auto_fix_script`: Path to the auto-fix script (defaults to `scripts/agents/auto_fix_and_pr.sh`).
+ - When creating PRs via `--commit_and_pr`, the orchestrator now captures PR URLs emitted by the apply script and saves them into each job's `job_<i>.meta.json` as `pr_url` for later aggregation.
+ - New post-PR options:
+	 - `--post_pr_labels`: comma-separated list of labels to add to PRs created by the orchestrator
+	 - `--post_pr_reviewers`: comma-separated list of reviewers to request for the PR
+	 - Post-PR actions call `scripts/agents/auto_review_agent.sh` and respect dry-run behavior.
+ - Nightly runs and auto-PRs:
+	 - A nightly GitHub Action `.github/workflows/nightly-orchestrator.yml` is provided to run the orchestrator on a schedule and upload `aggregated.json`/`aggregated.csv` as artifacts.
+	 - The nightly job will create draft PRs (requires `GITHUB_TOKEN` which is provided by Actions as `secrets.GITHUB_TOKEN`). The action runs a small safe placeholder by default; replace `scripts/agents/commands.nightly.json` with the desired nightly commands for your experiments.
 - Use `Merge Assistant` to inspect and apply changes from a background agent worktree back into the main branch.
 

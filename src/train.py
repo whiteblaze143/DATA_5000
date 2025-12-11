@@ -35,14 +35,26 @@ def parse_args():
     parser.add_argument('--features', type=int, default=64, help='Base features for UNet')
     parser.add_argument('--depth', type=int, default=4, help='Depth of UNet')
     parser.add_argument('--dropout', type=float, default=0.2, help='Dropout probability')
+    # Diagnostic classifier integration (Option A)
+    parser.add_argument('--classifier_path', type=str, default=None, help='Path to pretrained classifier checkpoint (optional)')
+    parser.add_argument('--labels_dir', type=str, default=None, help='Path to label arrays (e.g., data/processed_full/labels)')
+    parser.add_argument('--diag_loss_weight', type=float, default=0.0, help='Weight of diagnostic BCE loss to add to reconstruction loss')
+    parser.add_argument('--classifier_freeze', action='store_true', help='If set, freeze classifier parameters when computing diagnostic loss')
     return parser.parse_args()
 
-def train_epoch(model, dataloader, optimizer, criterion, device):
+def train_epoch(model, dataloader, optimizer, criterion, device, classifier_model=None, class_criterion=None, diag_loss_weight=0.0):
     """Train for one epoch"""
     model.train()
     running_loss = 0.0
+    running_diag_loss = 0.0
     
-    for inputs, targets in tqdm(dataloader, desc="Training"):
+    for batch in tqdm(dataloader, desc="Training"):
+        # Support datasets that optionally return labels
+        if len(batch) == 3:
+            inputs, targets, labels = batch
+        else:
+            inputs, targets = batch
+            labels = None
         # Move data to device
         inputs = inputs.to(device)
         targets = targets.to(device)
@@ -58,6 +70,15 @@ def train_epoch(model, dataloader, optimizer, criterion, device):
         
         # Compute loss
         loss = criterion(chest_leads_outputs, chest_leads_targets)
+        # Optionally add diagnostic loss if classifier and labels are provided
+        if classifier_model is not None and class_criterion is not None and labels is not None and diag_loss_weight > 0.0:
+            # Reconstruct full 12-leads
+            reconstructed_12_leads = reconstruct_12_leads(inputs, chest_leads_outputs)
+            # Select classifier input leads (I, II, V4 -> indices 0,1,9)
+            classifier_input = reconstructed_12_leads[:, [0, 1, 9], :]
+            logits = classifier_model(classifier_input)
+            diag_loss = class_criterion(logits, labels.to(device))
+            loss = loss + diag_loss_weight * diag_loss
         
         # Backward pass
         loss.backward()
@@ -65,17 +86,28 @@ def train_epoch(model, dataloader, optimizer, criterion, device):
         
         # Update statistics
         running_loss += loss.item()
+        # update diag loss if present
+        if classifier_model is not None and class_criterion is not None and labels is not None and diag_loss_weight > 0.0:
+            running_diag_loss += diag_loss.item()
     
-    return running_loss / len(dataloader)
+    avg_loss = running_loss / len(dataloader)
+    avg_diag_loss = running_diag_loss / len(dataloader) if running_diag_loss > 0.0 else 0.0
+    return avg_loss, avg_diag_loss
 
-def validate(model, dataloader, criterion, device):
+def validate(model, dataloader, criterion, device, classifier_model=None, class_criterion=None, diag_loss_weight=0.0):
     """Evaluate model on validation set"""
     model.eval()
     running_loss = 0.0
+    running_diag_loss = 0.0
     all_metrics = []
     
     with torch.no_grad():
-        for inputs, targets in tqdm(dataloader, desc="Validating"):
+        for batch in tqdm(dataloader, desc="Validating"):
+            if len(batch) == 3:
+                inputs, targets, labels = batch
+            else:
+                inputs, targets = batch
+                labels = None
             # Move data to device
             inputs = inputs.to(device)
             targets = targets.to(device)
@@ -89,7 +121,15 @@ def validate(model, dataloader, criterion, device):
             
             # Compute loss
             loss = criterion(chest_leads_outputs, chest_leads_targets)
+            if classifier_model is not None and class_criterion is not None and labels is not None and diag_loss_weight > 0.0:
+                reconstructed_12_leads = reconstruct_12_leads(inputs, chest_leads_outputs)
+                classifier_input = reconstructed_12_leads[:, [0, 1, 9], :]
+                logits = classifier_model(classifier_input)
+                diag_loss = class_criterion(logits, labels.to(device))
+                loss = loss + diag_loss_weight * diag_loss
             running_loss += loss.item()
+            if classifier_model is not None and class_criterion is not None and labels is not None and diag_loss_weight > 0.0:
+                running_diag_loss += diag_loss.item()
             
             # Reconstruct full 12-lead ECG
             reconstructed_12_leads = reconstruct_12_leads(inputs, chest_leads_outputs)
@@ -107,8 +147,9 @@ def validate(model, dataloader, criterion, device):
         'correlation_overall': np.mean([m['correlation_overall'] for m in all_metrics]),
         'snr_overall': np.mean([m['snr_overall'] for m in all_metrics])
     }
-    
-    return running_loss / len(dataloader), avg_metrics
+
+    avg_diag_loss = running_diag_loss / len(dataloader) if running_diag_loss > 0.0 else 0.0
+    return running_loss / len(dataloader), avg_metrics, avg_diag_loss
 
 def main():
     # Parse arguments
@@ -128,7 +169,8 @@ def main():
     train_loader, val_loader, test_loader = get_dataloaders(
         args.data_dir,
         batch_size=args.batch_size,
-        num_workers=args.num_workers
+        num_workers=args.num_workers,
+        labels_dir=args.labels_dir
     )
     
     # Create model
@@ -153,6 +195,41 @@ def main():
     
     # Define loss function and optimizer
     criterion = nn.MSELoss()
+    # Diagnostic classifier
+    class_criterion = None
+    classifier_model = None
+    if args.classifier_path is not None and args.diag_loss_weight > 0.0:
+        from src.models.classifier_1d import Classifier1D
+        # Determine number of classes if labels_dir provided
+        num_classes = None
+        if args.labels_dir is not None:
+            import json
+            try:
+                labels_path = os.path.join(args.labels_dir, 'labels.json')
+                with open(labels_path, 'r') as fh:
+                    label_list = json.load(fh)
+                num_classes = len(label_list)
+            except Exception:
+                num_classes = None
+        # Load checkpoint
+        ckpt = torch.load(args.classifier_path, map_location='cpu')
+        # determine in_channels from ckpt if available
+        model_in_ch = None
+        first_conv = 'encoder.0.conv.weight'
+        if first_conv in ckpt:
+            model_in_ch = ckpt[first_conv].shape[1]
+        if model_in_ch is None:
+            model_in_ch = 3
+        if num_classes is None:
+            num_classes = 30
+        classifier_model = Classifier1D(in_channels=model_in_ch, num_classes=num_classes)
+        classifier_model.load_state_dict(ckpt)
+        classifier_model.to(device)
+        classifier_model.eval()
+        if args.classifier_freeze:
+            for p in classifier_model.parameters():
+                p.requires_grad = False
+        class_criterion = nn.BCEWithLogitsLoss()
     
     # Use SGD optimizer to avoid torch dynamo issues
     optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=0.9, weight_decay=1e-4)
@@ -163,31 +240,54 @@ def main():
     train_losses = []
     val_losses = []
     val_metrics = []
+    train_diag_losses = []
+    val_diag_losses = []
     
     print(f"Starting training for {args.epochs} epochs...")
     start_time = time.time()
     
     for epoch in range(args.epochs):
         epoch_start_time = time.time()
-        
+
         # Train
-        train_loss = train_epoch(model, train_loader, optimizer, criterion, device)
+        train_loss, train_diag_loss = train_epoch(
+            model,
+            train_loader,
+            optimizer,
+            criterion,
+            device,
+            classifier_model=classifier_model,
+            class_criterion=class_criterion,
+            diag_loss_weight=args.diag_loss_weight,
+        )
         train_losses.append(train_loss)
-        
+        train_diag_losses.append(train_diag_loss)
+
         # Validate
-        val_loss, metrics = validate(model, val_loader, criterion, device)
+        val_loss, metrics, val_diag_loss = validate(
+            model,
+            val_loader,
+            criterion,
+            device,
+            classifier_model=classifier_model,
+            class_criterion=class_criterion,
+            diag_loss_weight=args.diag_loss_weight,
+        )
         val_losses.append(val_loss)
+        val_diag_losses.append(val_diag_loss)
         val_metrics.append(metrics)
-        
+
         # Print progress
         epoch_time = time.time() - epoch_start_time
-        print(f"Epoch {epoch+1}/{args.epochs} | "
-              f"Train Loss: {train_loss:.4f} | "
-              f"Val Loss: {val_loss:.4f} | "
-              f"Corr: {metrics['correlation_overall']:.4f} | "
-              f"MAE: {metrics['mae_overall']:.4f} | "
-              f"SNR: {metrics['snr_overall']:.2f} dB | "
-              f"Time: {epoch_time:.2f}s")
+        print(
+            f"Epoch {epoch+1}/{args.epochs} | "
+            f"Train Loss: {train_loss:.4f} | Train Diag Loss: {train_diag_loss:.6f} | "
+            f"Val Loss: {val_loss:.4f} | Val Diag Loss: {val_diag_loss:.6f} | "
+            f"Corr: {metrics['correlation_overall']:.4f} | "
+            f"MAE: {metrics['mae_overall']:.4f} | "
+            f"SNR: {metrics['snr_overall']:.2f} dB | "
+            f"Time: {epoch_time:.2f}s",
+        )
         
         # Save best model
         if val_loss < best_val_loss:
@@ -197,7 +297,11 @@ def main():
             
             # Generate example reconstruction
             with torch.no_grad():
-                inputs, targets = next(iter(val_loader))
+                batch_iter = next(iter(val_loader))
+                if len(batch_iter) == 3:
+                    inputs, targets, labels = batch_iter
+                else:
+                    inputs, targets = batch_iter
                 inputs = inputs.to(device)
                 targets = targets.to(device)
                 
@@ -252,6 +356,8 @@ def main():
     history = {
         'train_loss': train_losses,
         'val_loss': val_losses,
+        'train_diag_loss': train_diag_losses,
+        'val_diag_loss': val_diag_losses,
         'val_metrics': val_metrics
     }
     
@@ -259,6 +365,18 @@ def main():
     import pickle
     with open(os.path.join(args.output_dir, 'training_history.pkl'), 'wb') as f:
         pickle.dump(history, f)
+    
+    # Plot diagnostic loss curves if we had a diagnostic component
+    if len(train_diag_losses) > 0 or len(val_diag_losses) > 0:
+        plt.figure(figsize=(10, 6))
+        plt.plot(train_diag_losses, label='Train Diag Loss')
+        plt.plot(val_diag_losses, label='Val Diag Loss')
+        plt.xlabel('Epoch')
+        plt.ylabel('Diagnostic BCE Loss')
+        plt.title('Diagnostic Loss during Training')
+        plt.legend()
+        plt.grid(True, linestyle='--', alpha=0.7)
+        plt.savefig(os.path.join(args.output_dir, 'diagnostic_loss_curves.png'), dpi=300, bbox_inches='tight')
     
     print(f"All results saved to {args.output_dir}")
 

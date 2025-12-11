@@ -9,7 +9,7 @@ class ECGReconstructionDataset(Dataset):
     - Inputs: leads I, II, V4
     - Targets: all 12 leads
     """
-    def __init__(self, input_path, target_path, transform=None, verbose=True):
+    def __init__(self, input_path, target_path, labels_path=None, transform=None, verbose=True):
         """
         Args:
             input_path: Path to input data (.npy file)
@@ -36,6 +36,11 @@ class ECGReconstructionDataset(Dataset):
         self.targets = self.targets.astype(np.float32)
         
         self.transform = transform
+        # Load labels if provided
+        self.labels = None
+        if labels_path is not None:
+            if os.path.exists(labels_path):
+                self.labels = np.load(labels_path)
         
         # Verify shapes
         assert self.inputs.shape[0] == self.targets.shape[0], \
@@ -68,9 +73,12 @@ class ECGReconstructionDataset(Dataset):
         input_tensor = torch.from_numpy(input_signal)
         target_tensor = torch.from_numpy(target_signal)
         
+        if self.labels is not None:
+            label_tensor = torch.from_numpy(self.labels[idx].astype('float32'))
+            return input_tensor, target_tensor, label_tensor
         return input_tensor, target_tensor
 
-def get_dataloaders(data_dir, batch_size=32, num_workers=4, verbose=True):
+def get_dataloaders(data_dir, batch_size=32, num_workers=4, verbose=True, labels_dir=None):
     """
     Create train, validation, and test dataloaders
     
@@ -107,21 +115,31 @@ def get_dataloaders(data_dir, batch_size=32, num_workers=4, verbose=True):
         print(f"\nLoading data from: {data_dir}")
     
     # Create datasets
+    train_labels_path = None
+    val_labels_path = None
+    test_labels_path = None
+    if labels_dir is not None:
+        train_labels_path = os.path.join(labels_dir, 'train_labels.npy')
+        val_labels_path = os.path.join(labels_dir, 'val_labels.npy')
+        test_labels_path = os.path.join(labels_dir, 'test_labels.npy')
     train_dataset = ECGReconstructionDataset(
         os.path.join(data_dir, 'train_input.npy'),
         os.path.join(data_dir, 'train_target.npy'),
+        labels_path=train_labels_path,
         verbose=verbose
     )
     
     val_dataset = ECGReconstructionDataset(
         os.path.join(data_dir, 'val_input.npy'),
         os.path.join(data_dir, 'val_target.npy'),
+        labels_path=val_labels_path,
         verbose=verbose
     )
     
     test_dataset = ECGReconstructionDataset(
         os.path.join(data_dir, 'test_input.npy'),
         os.path.join(data_dir, 'test_target.npy'),
+        labels_path=test_labels_path,
         verbose=verbose
     )
     

@@ -54,9 +54,21 @@ def aggregate(exp_dir: Path):
     out_csv = exp_dir / 'aggregated.csv'
     with open(out_csv, 'w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(['id', 'exit_code', 'cmd'])
+        writer.writerow(['id', 'exit_code', 'cmd', 'git_commit', 'git_branch', 'pr_url', 'duration_seconds', 'artifacts'])
         for j in jobs:
-            writer.writerow([j.get('id'), j.get('exit_code'), j.get('cmd')])
+            artifacts = j.get('artifacts')
+            if isinstance(artifacts, (list, tuple)):
+                artifacts = ';'.join(artifacts)
+            writer.writerow([
+                j.get('id'),
+                j.get('exit_code'),
+                j.get('cmd'),
+                j.get('git_commit'),
+                j.get('git_branch'),
+                j.get('pr_url'),
+                j.get('duration_seconds'),
+                artifacts,
+            ])
 
     print(f"Wrote {out_json} and {out_csv}")
 
