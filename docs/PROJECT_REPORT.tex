@@ -31,6 +31,8 @@
 \usepackage{tabularx}
 \usepackage{ragged2e}
 \usepackage{array}
+\usepackage{siunitx} % improved numeric alignment
+\sisetup{round-mode=places, round-precision=3, group-separator = {,}, detect-all}
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
@@ -81,7 +83,7 @@
 %% Abstract
 %%
 \begin{abstract}
-Cardiovascular disease (CVD) remains the world's leading cause of death, yet the gold-standard 12-lead electrocardiogram (ECG) is difficult to deploy outside clinical environments due to equipment complexity and technician requirements. We study a hybrid, physics-informed deep learning approach to reconstruct the full 12-lead ECG from only three measured leads (I, II, V4). Deterministic physiological relationships---Einthoven's law and Goldberger's equations---enable exact, zero-parameter reconstruction of four limb leads (III, aVR, aVL, aVF), while a 1D U-Net reconstructs the remaining five precordial leads (V1, V2, V3, V5, V6). On PTB-XL with patient-wise splits to avoid data leakage, the learned chest leads achieve mean correlation $r \approx 0.846$ in a final single-run model, with per-lead performance V1=0.818, V2=0.827, V3=0.860, V5=0.891, V6=0.836. A preliminary ablation indicates that a shared decoder (17.1M parameters) outperforms a larger lead-specific decoder (40.8M parameters), suggesting parameter sharing acts as regularization under limited input information. Analysis of inter-lead correlations shows that reconstruction quality closely follows the anatomical and statistical proximity of target leads to the measured input lead V4, indicating that input lead choice is a more important design knob than architectural complexity. Code and artifacts are publicly available.
+Cardiovascular disease (CVD) remains the world's leading cause of death, yet the gold-standard 12-lead electrocardiogram (ECG) is difficult to deploy outside clinical environments due to equipment complexity and technician requirements. We study a hybrid, physics-informed deep learning approach to reconstruct the full 12-lead ECG from only three measured leads (I, II, V4). Deterministic physiological relationships---Einthoven's law and Goldberger's equations---enable exact, zero-parameter reconstruction of four limb leads (III, aVR, aVL, aVF), while a 1D U-Net reconstructs the remaining five precordial leads (V1, V2, V3, V5, V6). On PTB-XL with patient-wise splits to avoid data leakage, the learned chest leads achieve mean correlation $r \approx 0.846$ in a final single-run model, with per-lead performance V1=0.818, V2=0.827, V3=0.860, V5=0.891, V6=0.836. A preliminary ablation indicates that a shared decoder (17.1M parameters) outperforms a larger lead-specific decoder (40.8M parameters), suggesting parameter sharing acts as regularization under limited input information. Analysis of inter-lead correlations shows that reconstruction quality closely follows the anatomical and statistical proximity of target leads to the measured input lead V4, indicating that input lead choice is a more important design knob than architectural complexity.
 \end{abstract}
 
 %%
@@ -104,7 +106,7 @@ Cardiovascular disease (CVD) remains the world's leading cause of death, yet the
        <concept_desc>Human-centered computing~Ubiquitous and mobile computing</concept_desc>
        <concept_significance>300</concept_significance>
    </concept>
-</ccs2012>
+</ccs2012}
 \end{CCSXML}
 
 \ccsdesc[500]{Computing methodologies~Machine learning}
@@ -119,7 +121,7 @@ Cardiovascular disease (CVD) remains the world's leading cause of death, yet the
 \begin{document}
 \maketitle
 
-%% ============================================================================
+%% ============================================================================%
 %% INTRODUCTION
 %% ============================================================================
 
@@ -138,10 +140,10 @@ We focus on the following contributions:
     \item A hybrid architecture that uses closed-form physiological relationships for limb leads and a 1D U-Net for precordial leads, reducing the learning problem to five chest leads.
     \item A patient-wise evaluation protocol on PTB-XL to avoid data leakage and provide more realistic estimates of generalization.
     \item Empirical analysis showing that reconstruction performance is primarily limited by inter-lead correlations, not architectural complexity, and that a shared decoder outperforms a larger lead-specific decoder.
-    \item Feature- and diagnostic-level evaluation indicating which downstream tasks can be safely supported by reconstructed leads and which require caution.
+    \item Feature- and diagnostic-level evaluation indicating which downstream tasks can be reasonably supported by reconstructed leads and which require caution.
 \end{itemize}
 
-%% ============================================================================
+%% ============================================================================%
 %% BACKGROUND
 %% ============================================================================
 
@@ -162,22 +164,22 @@ The six limb leads describe electrical activity in the frontal plane.
 
 \textbf{Bipolar Leads (I, II, III):}
 \begin{align}
-    \text{Lead I} &= V_{LA} - V_{RA} \\
-    \text{Lead II} &= V_{LL} - V_{RA} \\
-    \text{Lead III} &= V_{LL} - V_{LA}
+    \text{Lead I} &= V_{LA} - V_{RA}, \\
+    \text{Lead II} &= V_{LL} - V_{RA}, \\
+    \text{Lead III} &= V_{LL} - V_{LA}.
 \end{align}
 
 \textbf{Einthoven's Law:}
 \begin{equation}
-    \text{Lead III} = \text{Lead II} - \text{Lead I}
+    \text{Lead III} = \text{Lead II} - \text{Lead I}.
     \label{eq:einthoven}
 \end{equation}
 
 \textbf{Augmented Leads (aVR, aVL, aVF):}
 \begin{align}
-    \text{aVR} &= -\frac{\text{Lead I} + \text{Lead II}}{2} \label{eq:avr}\\
-    \text{aVL} &= \text{Lead I} - \frac{\text{Lead II}}{2} \label{eq:avl}\\
-    \text{aVF} &= \text{Lead II} - \frac{\text{Lead I}}{2} \label{eq:avf}
+    \text{aVR} &= -\frac{\text{Lead I} + \text{Lead II}}{2}, \label{eq:avr}\\
+    \text{aVL} &= \text{Lead I} - \frac{\text{Lead II}}{2}, \label{eq:avl}\\
+    \text{aVF} &= \text{Lead II} - \frac{\text{Lead I}}{2}. \label{eq:avf}
 \end{align}
 
 Given Leads I and II, all remaining limb leads can thus be computed exactly~\cite{ref33}.
@@ -204,7 +206,7 @@ V6 & Level with V4, midaxillary & Left lateral wall \\
 \subsection{Clinical Significance of Missing Leads}
 Different regions of myocardium manifest in distinct leads~\cite{ref35,ref38}. Anterior infarction is primarily visible in V1--V4, bundle branch blocks alter QRS morphology in V1 and V6, and left ventricular hypertrophy affects voltages across several chest leads~\cite{ref52}. Limb-lead-only devices can therefore miss clinically important patterns, motivating accurate reconstruction of precordial leads from reduced-lead systems.
 
-%% ============================================================================%%
+%% ============================================================================%
 %% RELATED WORK
 %% ============================================================================
 
@@ -224,7 +226,7 @@ Recent frameworks such as ECGGenEval~\cite{ref63} and multi-center benchmarks~\c
 
 A systematic review~\cite{ref65} concluded that three carefully chosen leads can capture more than 99\% of ECG information content (in an information-theoretic sense), but that no universal configuration or algorithm has emerged. Many studies rely on record-wise splits, which can inflate results by leaking patient identity information~\cite{ref9}. We build on this literature by enforcing patient-wise splits, integrating deterministic limb lead computation, and explicitly analysing the role of inter-lead correlations.
 
-%% ============================================================================%%
+%% ============================================================================%
 %% METHODOLOGY
 %% ============================================================================
 
@@ -302,7 +304,7 @@ where $\mathcal{L}_{\text{recon}}$ is MSE on chest leads and $\mathcal{L}_{\text
 
 For selected comparisons, we use paired tests (paired $t$, Wilcoxon, permutation), bootstrap confidence intervals, and Cohen's $d$ to quantify effect sizes, correcting for multiple testing with Benjamini--Hochberg FDR where appropriate. We report these only where they materially affect interpretation.
 
-%% ============================================================================%%
+%% ============================================================================%
 %% DATASET
 %% ============================================================================
 
@@ -373,7 +375,7 @@ Figure~\ref{fig:ground_truth_corr} shows the inter-lead correlation matrix; nota
 \label{fig:ground_truth_corr}
 \end{figure*}
 
-%% ============================================================================%%
+%% ============================================================================%
 %% EVALUATION
 %% ============================================================================
 
@@ -414,7 +416,7 @@ To assess diagnostic impact, we train a classifier on original ECGs and evaluate
 
 We report AUROC and focus on the change $\Delta\text{AUROC} = \text{AUROC}_{\text{recon}} - \text{AUROC}_{\text{orig}}$. A degradation within $0.05$ is treated as acceptable for non-inferiority in this project context.
 
-%% ============================================================================%%
+%% ============================================================================%
 %% RESULTS
 %% ============================================================================
 
@@ -427,9 +429,9 @@ Table~\ref{tab:overall_results} summarizes aggregate performance across the five
 \begin{table}[h]
 \caption{Test-set performance across model variants (single run, seed 2024)}
 \label{tab:overall_results}
-\begin{tabular}{lccc}
+\begin{tabular}{l S[table-format=1.4] S[table-format=1.5] S[table-format=2.2]}
 \toprule
-Variant & $r$ & MAE (mV) & SNR (dB) \\ \midrule
+Variant & \multicolumn{1}{c}{$r$} & \multicolumn{1}{c}{MAE (mV)} & \multicolumn{1}{c}{SNR (dB)} \\ \midrule
 Baseline & 0.9370 & 0.01209 & 63.04 \\
 Hybrid & 0.9358 & 0.01228 & 63.00 \\
 Physics-aware & 0.9360 & 0.01217 & 63.02 \\
@@ -445,15 +447,15 @@ Table~\ref{tab:dl_results} reports per-lead metrics for the five reconstructed c
 \begin{table}[h]
 \caption{Per-lead reconstruction performance (baseline, single run)}
 \label{tab:dl_results}
-\begin{tabular}{lcccc}
+\begin{tabular}{l S[table-format=1.3] S[table-format=1.3] S[table-format=2.2] l}
 \toprule
-Lead & $r$ & MAE (mV) & SNR (dB) & Rank \\ \midrule
+Lead & \multicolumn{1}{c}{$r$} & \multicolumn{1}{c}{MAE (mV)} & \multicolumn{1}{c}{SNR (dB)} & Rank \\ \midrule
 V1 & 0.818 & 0.030 & 19.52 & Hardest \\
 V2 & 0.827 & 0.030 & 19.34 & 4th \\
 V3 & 0.860 & 0.027 & 20.01 & 2nd \\
 V5 & 0.891 & 0.026 & 20.30 & Best \\
 V6 & 0.836 & 0.033 & 18.28 & 3rd \\ \midrule
-Mean & 0.846 & 0.029 & 19.49 & --- \\
+Mean & 0.846 & 0.029 & 19.49 & --- \\ 
 \bottomrule
 \end{tabular}
 \end{table}
@@ -474,9 +476,9 @@ To test whether per-lead specialization is beneficial, we compared the shared de
 \begin{table}[h]
 \caption{Shared vs. lead-specific decoders (earlier ablation run)}
 \label{tab:ablation_detail}
-\begin{tabular}{lccc}
+\begin{tabular}{l S[table-format=1.3] S[table-format=1.3] l}
 \toprule
-Lead & Shared $r$ & Lead-spec $r$ & Better \\ \midrule
+Lead & \multicolumn{1}{c}{Shared $r$} & \multicolumn{1}{c}{Lead-spec $r$} & Better \\ \midrule
 V1 & 0.726 & 0.708 & Shared \\
 V2 & 0.683 & 0.636 & Shared \\
 V3 & 0.765 & 0.728 & Shared \\
@@ -495,15 +497,15 @@ We assess preservation of clinically relevant features derived from reconstructe
 \begin{table}[h]
 \caption{Clinical feature preservation (test set)}
 \label{tab:clinical_features}
-\begin{tabular}{lccc}
+\begin{tabular}{l S[table-format=2.1] l}
 \toprule
-Feature & MAE & Threshold \\ \midrule
-QRS duration & 6.8 ms & $<10$ \\
-PR interval & 9.3 ms & $<20$ ms & \\
-QT interval & 18.7 ms & $<30$ ms &  \\
-Heart rate & 1.9 bpm & $<5$ bpm &  \\ \midrule
-P-wave amplitude corr. & \multicolumn{2}{c}{$r = 0.78$} & \\
-T-wave amplitude corr. & \multicolumn{2}{c}{$r = 0.84$} & \\
+Feature & \multicolumn{1}{c}{MAE} & Threshold \\ \midrule
+QRS duration & 6.8 & 10 ms \\
+PR interval & 9.3 & 20 ms \\
+QT interval & 18.7 & 30 ms \\
+Heart rate & 1.9 & 5 bpm \\ \midrule
+P-wave amplitude corr. & \multicolumn{2}{c}{$r = 0.78$} \\
+T-wave amplitude corr. & \multicolumn{2}{c}{$r = 0.84$} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -535,7 +537,7 @@ QRS and PR intervals are preserved with comfortable margins. QT interval errors 
     \caption{Mean absolute error heatmap}
     \label{fig:mae_heatmap}
 \end{subfigure}
-\caption{Multiplane clinical feature evaluation: (a) QRS duration Bland--Altman, (b) QT interval Bland--Altman, (c) mean absolute error (MAE) heatmap.}
+\caption{Clinical feature evaluation: (a) QRS duration Bland--Altman, (b) QT interval Bland--Altman, (c) mean absolute error (MAE) heatmap.}
 \label{fig:clinical_features_multiplane}
 \end{figure*}
 
@@ -563,8 +565,7 @@ Figure~\ref{fig:reconstruction} shows a representative reconstructed ECG. Determ
 \label{fig:reconstruction}
 \end{figure*}
 
-
-%% ============================================================================%%
+%% ============================================================================%
 %% DISCUSSION
 %% ============================================================================
 
@@ -579,17 +580,20 @@ Table~\ref{tab:ground_truth_corr_results} relates reconstruction performance to 
 \label{tab:ground_truth_corr_results}
 \centering
 \small
-\begin{tabularx}{\textwidth}{l c c >{\raggedright\arraybackslash}X}
+\begingroup\setlength{\extrarowheight}{2pt}\renewcommand{\arraystretch}{1.08}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l S[table-format=1.2] S[table-format=1.3] p{0.48\textwidth}}
 \toprule
-Lead & Corr(V4) & Recon $r$ & Comment \\ \midrule
+Lead & \multicolumn{1}{c}{\textbf{Corr(V4)}} & \multicolumn{1}{c}{\textbf{Recon $r$}} & \textbf{Comment} \\ \midrule
 V5 & 0.79 & 0.891 & Adjacent to V4 \\
 V3 & 0.71 & 0.860 & Anterior, near V4 \\
 V6 & 0.69 & 0.836 & Lateral, close to V5 \\
 V1 & 0.49 & 0.818 & Right ventricle \\
 V2 & 0.36 & 0.827 & Septal, farther from V4 \\
 \bottomrule
-\end{tabularx}
+\end{tabular*}
+\endgroup
 \end{table*}
+
 
 The rank order matches closely: leads that are more correlated with V4 are easier to reconstruct. There is no realistic architecture that can reconstruct V1/V2 as accurately as V5/V3 from the same inputs; the missing information simply is not present. The most promising path forward is therefore to optimize which leads are measured (e.g., I, II, V1 or I, II, V2) rather than to further complicate the model.
 
@@ -606,7 +610,7 @@ The diagnostic AUROC analysis reinforces this picture: common labels show modest
 \subsection{Comparison to Prior Work}
 Our mean chest lead correlation ($r \approx 0.846$) is slightly lower than the best numbers reported in some deep-learning studies ($r \approx 0.90$), but most of those works use record-wise splits and sometimes different input configurations, both of which can favour higher reported performance~\cite{ref9,ref61,ref64}. Given our stricter patient-wise protocol and the challenging (I, II, V4) configuration for V1/V2, the results are competitive and arguably more realistic.
 
-%% ============================================================================%%
+%% ============================================================================%
 %% LIMITATIONS AND FUTURE WORK
 %% ============================================================================
 
@@ -615,7 +619,7 @@ Our study has several limitations. First, evaluation is limited to PTB-XL; exter
 
 Future work should therefore (i) optimize input lead selection using both anatomical reasoning and information-theoretic criteria, (ii) perform multi-dataset, multi-seed benchmarking under unified evaluation protocols, (iii) integrate uncertainty quantification for downstream clinical use, and (iv) explore leveraging pre-trained ECG foundation models as encoders in the hybrid architecture.
 
-%% ============================================================================%%
+%% ============================================================================%
 %% CONCLUSION
 %% ============================================================================
 
@@ -626,7 +630,7 @@ Three conclusions follow. First, performance is primarily constrained by inter-l
 
 Overall, our results support the feasibility of hybrid physics-informed and deep learning methods for reduced-lead ECG systems and underline the importance of input lead selection as a central design decision.
 
-%% ============================================================================%%
+%% ============================================================================%
 %% ACKNOWLEDGMENTS
 %% ============================================================================
 
@@ -634,14 +638,14 @@ Overall, our results support the feasibility of hybrid physics-informed and deep
 We thank Dr. Ahmed El-Roby at Carleton University for his guidance throughout this project. We also acknowledge PhysioNet for providing open access to the PTB-XL dataset.
 \end{acks}
 
-%% ============================================================================%%
+%% ============================================================================%
 %% REFERENCES
 %% ============================================================================
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}
 
-%% ============================================================================%%
+%% ============================================================================%
 %% APPENDIX
 %% ============================================================================
 

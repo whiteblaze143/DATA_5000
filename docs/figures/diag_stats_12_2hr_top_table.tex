@@ -4,9 +4,9 @@
 \small
 \caption{Top per-label AUROC differences (classifier true vs reconstructed variants) — 2hr classifier}
 \label{tab:diag_pairwise_top}
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X r r r p{3.5cm}}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X S[table-format=1.3] S[table-format=1.3] S[table-format=+1.3] >{\raggedright\arraybackslash}p{3.5cm}}
 \toprule
-Label & Variant AUC (true) & Variant B AUC (recon) & $\Delta$ (AUC$_A$ - AUC$_B$) & 95\% CI \\
+Label & \multicolumn{1}{c}{Variant AUC (true)} & \multicolumn{1}{c}{Variant B AUC (recon)} & \multicolumn{1}{c}{$\Delta$ (AUC$_A$ - AUC$_B$)} & 95\% CI \\
 \midrule
 % Rows inserted programmatically
 \texttt{ALMI} (anterolateral myocardial infarction) & 0.503 & 0.361 & +0.141 & [0.034, 0.246] \\
