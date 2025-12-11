@@ -100,3 +100,9 @@ python scripts/clinical_features_eval.py --y_true path/to/ground_truth.npy --y_p
 ## License
 
 MIT
+
+## VS Code Workflow
+
+See [docs/vscode-workflow.md](docs/vscode-workflow.md) for recommended workspace settings, how to use custom agents, and tips for running long experiments as background agents with Git worktrees.
+
+For advanced agent usage, see [docs/agents/README.md](docs/agents/README.md) and [docs/agents/agent_prompts.md](docs/agents/agent_prompts.md).

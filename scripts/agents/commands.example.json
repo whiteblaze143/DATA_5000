@@ -1,0 +1,4 @@
+[
+  "python run_training.py --exp demo_lr_3e-4 --seed 1",
+  "python run_training.py --exp demo_lr_1e-4 --seed 2"
+]

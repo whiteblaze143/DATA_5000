@@ -641,6 +641,151 @@ def create_clinical_features_figure(results, save_path='figures/clinical_feature
     return save_path
 
 
+def plot_bland_altman(true_signal, pred_signal, metric_label='Error', ax=None, units='ms'):
+    """Plot Bland-Altman plot for a single metric.
+
+    Args:
+        true_signal: array-like actual values
+        pred_signal: array-like predicted values
+        metric_label: label for title/axis
+        ax: matplotlib axes to plot on (if None create new)
+    Returns:
+        The axes containing the plot
+    """
+    import numpy as _np
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(6, 4))
+
+    true_arr = _np.array(true_signal).astype(float)
+    pred_arr = _np.array(pred_signal).astype(float)
+    # Restrict to finite values
+    mask = _np.isfinite(true_arr) & _np.isfinite(pred_arr)
+    true_arr = true_arr[mask]
+    pred_arr = pred_arr[mask]
+    if len(true_arr) == 0:
+        ax.text(0.5, 0.5, 'No valid pairs', ha='center')
+        return ax
+
+    m = _np.mean(pred_arr - true_arr)
+    sd = _np.std(pred_arr - true_arr)
+    loa_upper = m + 1.96 * sd
+    loa_lower = m - 1.96 * sd
+    mean_vals = (pred_arr + true_arr) / 2
+    diff_vals = pred_arr - true_arr
+
+    ax.scatter(mean_vals, diff_vals, alpha=0.4, s=10)
+    ax.hlines([m, loa_upper, loa_lower], xmin=mean_vals.min(), xmax=mean_vals.max(), colors=['k', 'r', 'r'], linestyles=['-', '--', '--'])
+    ax.set_xlabel(f'Mean {metric_label} ({units})')
+    ax.set_ylabel(f'Difference (pred - true) ({units})')
+    ax.set_title(f'Bland-Altman: {metric_label}')
+    ax.text(0.02, 0.95, f'Mean diff = {m:.2f}{units}\nLOA = [{loa_lower:.2f}, {loa_upper:.2f}]', transform=ax.transAxes, fontsize=8, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=0.7))
+    ax.grid(alpha=0.3)
+    return ax
+
+
+def plot_exceedance_heatmap(aggregated_results, save_path='figures/clinical_exceedance_heatmap.png'):
+    """Plot a heatmap of percent exceedances per lead & per metric.
+
+    aggregated_results: dict keyed by lead index with keys: qrs_exceed_pct, pr_exceed_pct, qt_exceed_pct, hr_exceed_pct
+    """
+    import pandas as pd
+    # Build DataFrame: index lead names, columns metrics
+    rows = []
+    for k, v in aggregated_results.items():
+        try:
+            lid = int(k)
+        except Exception:
+            continue
+        name = LEAD_NAMES[lid] if lid < len(LEAD_NAMES) else str(lid)
+        rows.append({
+            'lead_idx': lid,
+            'lead_name': name,
+            'qrs_exceed_pct': v.get('qrs_exceed_pct', float('nan')),
+            'pr_exceed_pct': v.get('pr_exceed_pct', float('nan')),
+            'qt_exceed_pct': v.get('qt_exceed_pct', float('nan')),
+            'hr_exceed_pct': v.get('hr_exceed_pct', float('nan'))
+        })
+    df = pd.DataFrame(rows).sort_values('lead_idx').set_index('lead_name')
+    # Reorder columns for display
+    df = df[['qrs_exceed_pct', 'pr_exceed_pct', 'qt_exceed_pct', 'hr_exceed_pct']]
+    plt.figure(figsize=(8, max(4, len(df) * 0.35)))
+    try:
+        sns.heatmap(df, annot=True, fmt='.1f', cmap='Reds', cbar_kws={'label': 'Percent Exceedance (%)'})
+    except Exception:
+        # fallback to basic imshow
+        plt.imshow(df.fillna(0), aspect='auto', cmap='Reds')
+        plt.colorbar(label='Percent Exceedance (%)')
+        plt.yticks(range(len(df)), df.index)
+        plt.xticks(range(df.shape[1]), df.columns, rotation=45)
+    plt.title('Percent Exceedance by Lead and Metric (%)')
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=300, bbox_inches='tight')
+    plt.close()
+    return save_path
+
+
+def plot_mae_heatmap(aggregated_results, save_path='figures/clinical_mae_heatmap.png'):
+    """Plot a heatmap of mean absolute errors per lead & per metric (MAE for intervals, bpm").
+
+    aggregated_results: dict keyed by lead index with keys: qrs_duration_error_mean, pr_interval_error_mean,
+    qt_interval_error_mean, hr_error_mean
+    """
+    # Support pandas if available; otherwise use pure Python/numpy fallback
+    try:
+        import pandas as pd
+        pd_available = True
+    except Exception:
+        pd_available = False
+    # Build rows list
+    rows = []
+    for k, v in aggregated_results.items():
+        try:
+            lid = int(k)
+        except Exception:
+            continue
+        name = LEAD_NAMES[lid] if lid < len(LEAD_NAMES) else str(lid)
+        rows.append({
+            'lead_idx': lid,
+            'lead_name': name,
+            'qrs_error_mean': v.get('qrs_duration_error_mean', float('nan')),
+            'pr_error_mean': v.get('pr_interval_error_mean', float('nan')),
+            'qt_error_mean': v.get('qt_interval_error_mean', float('nan')),
+            'hr_error_mean': v.get('hr_error_mean', float('nan'))
+        })
+    if pd_available:
+        df = pd.DataFrame(rows).sort_values('lead_idx').set_index('lead_name')
+        df = df[['qrs_error_mean', 'pr_error_mean', 'qt_error_mean', 'hr_error_mean']]
+        plt.figure(figsize=(8, max(4, len(df) * 0.35)))
+        try:
+            ax = sns.heatmap(df, annot=True, fmt='.2f', cmap='viridis', cbar_kws={'label': 'Mean Absolute Error'})
+            ax.set_xlabel('Metric')
+            ax.set_ylabel('Lead')
+        except Exception:
+            plt.imshow(df.fillna(0), aspect='auto', cmap='viridis')
+            plt.colorbar(label='Mean Absolute Error')
+            plt.yticks(range(len(df)), df.index)
+            plt.xticks(range(df.shape[1]), df.columns, rotation=45)
+    else:
+        # Fallback: build matrix and labels using numpy
+        import numpy as _np
+        data = []
+        lead_names = []
+        for r in sorted(rows, key=lambda x: x['lead_idx']):
+            lead_names.append(r['lead_name'])
+            data.append([r['qrs_error_mean'], r['pr_error_mean'], r['qt_error_mean'], r['hr_error_mean']])
+        arr = _np.array(data, dtype=float)
+        plt.figure(figsize=(8, max(4, arr.shape[0] * 0.35)))
+        plt.imshow(arr, aspect='auto', cmap='viridis')
+        plt.colorbar(label='Mean Absolute Error')
+        plt.yticks(range(arr.shape[0]), lead_names)
+        plt.xticks(range(arr.shape[1]), ['qrs_error_mean', 'pr_error_mean', 'qt_error_mean', 'hr_error_mean'], rotation=45)
+    plt.title('Mean Absolute Error by Lead and Metric (ms/bpm)')
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=300, bbox_inches='tight')
+    plt.close()
+    return save_path
+
+
 def compute_clinical_features_from_data(y_true_path, y_pred_path, fs=500):
     """
     Compute clinical feature metrics from saved reconstruction data.
@@ -906,6 +1051,31 @@ if __name__ == '__main__':
             create_clinical_features_figure(res, out_path)
             print(f"Figure saved to: {out_path}")
         save_path = args.output
+
+        # Additional advanced plots: Bland-Altman for each metric (if per-sample DF exists)
+        if per_sample_rows:
+            import pandas as pd
+            df = pd.DataFrame(per_sample_rows)
+            df = df.reset_index(drop=True)
+            # For each metric, create BA plot and save
+            for metric_key, units, fname in [('qrs_duration', 'ms', 'qrs_ba'), ('pr_interval', 'ms', 'pr_ba'), ('qt_interval', 'ms', 'qt_ba'), ('hr', 'bpm', 'hr_ba')]:
+                true_col = f'{metric_key}_true'
+                pred_col = f'{metric_key}_pred'
+                if true_col in df.columns and pred_col in df.columns:
+                    import matplotlib.pyplot as plt
+                    fig, ax = plt.subplots(figsize=(6, 4))
+                    plot_bland_altman(df[true_col].astype(float).values, df[pred_col].astype(float).values, metric_label=metric_key.replace('_', ' ').upper(), ax=ax, units=units)
+                    out_ba = os.path.join(out_dir, f'clinical_features_bland_altman_{metric_key}.png')
+                    fig.savefig(out_ba, dpi=300, bbox_inches='tight')
+                    plt.close(fig)
+                    print(f"Saved Bland-Altman plot to: {out_ba}")
+            # Summary heatmap for mean absolute errors (MAE)
+            try:
+                heatmap_path = os.path.join(out_dir, 'clinical_features_mae_heatmap.png')
+                plot_mae_heatmap(aggregated_results, save_path=heatmap_path)
+                print(f"Saved MAE heatmap to: {heatmap_path}")
+            except Exception as e:
+                print('Warning: failed to create MAE heatmap:', e)
     else:
         save_path = create_clinical_features_figure(results, args.output)
     

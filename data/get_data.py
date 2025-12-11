@@ -38,19 +38,29 @@ def load_ptb_xl(ptb_xl_path, sampling_rate=500):
     print("Loading ECG signals...")
     
     # Get list of available record files (check both flat and nested structures)
-    records100_path = os.path.join(ptb_xl_path, 'records100')
+    # Support both 100Hz and 500Hz directories (records100, records500)
     available_files = {}  # record_id -> file_path mapping
-    
-    if os.path.exists(records100_path):
-        # Walk through all subdirectories to find .hea files
-        for root, dirs, files in os.walk(records100_path):
-            for file in files:
-                if file.endswith('.hea'):
-                    # Extract record ID (e.g., "00001_lr.hea" -> 1)
-                    record_id = int(file.split('_')[0])
-                    # Store path without extension
-                    file_path = os.path.join(root, file[:-4])  # Remove .hea
-                    available_files[record_id] = file_path
+    for rec_dir in ['records100', 'records500']:
+        records_path = os.path.join(ptb_xl_path, rec_dir)
+        if os.path.exists(records_path):
+            # Walk through all subdirectories to find .hea files
+            for root, dirs, files in os.walk(records_path):
+                for file in files:
+                    if file.endswith('.hea'):
+                        # Extract record ID (e.g., "00001_lr.hea" -> 1)
+                        try:
+                            record_id = int(file.split('_')[0])
+                        except Exception:
+                            continue
+                        # Store path without extension
+                        file_path = os.path.join(root, file[:-4])  # Remove .hea
+                        # If both 100Hz and 500Hz exist, prefer 500Hz (higher fidelity)
+                        if record_id in available_files:
+                            # prefer records500 over records100
+                            if 'records500' in records_path:
+                                available_files[record_id] = file_path
+                        else:
+                            available_files[record_id] = file_path
     
     print(f"Found {len(available_files)} available records")
     if available_files:
